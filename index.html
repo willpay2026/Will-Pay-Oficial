@@ -1,62 +1,89 @@
-@@ -19,17 +19,27 @@
-        .logo-splash { width: 220px; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 0.5; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1); } }
+:root { --gold: #ffcf40; --dark-bg: #000; --card-bg: #0a0a0a; --border-gold: #ffcf40; }
+body, html { margin: 0; padding: 0; background: var(--dark-bg); color: #fff; font-family: 'Lexend', sans-serif; height: 100vh; overflow: hidden; }
 
+        .view { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100vh; padding: 20px; box-sizing: border-box; position: absolute; top:0; left:0; }
+        /* VISTAS */
+        .view { display: none; flex-direction: column; align-items: center; width: 100%; height: 100vh; padding: 20px; box-sizing: border-box; position: absolute; top:0; left:0; }
+
+/* SPLASH */
+        #view-splash { display: flex; z-index: 1000; background: #000; }
+        #view-splash { display: flex; z-index: 1000; background: #000; justify-content: center; }
+.logo-splash { width: 220px; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 0.5; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1); } }
+
+        /* CARDS */
+        .card { width: 100%; max-width: 360px; background: var(--card-bg); border: 2px solid var(--border-gold); border-radius: 25px; padding: 25px; text-align: center; box-sizing: border-box; }
         /* FORMULARIOS Y BOTONES (SIN RECUADRO ENCAPSULADOR) */
         .login-box { width: 100%; max-width: 360px; text-align: center; margin-top: 20px; }
-        /* ELEMENTOS DE INTERFAZ (LIMPIOS - SIN RECUADROS) */
-        .login-container { width: 100%; max-width: 360px; text-align: center; margin-top: 20px; }
 
+        input { width: 100%; padding: 12px; background: #111; border: 1px solid #444; border-radius: 10px; color: #fff; margin-bottom: 10px; text-align: center; outline: none; font-family: 'Lexend'; }
+        .btn-gold { width: 100%; background: var(--gold); border: none; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer; color: #000; text-transform: uppercase; font-size: 0.8rem; }
         input { width: 100%; padding: 15px; background: #111; border: 1px solid #333; border-radius: 12px; color: #fff; margin-bottom: 15px; text-align: center; outline: none; font-family: 'Lexend'; font-size: 1rem; }
         input:focus { border-color: var(--gold); }
-        input { 
-            width: 100%; padding: 15px; background: #0a0a0a; border: none; 
-            border-bottom: 1.5px solid #333; border-radius: 0; color: #fff; 
-            margin-bottom: 20px; text-align: center; outline: none; 
-            font-family: 'Lexend'; font-size: 1.1rem; transition: 0.3s;
-        }
-        input:focus { border-bottom-color: var(--gold); background: #111; }
 
         .btn-gold { width: 100%; background: var(--gold); border: none; padding: 18px; border-radius: 15px; font-weight: bold; cursor: pointer; color: #000; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; }
-        .btn-gold { 
-            width: 100%; background: var(--gold); border: none; padding: 18px; 
-            border-radius: 50px; font-weight: bold; cursor: pointer; color: #000; 
-            text-transform: uppercase; font-size: 0.9rem; letter-spacing: 2px;
-            box-shadow: 0 4px 15px rgba(255, 207, 64, 0.2);
-        }
 
+        .sello { margin-top: 20px; color: var(--gold); font-size: 0.6rem; letter-spacing: 3px; opacity: 0.7; }
         .sello { margin-top: 30px; color: var(--gold); font-size: 0.6rem; letter-spacing: 4px; opacity: 0.7; font-weight: bold; }
 
         /* CONTENEDOR DINÁMICO TOTAL */
-        /* CONTENEDOR DINÁMICO */
         #content-box { width: 100%; max-width: 450px; margin: 0 auto; }
-    </style>
+</style>
 </head>
-@@ -41,14 +51,14 @@
-    </div>
+<body>
+@@ -34,20 +40,22 @@
+<div class="sello" style="position:absolute; bottom:40px;">WILDON. C.A.</div>
+</div>
 
+    <div id="view-login" class="view">
+        <img src="logonuevo.png" style="width: 130px; margin-bottom: 20px;">
+        <div class="card" id="login-panel">
+            <h3 style="color:var(--gold); margin-top:0;">ACCESO OFICIAL</h3>
     <div id="view-login" class="view" style="justify-content: center;">
         <img src="logonuevo.png" style="width: 140px; margin-bottom: 30px;">
-        <img src="logonuevo.png" style="width: 150px; margin-bottom: 40px;">
-
+        
         <div class="login-box" id="login-panel">
             <h2 style="color:var(--gold); margin-bottom: 20px; font-weight: 300;">ACCESO OFICIAL</h2>
-        <div class="login-container">
-            <h2 style="color:var(--gold); margin-bottom: 30px; font-weight: 300; letter-spacing: 2px;">ACCESO</h2>
-            <input type="text" id="user" placeholder="Usuario / Teléfono">
-            <input type="password" id="pin" placeholder="PIN de Seguridad">
-            <button class="btn-gold" onclick="entrar()">ENTRAR AL SISTEMA</button>
+<input type="text" id="user" placeholder="Usuario / Teléfono">
+<input type="password" id="pin" placeholder="PIN de Seguridad">
+<button class="btn-gold" onclick="entrar()">ENTRAR AL SISTEMA</button>
+            <p style="font-size: 0.7rem; color: #555; margin-top: 15px; cursor: pointer;" onclick="iniciarRegistroADN()">¿No tienes ADN Digital? Regístrate</p>
             <p style="font-size: 0.75rem; color: #666; margin-top: 25px; cursor: pointer;" onclick="iniciarRegistroADN()">¿No tienes ADN Digital? <span style="color:var(--gold)">Regístrate</span></p>
-            <p style="font-size: 0.75rem; color: #555; margin-top: 30px; cursor: pointer;" onclick="iniciarRegistroADN()">¿No tienes ADN Digital? <span style="color:var(--gold)">Regístrate</span></p>
-        </div>
+</div>
 
-        <div class="sello">WILDON. C.A.</div>
-@@ -78,8 +88,6 @@ <h2 style="color:var(--gold); margin-bottom: 20px; font-weight: 300;">ACCESO OFI
-        function entrar() {
-            const u = document.getElementById('user').value;
-            irA('view-dash');
+<div class="sello">WILDON. C.A.</div>
+</div>
+
+    <div id="view-dash" class="view" style="justify-content: flex-start; padding-top: 40px; overflow-y: auto;">
+        <div id="content-box" class="card" style="border:none; background:transparent; width:100%;">
+    <div id="view-dash" class="view" style="justify-content: flex-start; padding-top: 30px; overflow-y: auto;">
+        <div id="content-box">
+</div>
+</div>
+
+@@ -57,7 +65,6 @@ <h3 style="color:var(--gold); margin-top:0;">ACCESO OFICIAL</h3>
+<script src="modules/admin.js"></script>
+
+<script>
+        // PROPIEDAD DE NAVEGACIÓN
+function irA(id) {
+document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
+const target = document.getElementById(id);
+@@ -68,16 +75,14 @@ <h3 style="color:var(--gold); margin-top:0;">ACCESO OFICIAL</h3>
+setTimeout(() => { irA('view-login'); }, 3000); 
+};
+
+        // PROPIEDAD DE ACCESO CORREGIDA
+function entrar() {
+const u = document.getElementById('user').value;
+irA('view-dash');
 
             // Lógica de detección de Maestro o Socio
-            if(u === "04126602555" || u === "WILFREDO") {
-                window.mostrarPanelAdmin();
-            } else {
+if(u === "04126602555" || u === "WILFREDO") {
+                // Si eres tú, carga el Panel Maestro de admin.js
+window.mostrarPanelAdmin();
+} else {
+                // Si es otro, carga el Dashboard de pagos.js
+window.mostrarDashboardUsuario();
+}
+}
