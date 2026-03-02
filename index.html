@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Will-Pay | El Legado</title>
+    <title>Will-Pay | Oficial</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="logonuevo.png">
-    <meta name="theme-color" content="#000000">
 
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;700&display=swap" rel="stylesheet">
     
@@ -18,15 +17,15 @@
         :root { --gold: #ffcf40; --dark-bg: #000; }
         body, html { margin: 0; padding: 0; background: var(--dark-bg); color: #fff; font-family: 'Lexend', sans-serif; height: 100%; overflow: hidden; }
 
-        /* 🎬 SPLASH SCREEN PROFESIONAL - AJUSTADO A 275PX */
+        /* 🎬 SPLASH SCREEN - LOGO A 275PX */
         #splash-screen {
             position: fixed; width: 100%; height: 100%; background: #000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             z-index: 1000; transition: opacity 1s ease-in-out;
         }
         .logo-container {
-            width: 275px; height: 275px; position: relative; /* TAMAÑO SOLICITADO */
-            overflow: hidden; border-radius: 35px; /* Bordes un pelo más suaves */
+            width: 275px; height: 275px; position: relative;
+            overflow: hidden; border-radius: 35px;
         }
         .logo-img { width: 100%; height: auto; }
         .logo-container::after {
@@ -35,118 +34,80 @@
             transform: rotate(-45deg); animation: shine 6s infinite;
         }
         @keyframes shine { 0% { top:-150%; left:-150%; } 20% { top:100%; left:100%; } 100% { top:100%; left:100%; } }
-        
-        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
 
-        /* 🏢 CONTENEDOR PRINCIPAL */
+        /* 🏢 LOGIN CARD */
         #main-app { display: none; width: 100%; min-height: 100vh; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; opacity: 0; transition: opacity 0.8s; }
-        .login-card { width: 100%; max-width: 400px; background: #080808; border: 1px solid #1a1500; border-radius: 30px; padding: 35px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.9); }
+        .login-card { width: 100%; max-width: 400px; background: #080808; border: 1px solid #1a1500; border-radius: 30px; padding: 35px; text-align: center; }
         
-        input { width: 100%; padding: 18px; background: #111; border: 1px solid #222; border-radius: 15px; color: #fff; margin-bottom: 15px; text-align: center; font-family: 'Lexend'; box-sizing: border-box; font-size: 1rem; }
-        input:focus { border-color: var(--gold); outline: none; }
-        .btn-gold { width: 100%; background: var(--gold); border: none; padding: 18px; border-radius: 15px; font-weight: bold; cursor: pointer; color: #000; text-transform: uppercase; font-size: 1rem; transition: transform 0.2s; }
-        .btn-gold:active { transform: scale(0.95); }
+        input { width: 100%; padding: 18px; background: #111; border: 1px solid #222; border-radius: 15px; color: #fff; margin-bottom: 15px; text-align: center; font-family: 'Lexend'; box-sizing: border-box; }
+        .btn-gold { width: 100%; background: var(--gold); border: none; padding: 18px; border-radius: 15px; font-weight: bold; cursor: pointer; color: #000; text-transform: uppercase; }
 
-        /* 📱 CARTELITO INSTALAR APP */
+        /* BANNER INSTALACIÓN */
         #install-banner {
             position: fixed; bottom: 20px; left: 20px; right: 20px; 
             background: var(--gold); color: #000; padding: 15px; 
             border-radius: 15px; display: none; justify-content: space-between; 
             align-items: center; z-index: 2000; font-weight: bold; font-size: 0.8rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); font-family: 'Lexend', sans-serif;
         }
     </style>
 </head>
-<body onload="iniciarSecuenciaSplash()">
+<body onload="iniciarApp()">
 
     <div id="splash-screen">
         <div class="logo-container"><img src="logonuevo.png" class="logo-img"></div>
-        <div style="margin-top:25px; color:var(--gold); letter-spacing:4px; font-size:0.8rem; font-weight:bold; animation: pulse 2s infinite;">WILL-PAY VENEZUELA</div>
+        <div style="margin-top:20px; color:var(--gold); letter-spacing:4px; font-size:0.8rem; font-weight:bold;">WILL-PAY VENEZUELA</div>
     </div>
 
     <div id="main-app">
         <div id="content-box" class="login-card">
             <img src="logonuevo.png" style="width: 100px; margin-bottom: 15px;">
-            <h2 style="color: var(--gold); font-size: 1.2rem; margin-bottom: 5px;">BIENVENIDO</h2>
-            <p style="color: #555; font-size: 0.7rem; margin-bottom: 25px; letter-spacing: 1px;">INGRESA A TU BILLETERA</p>
-            
+            <h2 style="color: var(--gold); font-size: 1.2rem;">BIENVENIDO</h2>
             <input type="text" id="user-master" placeholder="Usuario o Teléfono">
             <input type="password" id="pin-master" placeholder="PIN de Seguridad">
-            
-            <button class="btn-gold" onclick="intentarAcceso()">ENTRAR SEGURAMENTE</button>
-            
-            <p style="margin-top:25px; font-size:0.75rem; color:#444;">
-                ¿Eres nuevo? <span style="color:var(--gold); cursor:pointer; font-weight:bold;" onclick="iniciarRegistroADN()">Regístrate aquí</span>
-            </p>
+            <button class="btn-gold" onclick="intentarAcceso()">ENTRAR</button>
+            <p style="margin-top:20px; font-size:0.7rem; color:#444;">¿Nuevo? <span style="color:var(--gold); cursor:pointer;" onclick="iniciarRegistroADN()">Regístrate aquí</span></p>
         </div>
     </div>
 
     <div id="install-banner">
-        <span>Añade Will-Pay a tu pantalla de inicio</span>
-        <button onclick="instalarApp()" style="background:#000; color:#fff; border:none; padding:8px 12px; border-radius:8px; font-size:0.7rem; cursor:pointer; font-family: 'Lexend'; font-weight:bold;">INSTALAR</button>
+        <span>Instala Will-Pay en tu inicio</span>
+        <button onclick="instalarApp()" style="background:#000; color:#fff; border:none; padding:8px 12px; border-radius:8px;">INSTALAR</button>
     </div>
 
     <script>
-        // Lógica de Splash y Transición
-        function iniciarSecuenciaSplash() {
+        function iniciarApp() {
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 const main = document.getElementById('main-app');
-                splash.style.opacity = '0'; // Desvanecimiento
+                splash.style.opacity = '0';
                 setTimeout(() => {
                     splash.style.display = 'none';
-                    main.style.display = 'flex'; // Muestra el login
-                    setTimeout(() => { main.style.opacity = '1'; }, 50); // Transición suave de entrada
+                    main.style.display = 'flex';
+                    setTimeout(() => { main.style.opacity = '1'; }, 50);
                 }, 1000);
-            }, 5000); // 5 segundos de Splash como pidió Wilfredo
+            }, 5000);
+        }
 
-            // Registrar Service Worker para PWA (necesario para el icono)
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js').catch(err => console.log("SW no registrado", err));
+        function intentarAcceso() {
+            const user = document.getElementById('user-master').value.trim();
+            if(user === "WILFREDO-ADMIN") {
+                if(typeof mostrarPanelAdmin === 'function') mostrarPanelAdmin();
+            } else if(user.length >= 3) {
+                if(typeof mostrarDashboardUsuario === 'function') mostrarDashboardUsuario();
             }
         }
 
-        // Lógica de Instalación (PWA)
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            // Mostramos el banner solo si el navegador soporta instalación
-            setTimeout(() => {
-                document.getElementById('install-banner').style.display = 'flex';
-            }, 6000); // Aparece justo después del Splash
+            setTimeout(() => { document.getElementById('install-banner').style.display = 'flex'; }, 6000);
         });
 
         function instalarApp() {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        document.getElementById('install-banner').style.display = 'none';
-                    }
-                });
-            }
-        }
-
-        // Lógica de Acceso Inteligente
-        function intentarAcceso() {
-            const user = document.getElementById('user-master').value.trim();
-            // Verificamos que los módulos hayan cargado
-            if(user === "WILFREDO-ADMIN") {
-                if(typeof mostrarPanelAdmin === 'function') {
-                    mostrarPanelAdmin();
-                } else {
-                    alert("Error: El Panel Maestro no ha cargado. Intenta de nuevo en un minuto.");
-                }
-            } else if(user.length >= 3) {
-                // Cualquier usuario normal entra al Dashboard de Pagos
-                if(typeof mostrarDashboardUsuario === 'function') {
-                    mostrarDashboardUsuario();
-                } else {
-                    alert("Error: La billetera no ha cargado. Intenta de nuevo.");
-                }
-            } else {
-                alert("Por favor, ingrese un usuario o teléfono válido.");
+                document.getElementById('install-banner').style.display = 'none';
             }
         }
     </script>
@@ -154,6 +115,5 @@
     <script src="modules/registro.js"></script>
     <script src="modules/admin.js"></script>
     <script src="modules/pagos.js"></script>
-
 </body>
 </html>
