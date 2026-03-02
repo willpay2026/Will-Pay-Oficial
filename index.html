@@ -3,52 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Will-Pay | El Legado de Wilfredo Donquiz</title>
+    <title>Will-Pay | El Legado</title>
     
     <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100;300;400;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
 
     <style>
-        :root { --gold: #ffcf40; --dark-bg: #000; --card-bg: #080808; --gray: #1a1500; }
+        :root { --gold: #ffcf40; --dark-bg: #000; --card-bg: #080808; --gray-border: #1a1500; }
         body, html { margin: 0; padding: 0; background: var(--dark-bg); color: #fff; font-family: 'Lexend', sans-serif; height: 100%; overflow: hidden; }
 
-        /* SPLASH SCREEN - 5 SEGUNDOS */
+        /* --- BLOQUE 1: SPLASH SCREEN (DISEÑO FINAL) --- */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 10000; transition: opacity 1s;
+            z-index: 10000; transition: opacity 1s ease-in-out;
         }
-        .logo-img { width: 275px; height: auto; }
+        .logo-splash { width: 275px; height: auto; }
+        .credito-autor {
+            position: absolute; bottom: 50px; color: var(--gold); font-size: 0.65rem;
+            letter-spacing: 5px; font-weight: 300; text-transform: uppercase; opacity: 0.9;
+        }
 
         /* APP PRINCIPAL */
-        #main-app { display: none; width: 100%; height: 100vh; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.8s; overflow-y: auto; }
+        #main-app { display: none; width: 100%; height: 100vh; flex-direction: column; align-items: center; padding-top: 30px; opacity: 0; transition: opacity 0.8s; overflow-y: auto; }
         
-        /* CARD MAESTRA (IDÉNTICA A TU DISEÑO) */
-        .card { width: 90%; max-width: 400px; background: var(--dark-bg); border: 2px solid var(--gray); border-radius: 30px; padding: 30px; text-align: center; margin: auto; box-sizing: border-box; }
+        /* CARD CORPORATIVA (TU TABLERO) */
+        .card { width: 90%; max-width: 400px; background: var(--card-bg); border: 1px solid var(--gray-border); border-radius: 30px; padding: 25px; text-align: center; box-sizing: border-box; }
 
-        input { width: 100%; padding: 15px; background: #000; border: 1px solid var(--gray); border-radius: 12px; color: #fff; margin-bottom: 12px; text-align: center; font-family: 'Lexend'; box-sizing: border-box; outline: none; font-size: 0.9rem; }
-        .btn-gold { width: 100%; background: var(--gold); border: none; padding: 18px; border-radius: 15px; font-weight: bold; cursor: pointer; color: #000; text-transform: uppercase; font-size: 1rem; }
+        input { width: 100%; padding: 15px; background: #000; border: 1px solid #222; border-radius: 12px; color: #fff; margin-bottom: 12px; text-align: center; font-family: 'Lexend'; outline: none; }
+        .btn-gold { width: 100%; background: var(--gold); border: none; padding: 18px; border-radius: 15px; font-weight: bold; cursor: pointer; color: #000; text-transform: uppercase; font-size: 0.9rem; }
 
-        /* DASHBOARD (IDÉNTICO A TU DISEÑO) */
-        .wallet-balance { font-size: 2.8rem; font-weight: 700; color: var(--gold); margin-bottom: 20px; }
+        /* DASHBOARD */
+        .wallet-balance { font-size: 2.8rem; font-weight: 700; color: var(--gold); margin: 10px 0 25px 0; }
         .actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
-        .btn-action { background: #000; border: 1px solid var(--gray); padding: 20px 10px; border-radius: 20px; color: #fff; cursor: pointer; text-align: center; font-size: 0.8rem; }
+        .btn-action { background: #000; border: 1px solid var(--gray-border); padding: 25px 10px; border-radius: 20px; color: #fff; cursor: pointer; text-align: center; }
 
-        /* ESCÁNER (PARA PAGAR) */
+        /* ESCÁNER Y CAPAS */
         #reader-container { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 5000; flex-direction: column; }
-        #reader { width: 100% !important; height: 70% !important; }
-
-        /* SELLO WILDON C.A. */
-        .sello-wildon { margin-top: 30px; padding-top: 15px; border-top: 1px solid var(--gray); color: var(--gold); font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase; opacity: 0.6; }
+        #reader { width: 100% !important; height: 75% !important; }
+        
+        .sello-footer { margin-top: 25px; color: var(--gold); font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; opacity: 0.5; border-top: 1px solid #111; padding-top: 15px; width: 100%; }
     </style>
 </head>
 <body>
 
     <div id="splash-screen">
-        <img src="logonuevo.png" class="logo-img">
-        <div style="margin-top:20px; color:var(--gold); letter-spacing:6px; font-weight:bold;">VENEZUELA</div>
+        <img src="logonuevo.png" class="logo-splash">
+        <div class="credito-autor">WILDON. C.A.</div>
     </div>
 
     <div id="reader-container">
@@ -57,7 +61,7 @@
     </div>
 
     <div id="main-app">
-        <img src="logonuevo.png" style="width: 200px; margin-bottom: 20px;">
+        <img src="logonuevo.png" style="width: 180px; margin-bottom: 15px;">
         <div id="content-box" class="card"></div>
     </div>
 
@@ -66,106 +70,100 @@
         let nombreSocio = localStorage.getItem('WPay_Nombre') || "Socio";
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
+        // CONTROL DEL SPLASH
         window.onload = () => {
             mostrarLogin();
             setTimeout(() => {
-                document.getElementById('splash-screen').style.opacity = '0';
+                const splash = document.getElementById('splash-screen');
+                splash.style.opacity = '0';
                 setTimeout(() => {
-                    document.getElementById('splash-screen').style.display = 'none';
+                    splash.style.display = 'none';
                     document.getElementById('main-app').style.display = 'flex';
                     setTimeout(() => document.getElementById('main-app').style.opacity = '1', 50);
                 }, 1000);
             }, 5000);
         };
 
+        const footerSello = `<div class="sello-footer">WILDON. C.A.</div>`;
+
         function mostrarLogin() {
             document.getElementById('content-box').innerHTML = `
+                <h2 style="color:var(--gold); font-size:1.1rem; letter-spacing:1px;">ACCESO OFICIAL</h2>
                 <input type="text" id="u-login" placeholder="Usuario / Teléfono">
-                <input type="password" id="p-login" placeholder="PIN">
+                <input type="password" id="p-login" placeholder="PIN de Seguridad">
                 <button class="btn-gold" onclick="entrar()">ENTRAR</button>
-                <p style="font-size:0.8rem; margin-top:15px; color:#555;">¿Nuevo Socio? <span style="color:var(--gold); cursor:pointer;" onclick="mostrarRegistro()">Regístrate</span></p>
-                <div class="sello-wildon">WILDON. C.A.</div>
+                <p style="font-size:0.7rem; margin-top:20px; color:#555;">¿Nuevo Socio? <span style="color:var(--gold); font-weight:bold; cursor:pointer;" onclick="mostrarRegistro()">REGÍSTRATE</span></p>
+                ${footerSello}
             `;
+        }
+
+        function entrar() {
+            mostrarDashboard();
         }
 
         function mostrarDashboard() {
             document.getElementById('content-box').innerHTML = `
-                <div style="font-size:0.7rem; color:#666; letter-spacing:2px; margin-top:20px;">DISPONIBLE</div>
+                <div style="font-size:0.6rem; color:#666; letter-spacing:2px;">SALDO DISPONIBLE</div>
                 <div class="wallet-balance">$ ${saldoActual.toFixed(2)}</div>
                 <div class="actions-grid">
                     <div class="btn-action" onclick="abrirEscaner()">🚀<br>PAGAR</div>
                     <div class="btn-action" onclick="mostrarCobrar()">📥<br>COBRAR</div>
                 </div>
-                <button class="btn-gold" style="margin-top:20px; background:transparent; color:#444; border:1px solid #222;" onclick="mostrarLogin()">SALIR</button>
-                <div class="sello-wildon">WILDON. C.A.</div>
+                <button class="btn-gold" style="margin-top:25px; background:transparent; color:#333; border:1px solid #111;" onclick="mostrarLogin()">CERRAR SESIÓN</button>
+                ${footerSello}
             `;
         }
 
-        // --- 📥 COBRAR (GENERA QR CON MONTO) ---
-        function mostrarCobrar() {
+        function mostrarRegistro() {
             document.getElementById('content-box').innerHTML = `
-                <h3 style="color:var(--gold)">GENERAR COBRO</h3>
-                <input type="number" id="monto-cobro" placeholder="Monto ($)" oninput="actualizarQR()">
-                <div id="qr-space" style="background:#fff; padding:15px; border-radius:15px; display:inline-block; margin:15px 0;">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=WPay-User" id="qr-img" style="width:180px;">
+                <h2 style="color:var(--gold); font-size:1rem;">🧬 BÓVEDA ADN</h2>
+                <p style="font-size:0.5rem; letter-spacing:2px; color:#444; margin-bottom:15px;">FUNDACIÓN WILFREDO DONQUIZ</p>
+                <input type="text" id="rn" placeholder="Nombre Completo">
+                <input type="number" id="rc" placeholder="Cédula">
+                <input type="password" id="rp" placeholder="Crear PIN">
+                <div style="display:flex; gap:10px; margin-bottom:15px;">
+                    <div class="btn-action" style="flex:1; padding:10px; font-size:0.6rem;">FOTO CÉDULA</div>
+                    <div class="btn-action" style="flex:1; padding:10px; font-size:0.6rem;">SELFIE ADN</div>
                 </div>
-                <button class="btn-gold" onclick="mostrarDashboard()">VOLVER</button>
-                <div class="sello-wildon">WILDON. C.A.</div>
+                <button class="btn-gold" onclick="doReg()">UNIRSE A WILL-PAY</button>
+                <p onclick="mostrarLogin()" style="cursor:pointer; margin-top:15px; font-size:0.7rem; color:#444;">VOLVER</p>
+                ${footerSello}
             `;
         }
 
-        function actualizarQR() {
-            const monto = document.getElementById('monto-cobro').value || "0";
-            document.getElementById('qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=WP|${nombreSocio}|${monto}`;
+        function doReg() {
+            const n = document.getElementById('rn').value;
+            localStorage.setItem('WPay_Nombre', n);
+            localStorage.setItem('WPay_Saldo', 500);
+            saldoActual = 500; nombreSocio = n;
+            confetti({ particleCount: 150, colors:['#ffcf40', '#ffffff'] });
+            mostrarDashboard();
         }
 
-        // --- 🚀 PAGAR (ABRE CÁMARA) ---
-        let scanner;
+        // --- Lógica de Cámara básica ---
+        let html5Qr;
         function abrirEscaner() {
             document.getElementById('reader-container').style.display = 'flex';
-            scanner = new Html5Qrcode("reader");
-            scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (text) => {
-                alert("Pago detectado: " + text);
+            html5Qr = new Html5Qrcode("reader");
+            html5Qr.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (text) => {
+                alert("Pago procesado");
                 cerrarEscaner();
-                mostrarDashboard();
-            }).catch(err => alert("Error de cámara"));
+            }).catch(e => alert("Error de cámara"));
         }
 
         function cerrarEscaner() {
-            if(scanner) scanner.stop().then(() => document.getElementById('reader-container').style.display = 'none');
+            if(html5Qr) html5Qr.stop().then(() => document.getElementById('reader-container').style.display = 'none');
         }
 
-        function entrar() {
-            const u = document.getElementById('u-login').value;
-            if(u === "WILFREDO-ADMIN") alert("Bienvenido Jefe Wilfredo.");
-            mostrarDashboard();
-        }
-
-        // --- 🧬 REGISTRO ADN (IDÉNTICO A TU DISEÑO) ---
-        function mostrarRegistro() {
+        function mostrarCobrar() {
             document.getElementById('content-box').innerHTML = `
-                <h2 style="color:var(--gold); font-size:1.1rem;">🧬 BÓVEDA ADN</h2>
-                <p style="font-size:0.5rem; letter-spacing:2px; color:#555; margin-bottom:15px;">FUNDACIÓN WILFREDO DONQUIZ</p>
-                <input type="text" id="r-nom" placeholder="Nombre Completo">
-                <input type="number" id="r-ced" placeholder="Cédula">
-                <input type="password" id="r-pin" placeholder="PIN">
-                <div style="display:flex; gap:10px; margin-bottom:15px;">
-                    <div class="btn-action" style="flex:1; padding:10px; font-size:0.6rem;">📷 CÉDULA</div>
-                    <div class="btn-action" style="flex:1; padding:10px; font-size:0.6rem;">🤳 SELFIE</div>
+                <h3 style="color:var(--gold)">MI CÓDIGO QR</h3>
+                <div style="background:#fff; padding:15px; border-radius:15px; display:inline-block; margin:15px 0;">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=WP|${nombreSocio}" style="width:180px;">
                 </div>
-                <button class="btn-gold" onclick="completarRegistro()">UNIRSE A WILL-PAY</button>
-                <p onclick="mostrarLogin()" style="cursor:pointer; margin-top:15px; font-size:0.7rem; color:#444;">VOLVER</p>
-                <div class="sello-wildon">WILDON. C.A.</div>
+                <button class="btn-gold" onclick="mostrarDashboard()">VOLVER</button>
+                ${footerSello}
             `;
-        }
-
-        function completarRegistro() {
-            const nom = document.getElementById('r-nom').value;
-            localStorage.setItem('WPay_Nombre', nom);
-            localStorage.setItem('WPay_Saldo', 500); // Bono automático
-            saldoActual = 500; nombreSocio = nom;
-            confetti({ particleCount: 150 });
-            mostrarDashboard();
         }
     </script>
 </body>
