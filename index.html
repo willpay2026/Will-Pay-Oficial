@@ -4,113 +4,128 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Will-Pay | El Legado</title>
-    
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
 
     <style>
         :root { --gold: #ffcf40; --dark-bg: #000; --card-bg: #0a0a0a; --border-gold: #ffcf40; }
-        body, html { margin: 0; padding: 0; background: var(--dark-bg); color: #fff; font-family: 'Lexend', sans-serif; height: 100%; overflow-x: hidden; }
+        body, html { margin: 0; padding: 0; background: var(--dark-bg); color: #fff; font-family: 'Lexend', sans-serif; height: 100vh; overflow: hidden; }
 
         /* VISTAS */
-        .view { display: none; flex-direction: column; align-items: center; padding: 20px; width: 100%; min-height: 100vh; box-sizing: border-box; }
+        .view { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100vh; padding: 20px; box-sizing: border-box; position: absolute; top:0; left:0; }
 
-        /* SPLASH SCREEN (BLOQUE 1) */
-        #view-splash { display: flex; justify-content: center; background: #000; }
-        .logo-splash { width: 250px; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 0.7; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
+        /* 1. SPLASH CORREGIDO */
+        #view-splash { display: flex; z-index: 1000; background: #000; }
+        .logo-splash { width: 220px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 0.5; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1); } }
 
-        /* CARDS CORPORATIVAS (BORDES BIEN MARCADOS) */
-        .card { 
-            width: 100%; max-width: 380px; background: var(--card-bg); 
-            border: 2px solid var(--border-gold); border-radius: 30px; 
-            padding: 25px; text-align: center; box-sizing: border-box; 
-            margin-top: 10px; position: relative;
-        }
+        /* CARDS */
+        .card { width: 100%; max-width: 360px; background: var(--card-bg); border: 2px solid var(--border-gold); border-radius: 25px; padding: 25px; text-align: center; box-sizing: border-box; }
+        
+        input { width: 100%; padding: 12px; background: #111; border: 1px solid #444; border-radius: 10px; color: #fff; margin-bottom: 10px; text-align: center; outline: none; font-family: 'Lexend'; }
+        .btn-gold { width: 100%; background: var(--gold); border: none; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer; color: #000; text-transform: uppercase; font-size: 0.8rem; }
+        
+        /* BOTONES ACCIÓN */
+        .grid-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin: 15px 0; }
+        .btn-act { background: #000; border: 1.5px solid var(--gold); padding: 15px; border-radius: 15px; color: #fff; cursor: pointer; font-size: 0.7rem; font-weight: bold; }
 
-        /* INPUTS Y BOTONES */
-        input { 
-            width: 100%; padding: 14px; background: #111; border: 1px solid #444; 
-            border-radius: 12px; color: #fff; margin-bottom: 12px; text-align: center; 
-            outline: none; font-family: 'Lexend'; font-size: 0.9rem;
-        }
-        input:focus { border-color: var(--gold); }
-
-        .btn-gold { 
-            width: 100%; background: var(--gold); border: none; padding: 16px; 
-            border-radius: 12px; font-weight: bold; cursor: pointer; color: #000; 
-            text-transform: uppercase; font-size: 0.85rem; transition: 0.3s;
-        }
-        .btn-gold:active { transform: scale(0.98); }
-
-        .btn-action { 
-            background: #000; border: 2px solid var(--border-gold); padding: 18px; 
-            border-radius: 18px; color: #fff; cursor: pointer; font-size: 0.75rem; 
-            font-weight: bold; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 5px;
-        }
-
-        /* TABLERO CEO (EL DE TU IMAGEN) */
-        .ceo-container { width: 100%; max-width: 800px; display: flex; flex-direction: column; gap: 15px; }
-        .ceo-stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; width: 100%; }
-        .stat-item { background: #050505; border: 1px solid var(--gold); border-radius: 12px; padding: 15px; text-align: center; }
-        .stat-item small { color: var(--gold); font-size: 0.6rem; display: block; margin-bottom: 5px; }
-        .stat-item b { font-size: 1rem; color: #fff; }
-
-        /* RECUADRO DE RECARGA PENDIENTE (DISEÑO VERDE) */
-        .pending-box { 
-            background: #000; border: 1px solid #222; border-radius: 15px; 
-            padding: 15px; display: flex; justify-content: space-between; 
-            align-items: center; margin-top: 10px; 
-        }
-        .btn-approve { background: #00ff00; color: #000; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-
-        /* ESCÁNER Y COMPROBANTE */
-        #reader-container { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 5000; }
-        .receipt-overlay { 
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.98); z-index: 6000; justify-content: center; align-items: center; 
-        }
-        .receipt-card { 
-            background: #fff; color: #000; width: 85%; max-width: 320px; 
-            border-radius: 20px; padding: 25px; text-align: center; border: 5px double #000;
-        }
-
-        .sello-footer { margin-top: 25px; color: var(--gold); font-size: 0.6rem; letter-spacing: 4px; opacity: 0.8; text-transform: uppercase; }
-        .logout-link { color: #ff4444; margin-top: 30px; cursor: pointer; font-size: 0.8rem; text-decoration: underline; font-weight: bold; }
+        .sello { margin-top: 20px; color: var(--gold); font-size: 0.6rem; letter-spacing: 3px; opacity: 0.7; }
+        .logout { color: #ff4444; margin-top: 15px; cursor: pointer; font-size: 0.75rem; text-decoration: underline; }
     </style>
 </head>
 <body>
 
     <div id="view-splash" class="view">
         <img src="logonuevo.png" class="logo-splash">
-        <div class="sello-footer" style="position: absolute; bottom: 40px;">WILDON. C.A.</div>
+        <div class="sello" style="position:absolute; bottom:40px;">WILDON. C.A.</div>
     </div>
 
     <div id="view-login" class="view">
         <img src="logonuevo.png" style="width: 130px; margin-bottom: 20px;">
         <div class="card">
-            <h3 style="color:var(--gold); letter-spacing: 1px;">DNA DE ACCESO</h3>
-            <input type="text" id="user-in" placeholder="ID Socio / Teléfono">
-            <input type="password" id="pass-in" placeholder="PIN de Seguridad">
-            <button class="btn-gold" onclick="autenticar()">ENTRAR AL SISTEMA</button>
-            <p style="font-size: 0.7rem; margin-top: 15px; color: #555;">REGISTRO ADN DISPONIBLE EN AGENCIAS</p>
+            <h3 style="color:var(--gold); margin-top:0;">ACCESO OFICIAL</h3>
+            <input type="text" id="user" placeholder="Usuario / Teléfono">
+            <input type="password" id="pin" placeholder="PIN de Seguridad">
+            <button class="btn-gold" onclick="entrar()">ENTRAR AL SISTEMA</button>
         </div>
-        <div class="sello-footer">WILDON. C.A.</div>
+        <div class="sello">WILDON. C.A.</div>
     </div>
 
-    <div id="view-socio" class="view">
-        <img src="logonuevo.png" style="width: 100px; margin-bottom: 10px;">
+    <div id="view-dash" class="view" style="justify-content: flex-start; padding-top: 40px;">
+        <img src="logonuevo.png" style="width: 110px; margin-bottom: 10px;">
         <div class="card">
-            <div style="font-size: 0.7rem; color: #888;">SALDO DISPONIBLE</div>
-            <h1 style="color:var(--gold); font-size: 2.5rem; margin: 5px 0;" id="txt-saldo">Bs. 500.00</h1>
-            <div style="font-size: 0.8rem; margin-bottom: 20px;" id="txt-nombre">SOCIO ACTIVO</div>
+            <div id="lbl-user" style="font-size:0.7rem; color:#888;">BIENVENIDO</div>
+            <h1 id="lbl-saldo" style="color:var(--gold); font-size: 2.2rem; margin: 10px 0;">Bs. 0.00</h1>
             
-            <div style="display:flex; gap:12px; margin-bottom:20px;">
-                <button class="btn-action" onclick="abrirVistaPago()">🚀<br>PAGAR</button>
-                <button class="btn-action" onclick="abrirEscanerCobro()">📥<br>COBRAR</button>
+            <div class="grid-btns">
+                <button class="btn-act" onclick="irA('view-pagar')">🚀<br>PAGAR</button>
+                <button class="btn-act" onclick="abrirCamara()">📥<br>COBRAR</button>
             </div>
-
-            <button class="btn-gold" style="background:transparent; border:1px solid #333; color:#777;" onclick="abrirVistaRecarga()">+ SOLICITAR RECARGA</button>
+            
+            <button class="btn-gold" style="background:transparent; border:1px solid #333; color:#666;" onclick="irA('view-recarga')">+ RECARGAR</button>
         </div>
-        <div class="logout-link
+        <div class="logout" onclick="location.reload()">Cerrar Sesión</div>
+    </div>
+
+    <div id="view-pagar" class="view">
+        <div class="card">
+            <h3 style="color:var(--gold)">GENERAR PAGO</h3>
+            <input type="number" id="monto-p" placeholder="Monto Bs." oninput="genQR()">
+            <div style="background:#fff; padding:15px; border-radius:15px; display:inline-block; margin:15px 0;">
+                <img id="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=WILLPAY" style="width:150px;">
+            </div>
+            <button class="btn-gold" onclick="irA('view-dash')">REGRESAR</button>
+        </div>
+    </div>
+
+    <div id="view-recarga" class="view">
+        <div class="card">
+            <h3 style="color:var(--gold)">SOLICITAR RECARGA</h3>
+            <p style="font-size:0.6rem; color:#555;">BANESCO | ID: 13496133 | 04126602555</p>
+            <input type="number" placeholder="Monto Bs.">
+            <input type="text" placeholder="Referencia">
+            <button class="btn-gold" onclick="alert('Enviado'); irA('view-dash')">NOTIFICAR PAGO</button>
+            <button class="btn-gold" style="background:none; color:#444;" onclick="irA('view-dash')">VOLVER</button>
+        </div>
+    </div>
+
+    <script>
+        // NAVEGACIÓN INSTANTÁNEA
+        function irA(id) {
+            document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
+            const target = document.getElementById(id);
+            if(target) target.style.display = 'flex';
+        }
+
+        // SALTO DEL SPLASH (3 SEGUNDOS FIJOS)
+        window.onload = () => {
+            setTimeout(() => {
+                irA('view-login');
+            }, 3000); 
+        };
+
+        function entrar() {
+            const u = document.getElementById('user').value;
+            if(u === "04126602555" || u === "WILFREDO") {
+                document.getElementById('lbl-user').innerText = "MAESTRO: WILFREDO";
+                document.getElementById('lbl-saldo').innerText = "Bs. 290.074,68";
+            } else {
+                document.getElementById('lbl-user').innerText = "SOCIO: " + (u || "INVITADO");
+                document.getElementById('lbl-saldo').innerText = "Bs. 500,00";
+            }
+            irA('view-dash');
+        }
+
+        function genQR() {
+            const m = document.getElementById('monto-p').value || "0";
+            document.getElementById('qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=WP|${m}`;
+        }
+
+        function abrirCamara() {
+            alert("Iniciando Escáner de Auditoría...");
+            // Aquí iría el código de html5Qr.start
+        }
+    </script>
+</body>
+</html>
