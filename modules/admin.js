@@ -52,20 +52,35 @@ const mostrarPanelAdmin = () => {
     `;
 };
 
-window.guardarTasas = () => {
-    tasaNormal = document.getElementById('t-normal').value;
-    tasaNegocio = document.getElementById('t-negocio').value;
-    alert(`✅ ¡Entendido Jefe! Tasas ajustadas: Normal ${tasaNormal}% - Negocio ${tasaNegocio}%`);
-};
-
 window.recargar = () => {
     const t = document.getElementById('r-telf').value;
     const m = document.getElementById('r-monto').value;
-    if(!t || !m) return alert("Faltan datos para la recarga");
-    alert(`💸 ¡Dinero enviado! Recarga de ${m} Bs enviada exitosamente a ${t}`);
-};
+    
+    if(!t || !m) return alert("❌ Jefe, falta el teléfono o el monto.");
 
-window.toggleAuto = () => {
-    const isAuto = document.getElementById('auto-sw').checked;
-    alert(isAuto ? "🤖 Modo Automático ACTIVADO. El legado fluye solo." : "👨‍💻 Modo Manual ACTIVADO. Usted tiene el control.");
+    // Simulamos la generación de un correlativo único
+    const correlativo = "WP-REC-" + Math.floor(Math.random() * 1000000);
+    const fecha = new Date().toLocaleString();
+
+    // Reemplazamos el panel por el Ticket Dorado
+    const content = document.getElementById('content-box');
+    content.innerHTML = `
+        <div id="ticket-recarga" style="background: #fff; color: #000; padding: 25px; border-radius: 15px; font-family: 'Courier New', monospace; text-align: center; border: 4px double #ffcf40; box-shadow: 0 0 20px rgba(255, 207, 64, 0.5);">
+            <img src="logonuevo.png" style="width: 80px; filter: grayscale(1) invert(1);">
+            <h3 style="margin: 10px 0; font-size: 1.2rem;">WILL-PAY</h3>
+            <p style="font-size: 0.7rem; border-bottom: 1px dashed #000; padding-bottom: 10px;">RECIBO DE CARGA DE SALDO</p>
+            
+            <div style="text-align: left; font-size: 0.8rem; line-height: 1.6;">
+                <p><b>FECHA:</b> ${fecha}</p>
+                <p><b>CORRELATIVO:</b> ${correlativo}</p>
+                <p><b>TELÉFONO:</b> ${t}</p>
+                <p><b>ESTADO:</b> <span style="background: #000; color: #fff; padding: 2px 5px;">APROBADO</span></p>
+                <hr style="border: 1px dashed #ccc;">
+                <p style="font-size: 1.1rem; text-align: center;"><b>MONTO: ${m} Bs</b></p>
+            </div>
+            
+            <p style="font-size: 0.6rem; color: #666; margin-top: 15px;">"Construyendo el legado para Wilyanny Donquiz"</p>
+            <button onclick="mostrarPanelAdmin()" style="background: #000; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; margin-top: 15px; cursor: pointer; font-family: 'Lexend';">VOLVER AL PANEL</button>
+        </div>
+    `;
 };
