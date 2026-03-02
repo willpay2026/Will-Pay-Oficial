@@ -17,7 +17,7 @@
         :root { --gold: #ffcf40; --dark-bg: #000; --card-bg: #080808; }
         body, html { margin: 0; padding: 0; background: var(--dark-bg); color: #fff; font-family: 'Lexend', sans-serif; height: 100%; overflow: hidden; }
 
-        /* SPLASH SCREEN - LOGO LIBRE */
+        /* SPLASH SCREEN - LOGO LIBRE 275PX */
         #splash-screen {
             position: fixed; width: 100%; height: 100%; background: #000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -36,7 +36,7 @@
         #main-app { display: none; width: 100%; min-height: 100vh; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; overflow-y: auto; opacity: 0; transition: opacity 0.8s; }
         .login-card { width: 100%; max-width: 420px; background: var(--card-bg); border: 1px solid #1a1500; border-radius: 30px; padding: 35px; text-align: center; margin: 20px auto; position: relative; }
         
-        input, select { width: 100%; padding: 15px; background: #111; border: 1px solid #222; border-radius: 12px; color: #fff; margin-bottom: 10px; text-align: center; font-family: 'Lexend'; outline: none; border-radius: 12px; }
+        input, select { width: 100%; padding: 15px; background: #111; border: 1px solid #222; border-radius: 12px; color: #fff; margin-bottom: 10px; text-align: center; font-family: 'Lexend'; outline: none; }
         
         .adn-file-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
         .file-upload { background: #000; border: 1px dashed #333; border-radius: 12px; padding: 15px 5px; color: #666; cursor: pointer; font-size: 0.65rem; display: flex; flex-direction: column; align-items: center; }
@@ -46,16 +46,14 @@
         .privilegio-box { background: rgba(255, 207, 64, 0.05); border: 1px dashed rgba(255, 207, 64, 0.3); border-radius: 15px; padding: 12px; margin-top: 15px; text-align: left; }
         .privilegio-text { color: var(--gold); font-size: 0.65rem; line-height: 1.4; }
 
-        /* SELLO WILDON C.A. */
         .sello-wildon { margin-top: 30px; padding-top: 15px; border-top: 1px solid #1a1500; color: var(--gold); font-size: 0.7rem; font-weight: 100; letter-spacing: 4px; text-transform: uppercase; opacity: 0.6; }
 
-        /* MODAL DE SORPRESA */
         #premio-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 20000; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+            background: rgba(0,0,0,0.95); z-index: 20000; flex-direction: column; justify-content: center; align-items: center; text-align: center;
         }
-        .bonus-destello { color: var(--gold); font-size: 3rem; font-weight: bold; text-shadow: 0 0 20px var(--gold); animation: pulse 1s infinite alternate; }
-        @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.1); } }
+        .bonus-destello { color: var(--gold); font-size: 3.5rem; font-weight: bold; text-shadow: 0 0 30px var(--gold); animation: pulse 0.8s infinite alternate; }
+        @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.15); } }
     </style>
 </head>
 <body onload="arrancarWillPay()">
@@ -68,7 +66,7 @@
     <div id="premio-modal">
         <h1 style="color: white; letter-spacing: 2px;">¡SORPRESA SOCIO!</h1>
         <div class="bonus-destello">+ 500</div>
-        <p style="color: var(--gold); margin-top: 20px; padding: 0 20px;">Has sido seleccionado por la Fundación Wilfredo Donquiz por ser de los primeros 5 socios oficiales.</p>
+        <p style="color: var(--gold); margin-top: 20px; padding: 0 20px; font-weight: 300;">Por creer en el sistema, la Fundación Wilfredo Donquiz te otorga este bono de bienvenida.</p>
         <button class="btn-gold" style="width: auto; padding: 15px 40px; margin-top: 30px;" onclick="cerrarPremio()">RECIBIR SALDO</button>
     </div>
 
@@ -91,42 +89,58 @@
             }, 5000);
         }
 
+        const footerSello = `<div class="sello-wildon">WILDON. C.A.</div>`;
+
         function mostrarLogin() {
             document.getElementById('content-box').innerHTML = `
-                <img src="logonuevo.png" style="width: 100px; margin-bottom: 15px;">
-                <h2 style="color: var(--gold); font-size: 1.2rem; margin-bottom: 5px;">BIENVENIDO</h2>
+                <img src="logonuevo.png" style="width: 140px; margin-bottom: 20px;"> <h2 style="color: var(--gold); font-size: 1.2rem; margin-bottom: 5px;">BIENVENIDO</h2>
                 <input type="text" id="user-master" placeholder="Usuario o Teléfono">
                 <input type="password" id="pin-master" placeholder="PIN de Seguridad">
                 <button class="btn-gold" onclick="intentarAcceso()">ENTRAR</button>
                 <p style="margin-top:20px; font-size:0.75rem; color:#444;">
                     ¿Nuevo Socio? <span style="color:var(--gold); cursor:pointer; font-weight:bold;" onclick="mostrarRegistroADN()">Regístrate aquí</span>
                 </p>
-                <div class="sello-wildon">WILDON. C.A.</div>
+                ${footerSello}
             `;
         }
 
         function mostrarRegistroADN() {
             document.getElementById('content-box').innerHTML = `
-                <h2 style="color: var(--gold); font-size: 1.1rem;">🧬 REGISTRO ADN</h2>
+                <img src="logonuevo.png" style="width: 140px; margin-bottom: 15px;"> <h2 style="color: var(--gold); font-size: 1.1rem;">🧬 REGISTRO ADN</h2>
                 <p style="color: #666; font-size: 0.5rem; letter-spacing: 2px; margin-bottom: 15px;">FUNDACIÓN WILFREDO DONQUIZ</p>
+                
                 <input type="text" id="reg-nombre" placeholder="Nombre Completo">
                 <input type="number" id="reg-cedula" placeholder="Cédula de Identidad">
                 <input type="tel" id="reg-telf" placeholder="Número de Teléfono">
-                <select id="reg-actividad"><option value="Independiente">Particular/Independiente</option><option value="Moto-Taxi">Moto-Taxi</option><option value="Comercio">Comercio</option></select>
+                
+                <select id="reg-actividad">
+                    <option value="Independiente">Particular / Independiente</option>
+                    <option value="Moto-Taxi">Moto-Taxi</option>
+                    <option value="Comercio">Comercio</option>
+                </select>
+
                 <div class="adn-file-container">
                     <label class="file-upload"><span>📸 CÉDULA</span><input type="file" style="display:none;"></label>
                     <label class="file-upload"><span>🤳 SELFIE ADN</span><input type="file" style="display:none;"></label>
                 </div>
+
                 <button class="btn-gold" onclick="procesarPrimerosSocios()">UNIRSE A WILL-PAY</button>
+
                 <div class="privilegio-box">
-                    <p class="privilegio-text">✨ <b>PRIVILEGIO DE USUARIO:</b> Al registrarte con alguna actividad económica gozarás del beneficio de un <b>Historial Certificado</b> para cualquier tipo de trámites.</p>
+                    <p class="privilegio-text">
+                        ✨ <b>PRIVILEGIO DE USUARIO:</b> Al registrarte con alguna actividad económica gozarás del beneficio de un <b>Historial Certificado</b> para cualquier tipo de trámites.
+                    </p>
                 </div>
+
                 <p onclick="mostrarLogin()" style="color:#444; font-size:0.7rem; margin-top:15px; cursor:pointer;">VOLVER</p>
-                <div class="sello-wildon">WILDON. C.A.</div>
+                ${footerSello}
             `;
         }
 
         function procesarPrimerosSocios() {
+            const cedula = document.getElementById('reg-cedula').value;
+            if(!cedula) return alert("Por favor, ingrese su cédula.");
+            
             contadorSocios++;
             localStorage.setItem('WillPay_Contador', contadorSocios);
 
@@ -140,7 +154,7 @@
 
         function lanzarSorpresa() {
             document.getElementById('premio-modal').style.display = 'flex';
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ffcf40', '#ffffff'] });
+            confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 }, colors: ['#ffcf40', '#ffffff', '#d1b13b'] });
         }
 
         function cerrarPremio() {
@@ -148,11 +162,6 @@
             mostrarLogin();
         }
 
+        // CORRECCIÓN DE ACCESO MAESTRO
         function intentarAcceso() {
-            const user = document.getElementById('user-master').value.trim();
-            if(user === "WILFREDO-ADMIN") mostrarPanelAdmin();
-            else mostrarDashboardUsuario();
-        }
-    </script>
-</body>
-</html>
+            const user = document.getElementById('user
