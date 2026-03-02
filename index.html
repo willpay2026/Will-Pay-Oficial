@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Will-Pay | El Legado</title>
+    <title>Will-Pay | Oficial</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
@@ -17,7 +17,6 @@
         :root { --gold: #ffcf40; --dark-bg: #000; }
         body, html { margin: 0; padding: 0; background: var(--dark-bg); color: #fff; font-family: 'Lexend', sans-serif; height: 100%; overflow: hidden; }
 
-        /* SPLASH SCREEN 275PX */
         #splash-screen {
             position: fixed; width: 100%; height: 100%; background: #000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -25,26 +24,21 @@
         }
         .logo-container { width: 275px; height: 275px; position: relative; overflow: hidden; border-radius: 35px; }
         .logo-img { width: 100%; height: auto; }
-        .logo-container::after {
-            content: ""; position: absolute; top: -150%; left: -150%; width: 300%; height: 300%;
-            background: linear-gradient(to bottom right, transparent 45%, rgba(255,255,255,0.6) 50%, transparent 55%);
-            transform: rotate(-45deg); animation: shine 6s infinite;
-        }
-        @keyframes shine { 0% { top:-150%; left:-150%; } 20% { top:100%; left:100%; } 100% { top:100%; left:100%; } }
 
         #main-app { display: none; width: 100%; min-height: 100vh; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; opacity: 0; transition: opacity 0.8s; }
         .login-card { width: 100%; max-width: 420px; background: #080808; border: 1px solid #1a1500; border-radius: 30px; padding: 35px; text-align: center; }
         
-        input { width: 100%; padding: 18px; background: #111; border: 1px solid #222; border-radius: 15px; color: #fff; margin-bottom: 15px; text-align: center; font-family: 'Lexend'; box-sizing: border-box; }
-        .btn-gold { width: 100%; background: var(--gold); border: none; padding: 18px; border-radius: 15px; font-weight: bold; cursor: pointer; color: #000; text-transform: uppercase; }
+        input { width: 100%; padding: 18px; background: #111; border: 1px solid #222; border-radius: 15px; color: #fff; margin-bottom: 15px; text-align: center; font-family: 'Lexend'; box-sizing: border-box; outline: none; }
+        input:focus { border-color: var(--gold); }
+        .btn-gold { width: 100%; background: var(--gold); border: none; padding: 18px; border-radius: 15px; font-weight: bold; cursor: pointer; color: #000; text-transform: uppercase; margin-bottom: 10px; }
 
-        /* ESTILO DEL SWITCH MAESTRO */
+        /* Estilos del Switch para el Admin */
         .switch { position: relative; display: inline-block; width: 45px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #222; transition: .4s; border-radius: 34px; border: 1px solid #333; }
-        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #222; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
         input:checked + .slider { background-color: var(--gold); }
-        input:checked + .slider:before { transform: translateX(21px); background-color: #000; }
+        input:checked + .slider:before { transform: translateX(21px); }
     </style>
 </head>
 <body onload="iniciarApp()">
@@ -63,7 +57,7 @@
 
     <script>
         function iniciarApp() {
-            renderLogin();
+            mostrarLoginView(); // Pre-cargamos la vista de login
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 const main = document.getElementById('main-app');
@@ -76,14 +70,20 @@
             }, 5000);
         }
 
-        function renderLogin() {
+        function mostrarLoginView() {
             document.getElementById('content-box').innerHTML = `
                 <img src="logonuevo.png" style="width: 100px; margin-bottom: 15px;">
-                <h2 style="color: var(--gold); font-size: 1.2rem;">BIENVENIDO</h2>
+                <h2 style="color: var(--gold); font-size: 1.2rem; margin-bottom: 5px;">BIENVENIDO</h2>
+                <p style="color: #444; font-size: 0.6rem; margin-bottom: 20px;">INGRESA A TU BILLETERA</p>
+                
                 <input type="text" id="user-master" placeholder="Usuario o Teléfono">
                 <input type="password" id="pin-master" placeholder="PIN de Seguridad">
+                
                 <button class="btn-gold" onclick="intentarAcceso()">ENTRAR</button>
-                <p style="margin-top:20px; font-size:0.7rem; color:#444;">¿Nuevo Socio? <span style="color:var(--gold); cursor:pointer;" onclick="iniciarRegistroADN()">Regístrate aquí</span></p>
+                
+                <p style="margin-top:20px; font-size:0.75rem; color:#444;">
+                    ¿Nuevo Socio? <span style="color:var(--gold); cursor:pointer; font-weight:bold;" onclick="iniciarRegistroADN()">Regístrate aquí</span>
+                </p>
             `;
         }
 
@@ -93,6 +93,8 @@
                 if(typeof mostrarPanelAdmin === 'function') mostrarPanelAdmin();
             } else if(user.length >= 3) {
                 if(typeof mostrarDashboardUsuario === 'function') mostrarDashboardUsuario();
+            } else {
+                alert("Ingrese sus datos");
             }
         }
     </script>
@@ -100,5 +102,6 @@
     <script src="modules/registro.js"></script>
     <script src="modules/admin.js"></script>
     <script src="modules/pagos.js"></script>
+
 </body>
 </html>
