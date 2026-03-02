@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Will-Pay | Oficial</title>
+    <title>Will-Pay | El Legado</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
@@ -15,34 +15,34 @@
         :root { --gold: #ffcf40; --dark-bg: #000; --card-bg: #080808; }
         body, html { margin: 0; padding: 0; background: var(--dark-bg); color: #fff; font-family: 'Lexend', sans-serif; height: 100%; overflow: hidden; }
 
-        /* SPLASH SCREEN OPTIMIZADO */
+        /* SPLASH SCREEN 275PX - 5 SEGUNDOS DE GLORIA */
         #splash-screen {
             position: fixed; width: 100%; height: 100%; background: #000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 10000; transition: opacity 0.8s ease-in-out;
+            z-index: 10000; transition: opacity 1s ease-in-out;
         }
         .logo-container { width: 275px; height: 275px; position: relative; overflow: hidden; border-radius: 35px; }
         .logo-img { width: 100%; height: auto; }
         
-        /* Brillo que atraviesa el logo */
         .logo-container::after {
             content: ""; position: absolute; top: -150%; left: -150%; width: 300%; height: 300%;
             background: linear-gradient(to bottom right, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%);
-            transform: rotate(-45deg); animation: shine 3s infinite;
+            transform: rotate(-45deg); animation: shine 5s infinite;
         }
-        @keyframes shine { 0% { top:-150%; left:-150%; } 100% { top:100%; left:100%; } }
+        @keyframes shine { 0% { top:-150%; left:-150%; } 20% { top:100%; left:100%; } 100% { top:100%; left:100%; } }
 
-        #main-app { display: none; width: 100%; min-height: 100vh; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; opacity: 0; transition: opacity 0.5s; }
-        .login-card { width: 100%; max-width: 420px; background: var(--card-bg); border: 1px solid #1a1500; border-radius: 30px; padding: 35px; text-align: center; }
+        #main-app { display: none; width: 100%; min-height: 100vh; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; opacity: 0; transition: opacity 0.8s; }
+        .login-card { width: 100%; max-width: 420px; background: var(--card-bg); border: 1px solid #1a1500; border-radius: 30px; padding: 35px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.9); }
         
         input, select { width: 100%; padding: 18px; background: #111; border: 1px solid #222; border-radius: 15px; color: #fff; margin-bottom: 12px; text-align: center; font-family: 'Lexend'; box-sizing: border-box; outline: none; font-size: 1rem; }
+        input:focus { border-color: var(--gold); }
         .btn-gold { width: 100%; background: var(--gold); border: none; padding: 18px; border-radius: 15px; font-weight: bold; cursor: pointer; color: #000; text-transform: uppercase; font-size: 1rem; }
         
         .privilegio-box { background: rgba(255, 207, 64, 0.05); border: 1px dashed rgba(255, 207, 64, 0.3); border-radius: 15px; padding: 12px; margin-top: 15px; }
-        .privilegio-text { color: var(--gold); font-size: 0.65rem; line-height: 1.4; font-style: italic; }
+        .privilegio-text { color: var(--gold); font-size: 0.65rem; line-height: 1.4; font-style: italic; text-align: left; }
     </style>
 </head>
-<body onload="arrancarMotor()">
+<body onload="arrancarWillPay()">
 
     <div id="splash-screen">
         <div class="logo-container"><img src="logonuevo.png" class="logo-img"></div>
@@ -56,64 +56,96 @@
     <script src="https://unpkg.com/html5-qrcode"></script>
 
     <script>
-        // 🧬 BÓVEDA ADN
+        // 🧬 BÓVEDA ADN (REGISTROS INTERNOS)
         const BovedaADN = {
             guardar: (socio) => {
                 let socios = JSON.parse(localStorage.getItem('WillPay_Socios')) || [];
                 socios.push(socio);
                 localStorage.setItem('WillPay_Socios', JSON.stringify(socios));
-            }
+            },
+            obtenerConfig: () => JSON.parse(localStorage.getItem('WillPay_Config')) || { modoAuto: false }
         };
 
-        // MOTOR DE ARRANQUE (Sin fallos)
-        function arrancarMotor() {
-            renderLogin(); // Pre-carga el login en el fondo
-            
-            // Tiempo ajustado a 3 segundos para que no canse
+        function arrancarWillPay() {
+            mostrarLogin();
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 const main = document.getElementById('main-app');
-                
                 splash.style.opacity = '0';
                 setTimeout(() => {
                     splash.style.display = 'none';
                     main.style.display = 'flex';
                     setTimeout(() => { main.style.opacity = '1'; }, 50);
-                }, 800);
-            }, 3000);
+                }, 1000);
+            }, 5000);
         }
 
-        function renderLogin() {
+        function mostrarLogin() {
             document.getElementById('content-box').innerHTML = `
                 <img src="logonuevo.png" style="width: 100px; margin-bottom: 15px;">
-                <h2 style="color: var(--gold); font-size: 1.2rem; margin-bottom:5px;">BIENVENIDO</h2>
+                <h2 style="color: var(--gold); font-size: 1.2rem; margin-bottom: 5px;">BIENVENIDO</h2>
+                <p style="color: #444; font-size: 0.6rem; margin-bottom: 20px;">INGRESA A TU BILLETERA</p>
                 <input type="text" id="user-master" placeholder="Usuario o Teléfono">
                 <input type="password" id="pin-master" placeholder="PIN de Seguridad">
                 <button class="btn-gold" onclick="intentarAcceso()">ENTRAR</button>
                 <p style="margin-top:20px; font-size:0.75rem; color:#444;">
-                    ¿Nuevo Socio? <span style="color:var(--gold); cursor:pointer; font-weight:bold;" onclick="renderRegistroADN()">Regístrate aquí</span>
+                    ¿Nuevo Socio? <span style="color:var(--gold); cursor:pointer; font-weight:bold;" onclick="mostrarRegistroADN()">Regístrate aquí</span>
                 </p>
             `;
         }
 
-        function renderRegistroADN() {
+        function mostrarRegistroADN() {
             document.getElementById('content-box').innerHTML = `
                 <h2 style="color: var(--gold); font-size: 1.2rem; margin-bottom: 5px;">🧬 REGISTRO ADN</h2>
                 <p style="color: #666; font-size: 0.5rem; letter-spacing: 2px; margin-bottom: 20px;">FUNDACIÓN WILFREDO DONQUIZ</p>
+                
                 <input type="text" id="reg-nombre" placeholder="Nombre Completo">
                 <input type="number" id="reg-cedula" placeholder="Cédula">
-                <input type="tel" id="reg-telf" placeholder="Teléfono">
+                <input type="tel" id="reg-telf" placeholder="Número de Teléfono">
+                
                 <select id="reg-actividad">
                     <option value="" disabled selected>Actividad Económica</option>
+                    <option value="Particular">Particular</option>
                     <option value="Moto-Taxi">Moto-Taxi</option>
                     <option value="Comercio">Comercio / Negocio</option>
+                    <option value="Vendedor">Vendedor Ambulante</option>
                 </select>
-                <button class="btn-gold" onclick="procesarKYC()">UNIRSE A WILL-PAY</button>
+
+                <button class="btn-gold" onclick="procesarRegistroADN()">UNIRSE A WILL-PAY</button>
+
                 <div class="privilegio-box">
-                    <p class="privilegio-text">✨ <b>PRIVILEGIO DE SOCIO:</b> Historial certificado para <b>ISRL</b> y trámites oficiales.</p>
+                    <p class="privilegio-text">
+                        ✨ <b>PRIVILEGIO DE SOCIO:</b> Al registrarte, gozarás del beneficio de un <b>Historial Certificado</b> para trámites de <b>ISRL</b> y estados de cuenta oficiales.
+                    </p>
                 </div>
-                <p onclick="renderLogin()" style="color:#444; font-size:0.7rem; margin-top:15px; cursor:pointer;">VOLVER</p>
+
+                <p onclick="mostrarLogin()" style="color:#444; font-size:0.7rem; margin-top:15px; cursor:pointer;">VOLVER AL LOGIN</p>
             `;
+        }
+
+        function procesarRegistroADN() {
+            const socio = {
+                nombre: document.getElementById('reg-nombre').value,
+                cedula: document.getElementById('reg-cedula').value,
+                telf: document.getElementById('reg-telf').value,
+                actividad: document.getElementById('reg-actividad').value,
+                fecha: new Date().toLocaleString()
+            };
+
+            if(!socio.nombre || !socio.cedula || !socio.telf || !socio.actividad) {
+                return alert("❌ Jefe, faltan datos para el ADN.");
+            }
+
+            BovedaADN.guardar(socio);
+            
+            const config = BovedaADN.obtenerConfig();
+            if(config.modoAuto) {
+                alert(`🔥 ¡Bienvenido ${socio.nombre}! Acceso masivo activado.`);
+                mostrarDashboardUsuario();
+            } else {
+                alert(`⏳ REGISTRO RECIBIDO: Wilfredo Donquiz validará tu ADN para el beneficio ISRL.`);
+                mostrarLogin();
+            }
         }
 
         function intentarAcceso() {
