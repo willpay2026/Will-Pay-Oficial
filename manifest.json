@@ -1,0 +1,20 @@
+{
+  "name": "Will-Pay Oficial",
+  "short_name": "Will-Pay",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#ffcf40",
+  "icons": [
+    {
+      "src": "logonuevo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logonuevo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
