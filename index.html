@@ -3,121 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Will-Pay</title>
+    <title>Will-Pay Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #ffcf40;
-            --dark-bg: #050505;
-            --card-bg: #121212;
-            --text: #ffffff;
+            --dark-bg: #000000;
+            --card-bg: #0a0a0a;
+            --border: 1px solid #332b00;
         }
-
-        * { box-sizing: border-box; }
 
         body {
             font-family: 'Lexend', sans-serif;
             margin: 0;
-            padding: 0;
             background: var(--dark-bg);
-            color: var(--text);
+            color: #fff;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
+            padding: 10px;
         }
 
-        /* LOGO LIMPIO Y CENTRADO */
-        .app-header {
-            width: 100%;
-            padding: 40px 20px 20px 20px;
-            text-align: center;
+        .header-logo {
+            width: 120px;
+            margin: 20px 0;
         }
 
-        .app-logo {
-            width: 150px; /* Un poco más grande ya que no hay texto */
-            height: auto;
-            /* Sin bordes, sin sombras, solo tu imagen pura */
-        }
-
-        /* CONTENEDOR DE MÓDULOS */
-        .container {
-            width: 95%;
-            max-width: 450px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            padding-bottom: 50px;
-        }
-
-        .app-card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 25px;
-            border: 1px solid #222;
-        }
-
-        h2 {
-            font-size: 0.85rem;
+        .welcome-msg {
             color: var(--gold);
+            font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 20px;
         }
 
-        input {
+        /* 📊 FILA DE SALDOS (Igual a tu foto) */
+        .stats-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
             width: 100%;
-            background: #000;
-            border: 1px solid #333;
-            border-radius: 12px;
-            padding: 16px;
-            color: #fff;
-            font-size: 1rem;
-            margin-bottom: 12px;
+            max-width: 600px;
+            margin-bottom: 20px;
         }
 
-        button {
-            width: 100%;
-            background: var(--gold);
-            color: #000;
-            border: none;
-            border-radius: 12px;
-            padding: 16px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .footer {
-            margin-top: auto;
-            padding: 20px;
+        .stat-card {
+            background: var(--card-bg);
+            border: var(--border);
+            border-radius: 10px;
+            padding: 15px 5px;
             text-align: center;
-            color: #333;
-            font-size: 0.7rem;
         }
+
+        .stat-label { font-size: 0.6rem; color: #888; margin-bottom: 5px; }
+        .stat-value { font-size: 1.2rem; font-weight: bold; }
+
+        /* ⚙️ CONTROL DE COMISIONES */
+        .section-title {
+            width: 100%;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #666;
+            margin: 15px 0 10px 0;
+            letter-spacing: 1px;
+        }
+
+        .commission-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+
+        /* 📋 CONTENEDORES DE LOS MÓDULOS JS */
+        .module-container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--card-bg);
+            border: var(--border);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .ganancias-netas {
+            color: #00ff00;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .footer { font-size: 0.6rem; color: #222; margin-top: 20px; }
     </style>
 </head>
 <body>
 
-    <div class="app-header">
-        <img src="logonuevo.png" alt="Logo" class="app-logo">
+    <img src="logonuevo.png" alt="Logo" class="header-logo">
+    
+    <div class="welcome-msg">BIENVENIDO WILFREDO DONQUIZ</div>
+
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-label">Bs.</div>
+            <div class="stat-value" id="main-bs">100.00</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">WPC</div>
+            <div class="stat-value">0.00</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">$</div>
+            <div class="stat-value">0.00</div>
+        </div>
     </div>
 
-    <div class="container">
-        <div class="app-card" id="render-pagos"></div>
-
-        <div class="app-card" id="render-admin"></div>
-
-        <div class="app-card" id="render-socios"></div>
+    <div class="section-title">CONTROL DE COMISIONES</div>
+    
+    <div class="commission-grid">
+        <div class="stat-card">
+            <div class="stat-label">PAGOS %</div>
+            <div style="color:var(--gold)">1,5</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">RETIROS %</div>
+            <div style="color:var(--gold)">2,1</div>
+        </div>
     </div>
 
-    <div class="footer">
-        © 2026 WILL-PAY
+    <div class="section-title">GANANCIAS NETAS ACUMULADAS</div>
+    <div class="module-container">
+        <div class="ganancias-netas" id="display-ganancia">Bs. 0.00</div>
     </div>
+
+    <div class="module-container" id="render-pagos">
+        </div>
+
+    <div class="module-container" id="render-admin">
+        </div>
+
+    <div class="footer">ID DNA: CEO-001 | WILL-PAY © 2026</div>
 
     <script src="modules/pagos.js"></script>
     <script src="modules/admin.js"></script>
     <script src="modules/socios.js"></script>
-
 </body>
 </html>
