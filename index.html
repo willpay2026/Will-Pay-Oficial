@@ -17,7 +17,7 @@
         :root { --gold: #ffcf40; --dark-bg: #000; --card-bg: #080808; }
         body, html { margin: 0; padding: 0; background: var(--dark-bg); color: #fff; font-family: 'Lexend', sans-serif; height: 100%; overflow: hidden; }
 
-        /* SPLASH SCREEN - EL LOGO DE 275PX */
+        /* SPLASH SCREEN - LOGO 275PX */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -35,17 +35,8 @@
 
         /* APP PRINCIPAL */
         #main-app { 
-            display: none; 
-            width: 100%; 
-            height: 100vh; 
-            justify-content: center; 
-            align-items: center; 
-            padding: 20px; 
-            box-sizing: border-box; 
-            overflow-y: auto; 
-            opacity: 0; 
-            transition: opacity 0.8s; 
-            background: var(--dark-bg);
+            display: none; width: 100%; height: 100vh; justify-content: center; align-items: center; 
+            padding: 20px; box-sizing: border-box; overflow-y: auto; opacity: 0; transition: opacity 0.8s; background: var(--dark-bg);
         }
         .login-card { width: 100%; max-width: 420px; background: var(--card-bg); border: 1px solid #1a1500; border-radius: 30px; padding: 35px; text-align: center; margin: auto; position: relative; }
         
@@ -59,8 +50,10 @@
         .privilegio-box { background: rgba(255, 207, 64, 0.05); border: 1px dashed rgba(255, 207, 64, 0.3); border-radius: 15px; padding: 12px; margin-top: 15px; text-align: left; }
         .privilegio-text { color: var(--gold); font-size: 0.65rem; line-height: 1.4; }
 
+        /* SELLO WILDON C.A. FINO PALO SECO */
         .sello-wildon { margin-top: 30px; padding-top: 15px; border-top: 1px solid #1a1500; color: var(--gold); font-size: 0.7rem; font-weight: 100; letter-spacing: 4px; text-transform: uppercase; opacity: 0.6; }
 
+        /* MODAL PREMIO 500 */
         #premio-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.95); z-index: 20000; flex-direction: column; justify-content: center; align-items: center; text-align: center;
@@ -81,6 +74,120 @@
     </div>
 
     <div id="premio-modal">
-        <h1 style="color: white;">¡SORPRESA SOCIO!</h1>
+        <h1 style="color: white; letter-spacing: 2px;">¡SORPRESA SOCIO!</h1>
         <div class="bonus-destello">+ 500</div>
-        <p style="color:
+        <p style="color: var(--gold); margin-top: 20px; padding: 0 20px;">Bono de Bienvenida Fundación Wilfredo Donquiz por ser de los primeros 5 socios oficiales.</p>
+        <button class="btn-gold" style="width: auto; padding: 15px 40px; margin-top: 30px;" onclick="cerrarPremio()">RECIBIR SALDO</button>
+    </div>
+
+    <script>
+        window.onload = function() {
+            mostrarLogin();
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                const main = document.getElementById('main-app');
+                splash.style.opacity = '0';
+                setTimeout(() => {
+                    splash.style.display = 'none';
+                    main.style.display = 'flex';
+                    setTimeout(() => { main.style.opacity = '1'; }, 50);
+                }, 1000);
+            }, 5000);
+        };
+
+        const footerSello = `<div class="sello-wildon">WILDON. C.A.</div>`;
+
+        function mostrarLogin() {
+            document.getElementById('content-box').innerHTML = `
+                <img src="logonuevo.png" style="width: 140px; margin-bottom: 20px;">
+                <h2 style="color: var(--gold); font-size: 1.2rem; margin-bottom: 5px;">BIENVENIDO</h2>
+                <input type="text" id="user-master" placeholder="Usuario o Teléfono">
+                <input type="password" id="pin-master" placeholder="PIN de Seguridad">
+                <button class="btn-gold" onclick="intentarAcceso()">ENTRAR</button>
+                <p style="margin-top:20px; font-size:0.75rem; color:#444;">
+                    ¿Nuevo Socio? <span style="color:var(--gold); cursor:pointer; font-weight:bold;" onclick="mostrarRegistroADN()">Regístrate aquí</span>
+                </p>
+                ${footerSello}
+            `;
+        }
+
+        function mostrarRegistroADN() {
+            document.getElementById('content-box').innerHTML = `
+                <img src="logonuevo.png" style="width: 140px; margin-bottom: 15px;">
+                <h2 style="color: var(--gold); font-size: 1.1rem;">🧬 REGISTRO ADN</h2>
+                <p style="color: #666; font-size: 0.5rem; letter-spacing: 2px; margin-bottom: 15px;">FUNDACIÓN WILFREDO DONQUIZ</p>
+                
+                <input type="text" id="reg-nombre" placeholder="Nombre Completo">
+                <input type="number" id="reg-cedula" placeholder="Cédula de Identidad">
+                <input type="tel" id="reg-telf" placeholder="Número de Teléfono">
+                
+                <select id="reg-actividad">
+                    <option value="Independiente">Particular / Independiente</option>
+                    <option value="Moto-Taxi">Moto-Taxi</option>
+                    <option value="Comercio">Comercio</option>
+                </select>
+
+                <input type="password" id="reg-pin" placeholder="Crea tu PIN de Seguridad (4-6 dígitos)" maxlength="6">
+
+                <div class="adn-file-container">
+                    <label class="file-upload"><span>📸 CÉDULA</span><input type="file" accept="image/*" style="display:none;"></label>
+                    <label class="file-upload"><span>🤳 SELFIE ADN</span><input type="file" accept="image/*" style="display:none;"></label>
+                </div>
+
+                <button class="btn-gold" onclick="procesarPrimerosSocios()">UNIRSE A WILL-PAY</button>
+
+                <div class="privilegio-box">
+                    <p class="privilegio-text">
+                        ✨ <b>PRIVILEGIO DE USUARIO:</b> Al registrarte con alguna actividad económica gozarás del beneficio de un <b>Historial Certificado</b> para cualquier tipo de trámites.
+                    </p>
+                </div>
+
+                <p onclick="mostrarLogin()" style="color:#444; font-size:0.7rem; margin-top:15px; cursor:pointer;">VOLVER</p>
+                ${footerSello}
+            `;
+        }
+
+        function procesarPrimerosSocios() {
+            let contador = parseInt(localStorage.getItem('WillPay_Contador')) || 0;
+            const pin = document.getElementById('reg-pin').value;
+            
+            if(!pin) return alert("Socio, debe crear un PIN para su seguridad.");
+
+            contador++;
+            localStorage.setItem('WillPay_Contador', contador);
+
+            if(contador <= 5) {
+                // DISPARAR EL CONFETI DORADO
+                document.getElementById('premio-modal').style.display = 'flex';
+                confetti({
+                    particleCount: 200,
+                    spread: 80,
+                    origin: { y: 0.6 },
+                    colors: ['#ffcf40', '#ffffff', '#d1b13b']
+                });
+            } else {
+                alert("✅ Registro Exitoso. Expediente ADN Archivador WILDON C.A.");
+                mostrarLogin();
+            }
+        }
+
+        function cerrarPremio() {
+            document.getElementById('premio-modal').style.display = 'none';
+            mostrarLogin();
+        }
+
+        function intentarAcceso() {
+            const user = document.getElementById('user-master').value.trim();
+            if(user === "WILFREDO-ADMIN") {
+                if(typeof mostrarPanelAdmin === 'function') mostrarPanelAdmin();
+                else alert("Acceso Maestro: Bienvenido Wilfredo.");
+            } else {
+                if(typeof mostrarDashboardUsuario === 'function') mostrarDashboardUsuario();
+                else alert("Bienvenido a Will-Pay.");
+            }
+        }
+    </script>
+    <script src="modules/admin.js"></script>
+    <script src="modules/pagos.js"></script>
+</body>
+</html>
