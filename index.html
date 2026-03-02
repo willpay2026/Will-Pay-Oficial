@@ -68,4 +68,154 @@
 
         .tagline {
             color: var(--gray);
-            font-size: 0.
+            font-size: 0.75rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        /* EL MENSAJE MÁGICO DE WILFREDO */
+        .legacy-box {
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            background: rgba(255, 207, 64, 0.03);
+            border-radius: 15px;
+            border-left: 4px solid var(--gold);
+            margin-bottom: 30px;
+            font-style: italic;
+            line-height: 1.6;
+            color: #ddd;
+            font-size: 0.95rem;
+        }
+
+        /* TARJETAS DE LA APP (MÓDULOS) */
+        .container {
+            width: 95%;
+            max-width: 450px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding-bottom: 50px;
+        }
+
+        .app-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 25px;
+            border: 1px solid #222;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+        }
+
+        /* TITULOS DE SECCIÓN */
+        h2 {
+            font-size: 0.85rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #333;
+        }
+
+        /* ELEMENTOS DE INTERACCIÓN */
+        input {
+            width: 100%;
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 16px;
+            color: #fff;
+            font-size: 1rem;
+            margin-bottom: 12px;
+            transition: border 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        button {
+            width: 100%;
+            background: var(--gold);
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:active { transform: scale(0.98); opacity: 0.9; }
+
+        .footer {
+            margin-top: auto;
+            padding: 30px;
+            text-align: center;
+            color: #444;
+            font-size: 0.7rem;
+            line-height: 1.5;
+        }
+
+        /* Animación de entrada */
+        .app-card {
+            animation: slideUp 0.5s ease-out forwards;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-header">
+        <div class="logo-wrapper">
+            <img src="logonuevo.png" alt="Will-Pay Logo" class="app-logo">
+        </div>
+        <h1>Will-Pay</h1>
+        <div class="tagline">The Payment Revolution</div>
+    </div>
+
+    <div class="legacy-box">
+        "Nacido de un emprendedor que pensó en su región y en revolucionar el sistema de pagos con una idea simple y código honesto. El legado de Wilyanny Donquiz."
+    </div>
+
+    <div class="container">
+        <div class="app-card" id="render-pagos">
+            <h2>💰 Sistema de Pagos</h2>
+            </div>
+
+        <div class="app-card" id="render-admin">
+            <h2>🛡️ Panel Maestro</h2>
+            </div>
+
+        <div class="app-card" id="render-socios">
+            <h2>🤝 Alianzas Will-Pay</h2>
+            </div>
+    </div>
+
+    <div class="footer">
+        DESARROLLADO POR WILFREDO DONQUIZ<br>
+        PROPIEDAD EXCLUSIVA © 2026<br>
+        PUNTO FIJO, VENEZUELA
+    </div>
+
+    <script src="modules/pagos.js"></script>
+    <script src="modules/admin.js"></script>
+    <script src="modules/socios.js"></script>
+
+</body>
+</html>
