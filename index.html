@@ -2,85 +2,153 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Will-Pay | Official System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Will-Pay | El Legado de Wilfredo</title>
     <style>
         :root {
-            --gold: #D4AF37;
-            --dark: #0a0a0a;
-            --card: #161616;
-            --text: #ffffff;
+            --gold: #ffcf40;
+            --dark-bg: #0a0a0a;
+            --card-bg: #161616;
+            --text: #e0e0e0;
         }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
-            padding: 20px;
-            /* Degradado de lujo: Negro profundo a azul tecnológico */
-            background: radial-gradient(circle at top, #1a1a1a, #000); 
-            color: #fff;
+            padding: 15px;
+            background: radial-gradient(circle at top, #1a1a1a, #000);
+            color: var(--text);
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
         }
 
-        /* Efecto de brillo dorado para el título */
+        /* Estilo del Título estilo App */
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
         h1 {
             color: var(--gold);
-            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-            font-size: 2.5rem;
-            margin-bottom: 5px;
+            font-size: 2.2rem;
+            margin: 10px 0 5px 0;
+            text-shadow: 0 0 10px rgba(255, 207, 64, 0.3);
+            letter-spacing: 1px;
         }
+
+        .tagline {
+            font-size: 0.85rem;
+            color: #888;
+            font-style: italic;
         }
-        .app-container { max-width: 500px; width: 100%; }
-        header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid var(--gold); padding-bottom: 15px; }
-        header h1 { color: var(--gold); margin: 0; font-size: 2.2rem; }
-        
-        /* Contenedores de los Módulos */
-        .module-section {
-            background: var(--card);
+
+        /* El Mensaje Mágico de Wilfredo */
+        .legacy-box {
+            background: rgba(255, 207, 64, 0.05);
+            border: 1px solid rgba(255, 207, 64, 0.2);
+            padding: 15px;
             border-radius: 12px;
+            margin-bottom: 25px;
+            text-align: center;
+            max-width: 400px;
+        }
+
+        .legacy-box p {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin: 0;
+            color: #ccc;
+        }
+
+        /* Contenedores que parecen "Tarjetas de App" */
+        .app-card {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 400px;
+            border-radius: 15px;
             padding: 20px;
             margin-bottom: 20px;
-            border: 1px solid #333;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid #222;
+            box-sizing: border-box;
         }
-        h2 { color: var(--gold); font-size: 1.2rem; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        
-        .footer-legacy { text-align: center; font-size: 0.8rem; color: #666; margin-top: 40px; }
+
+        h2 {
+            font-size: 1.1rem;
+            color: var(--gold);
+            margin-top: 0;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        /* Ajuste de botones para dedos (Touch Friendly) */
+        button {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background: #000;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 0.7rem;
+            color: #444;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <header>
-        <h1>WILL-PAY</h1>
-        <small>Legado de Wilfredo Donquiz para Wilyanny</small>
-    </header>
-
-    <div id="modulo-pagos-container" class="module-section">
-        <h2>💳 Módulo de Pagos</h2>
-        <div id="render-pagos">Cargando sistema de seguridad...</div>
+    <div class="header">
+        <h1>Will-Pay</h1>
+        <div class="tagline">By Wilfredo Donquiz</div>
     </div>
 
-    <div id="modulo-admin-container" class="module-section">
-        <h2>🛠️ Panel Maestro</h2>
-        <div id="render-admin">Iniciando panel de control...</div>
+    <div class="legacy-box">
+        <p>
+            "Nacido de una idea simple pero revolucionaria para mi región. Will-Pay es fe, código y el futuro de mi hija Wilyanny."
+        </p>
     </div>
 
-    <div id="modulo-socios-container" class="module-section">
-        <h2>👥 Gestión de Socios</h2>
-        <div id="render-socios">Verificando cupos reservados...</div>
+    <div class="app-card" id="render-pagos">
+        <h2>Cargando Sistema de Pagos...</h2>
     </div>
 
-    <footer class="footer-legacy">
-        Will-Pay © 2026 | Revolución en Pagos Regionales
-    </footer>
-</div>
+    <div class="app-card" id="render-admin">
+        <h2>Protegiendo Oficina...</h2>
+    </div>
 
-<script src="modules/pagos.js"></script>
-<script src="modules/admin.js"></script>
-<script src="modules/socios.js"></script>
+    <div class="app-card" id="render-socios">
+        <h2>Espacios Reservados...</h2>
+    </div>
+
+    <div class="footer">
+        PROPIEDAD DE WILFREDO DONQUIZ © 2026<br>
+        VENEZUELA - TECNOLOGÍA CON PROPÓSITO
+    </div>
+
+    <script src="modules/pagos.js"></script>
+    <script src="modules/admin.js"></script>
+    <script src="modules/socios.js"></script>
 
 </body>
 </html>
