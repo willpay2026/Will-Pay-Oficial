@@ -33,7 +33,7 @@
         }
         @keyframes shine { 0% { left: -150%; } 30% { left: 150%; } 100% { left: 150%; } }
 
-        /* APP PRINCIPAL - OCULTA POR DEFECTO */
+        /* APP PRINCIPAL */
         #main-app { 
             display: none; 
             width: 100%; 
@@ -83,86 +83,4 @@
     <div id="premio-modal">
         <h1 style="color: white;">¡SORPRESA SOCIO!</h1>
         <div class="bonus-destello">+ 500</div>
-        <p style="color: var(--gold); margin-top: 20px;">Bono de Bienvenida Fundación Wilfredo Donquiz.</p>
-        <button class="btn-gold" style="width: auto; padding: 15px 40px; margin-top: 30px;" onclick="cerrarPremio()">RECIBIR SALDO</button>
-    </div>
-
-    <script>
-        // MOTOR DE ARRANQUE SEGURO
-        window.onload = function() {
-            // Pre-renderizamos el login
-            mostrarLogin();
-
-            // Esperar los 5 segundos del legado
-            setTimeout(() => {
-                const splash = document.getElementById('splash-screen');
-                const main = document.getElementById('main-app');
-
-                splash.style.opacity = '0';
-                
-                setTimeout(() => {
-                    splash.style.display = 'none';
-                    main.style.display = 'flex';
-                    setTimeout(() => { main.style.opacity = '1'; }, 50);
-                }, 1000);
-            }, 5000);
-        };
-
-        const footerSello = `<div class="sello-wildon">WILDON. C.A.</div>`;
-
-        function mostrarLogin() {
-            document.getElementById('content-box').innerHTML = `
-                <img src="logonuevo.png" style="width: 140px; margin-bottom: 20px;">
-                <h2 style="color: var(--gold); font-size: 1.2rem; margin-bottom: 5px;">BIENVENIDO</h2>
-                <input type="text" id="user-master" placeholder="Usuario o Teléfono">
-                <input type="password" id="pin-master" placeholder="PIN de Seguridad">
-                <button class="btn-gold" onclick="intentarAcceso()">ENTRAR</button>
-                <p style="margin-top:20px; font-size:0.75rem; color:#444;">
-                    ¿Nuevo Socio? <span style="color:var(--gold); cursor:pointer; font-weight:bold;" onclick="mostrarRegistroADN()">Regístrate aquí</span>
-                </p>
-                ${footerSello}
-            `;
-        }
-
-        function mostrarRegistroADN() {
-            document.getElementById('content-box').innerHTML = `
-                <img src="logonuevo.png" style="width: 140px; margin-bottom: 15px;">
-                <h2 style="color: var(--gold); font-size: 1.1rem;">🧬 REGISTRO ADN</h2>
-                <p style="color: #666; font-size: 0.5rem; letter-spacing: 2px; margin-bottom: 15px;">FUNDACIÓN WILFREDO DONQUIZ</p>
-                <input type="text" id="reg-nombre" placeholder="Nombre Completo">
-                <input type="number" id="reg-cedula" placeholder="Cédula de Identidad">
-                <input type="tel" id="reg-telf" placeholder="Número de Teléfono">
-                <select id="reg-actividad">
-                    <option value="Independiente">Particular / Independiente</option>
-                    <option value="Moto-Taxi">Moto-Taxi</option>
-                    <option value="Comercio">Comercio</option>
-                </select>
-                <div class="adn-file-container">
-                    <label class="file-upload"><span>📸 CÉDULA</span><input type="file" style="display:none;"></label>
-                    <label class="file-upload"><span>🤳 SELFIE ADN</span><input type="file" style="display:none;"></label>
-                </div>
-                <button class="btn-gold" onclick="procesarPrimerosSocios()">UNIRSE A WILL-PAY</button>
-                <div class="privilegio-box">
-                    <p class="privilegio-text">✨ <b>PRIVILEGIO DE USUARIO:</b> Al registrarte con alguna actividad económica gozarás del beneficio de un <b>Historial Certificado</b> para cualquier tipo de trámites.</p>
-                </div>
-                <p onclick="mostrarLogin()" style="color:#444; font-size:0.7rem; margin-top:15px; cursor:pointer;">VOLVER</p>
-                ${footerSello}
-            `;
-        }
-
-        function procesarPrimerosSocios() {
-            let contador = parseInt(localStorage.getItem('WillPay_Contador')) || 0;
-            contador++;
-            localStorage.setItem('WillPay_Contador', contador);
-
-            if(contador <= 5) {
-                document.getElementById('premio-modal').style.display = 'flex';
-                confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 }, colors: ['#ffcf40', '#ffffff'] });
-            } else {
-                alert("Expediente ADN Archivador WILDON C.A.");
-                mostrarLogin();
-            }
-        }
-
-        function cerrarPremio() {
-            document.getElementById('prem
+        <p style="color:
