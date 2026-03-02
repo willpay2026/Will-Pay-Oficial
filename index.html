@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Will-Pay | Oficial</title>
+    <title>Will-Pay | El Legado</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
@@ -17,16 +17,13 @@
         :root { --gold: #ffcf40; --dark-bg: #000; }
         body, html { margin: 0; padding: 0; background: var(--dark-bg); color: #fff; font-family: 'Lexend', sans-serif; height: 100%; overflow: hidden; }
 
-        /* 🎬 SPLASH SCREEN - LOGO A 275PX */
+        /* SPLASH SCREEN 275PX */
         #splash-screen {
             position: fixed; width: 100%; height: 100%; background: #000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             z-index: 1000; transition: opacity 1s ease-in-out;
         }
-        .logo-container {
-            width: 275px; height: 275px; position: relative;
-            overflow: hidden; border-radius: 35px;
-        }
+        .logo-container { width: 275px; height: 275px; position: relative; overflow: hidden; border-radius: 35px; }
         .logo-img { width: 100%; height: auto; }
         .logo-container::after {
             content: ""; position: absolute; top: -150%; left: -150%; width: 300%; height: 300%;
@@ -35,20 +32,19 @@
         }
         @keyframes shine { 0% { top:-150%; left:-150%; } 20% { top:100%; left:100%; } 100% { top:100%; left:100%; } }
 
-        /* 🏢 LOGIN CARD */
         #main-app { display: none; width: 100%; min-height: 100vh; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; opacity: 0; transition: opacity 0.8s; }
-        .login-card { width: 100%; max-width: 400px; background: #080808; border: 1px solid #1a1500; border-radius: 30px; padding: 35px; text-align: center; }
+        .login-card { width: 100%; max-width: 420px; background: #080808; border: 1px solid #1a1500; border-radius: 30px; padding: 35px; text-align: center; }
         
         input { width: 100%; padding: 18px; background: #111; border: 1px solid #222; border-radius: 15px; color: #fff; margin-bottom: 15px; text-align: center; font-family: 'Lexend'; box-sizing: border-box; }
         .btn-gold { width: 100%; background: var(--gold); border: none; padding: 18px; border-radius: 15px; font-weight: bold; cursor: pointer; color: #000; text-transform: uppercase; }
 
-        /* BANNER INSTALACIÓN */
-        #install-banner {
-            position: fixed; bottom: 20px; left: 20px; right: 20px; 
-            background: var(--gold); color: #000; padding: 15px; 
-            border-radius: 15px; display: none; justify-content: space-between; 
-            align-items: center; z-index: 2000; font-weight: bold; font-size: 0.8rem;
-        }
+        /* ESTILO DEL SWITCH MAESTRO */
+        .switch { position: relative; display: inline-block; width: 45px; height: 24px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #222; transition: .4s; border-radius: 34px; border: 1px solid #333; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--gold); }
+        input:checked + .slider:before { transform: translateX(21px); background-color: #000; }
     </style>
 </head>
 <body onload="iniciarApp()">
@@ -60,22 +56,14 @@
 
     <div id="main-app">
         <div id="content-box" class="login-card">
-            <img src="logonuevo.png" style="width: 100px; margin-bottom: 15px;">
-            <h2 style="color: var(--gold); font-size: 1.2rem;">BIENVENIDO</h2>
-            <input type="text" id="user-master" placeholder="Usuario o Teléfono">
-            <input type="password" id="pin-master" placeholder="PIN de Seguridad">
-            <button class="btn-gold" onclick="intentarAcceso()">ENTRAR</button>
-            <p style="margin-top:20px; font-size:0.7rem; color:#444;">¿Nuevo? <span style="color:var(--gold); cursor:pointer;" onclick="iniciarRegistroADN()">Regístrate aquí</span></p>
-        </div>
+            </div>
     </div>
 
-    <div id="install-banner">
-        <span>Instala Will-Pay en tu inicio</span>
-        <button onclick="instalarApp()" style="background:#000; color:#fff; border:none; padding:8px 12px; border-radius:8px;">INSTALAR</button>
-    </div>
+    <script src="https://unpkg.com/html5-qrcode"></script>
 
     <script>
         function iniciarApp() {
+            renderLogin();
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 const main = document.getElementById('main-app');
@@ -88,26 +76,23 @@
             }, 5000);
         }
 
+        function renderLogin() {
+            document.getElementById('content-box').innerHTML = `
+                <img src="logonuevo.png" style="width: 100px; margin-bottom: 15px;">
+                <h2 style="color: var(--gold); font-size: 1.2rem;">BIENVENIDO</h2>
+                <input type="text" id="user-master" placeholder="Usuario o Teléfono">
+                <input type="password" id="pin-master" placeholder="PIN de Seguridad">
+                <button class="btn-gold" onclick="intentarAcceso()">ENTRAR</button>
+                <p style="margin-top:20px; font-size:0.7rem; color:#444;">¿Nuevo Socio? <span style="color:var(--gold); cursor:pointer;" onclick="iniciarRegistroADN()">Regístrate aquí</span></p>
+            `;
+        }
+
         function intentarAcceso() {
             const user = document.getElementById('user-master').value.trim();
             if(user === "WILFREDO-ADMIN") {
                 if(typeof mostrarPanelAdmin === 'function') mostrarPanelAdmin();
             } else if(user.length >= 3) {
                 if(typeof mostrarDashboardUsuario === 'function') mostrarDashboardUsuario();
-            }
-        }
-
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            setTimeout(() => { document.getElementById('install-banner').style.display = 'flex'; }, 6000);
-        });
-
-        function instalarApp() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                document.getElementById('install-banner').style.display = 'none';
             }
         }
     </script>
