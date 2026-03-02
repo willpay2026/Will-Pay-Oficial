@@ -3,246 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Will-Pay Dashboard</title>
+    <title>Will-Pay | Control</title>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root { 
             --gold: #ffcf40; 
-            --gold-bright: #fff0b3;
             --dark-bg: #000000; 
             --card-bg: #0a0a0a; 
             --border: 1px solid #332b00; 
         }
 
-        body { 
-            font-family: 'Lexend', sans-serif; 
+        body, html { 
             margin: 0; 
+            padding: 0;
             background: var(--dark-bg); 
             color: #fff; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            padding: 10px; 
-            min-height: 100vh;
+            font-family: 'Lexend', sans-serif;
+            overflow-x: hidden;
+            height: 100%;
         }
 
-        /* ✨ EFECTO DE BRILLO DIAGONAL (SHINE ANIMATION) */
-        .shine-effect {
+        /* 🎬 PANTALLA DE INICIO (FLASH SCREEN) */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease, visibility 1s;
+        }
+
+        .logo-flash {
+            width: 180px; /* Logo más grande para el inicio */
+            border-radius: 30px;
             position: relative;
             overflow: hidden;
         }
 
-        .shine-effect::after {
+        /* ✨ EL BRILLO DIAGONAL */
+        .shine {
+            position: relative;
+            overflow: hidden;
+        }
+        .shine::after {
             content: "";
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                to bottom right,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0) 40%,
-                rgba(255, 255, 255, 0.6) 50%, /* El destello blanco/plateado */
-                rgba(255, 255, 255, 0) 60%,
-                rgba(255, 255, 255, 0) 100%
-            );
-            transform: rotate(-45deg); /* Inclinación diagonal */
-            animation: shineSweep 3s infinite; /* Velocidad y repetición */
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: linear-gradient(to bottom right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+            transform: rotate(-45deg);
+            animation: sweep 2.5s infinite;
         }
-
-        @keyframes shineSweep {
+        @keyframes sweep {
             0% { left: -100%; top: -100%; }
             100% { left: 100%; top: 100%; }
         }
 
-        /* APLICANDO EL BRILLO A LOS ELEMENTOS CLAVE */
-        .header-logo { 
-            width: 120px; 
-            margin: 20px 0; 
-            border-radius: 20px;
-            box-shadow: 0 0 15px rgba(255, 207, 64, 0.3);
+        /* 📱 CONTENIDO DE LA APP (OCULTO AL INICIO) */
+        #main-app {
+            opacity: 0;
+            transition: opacity 1s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            visibility: hidden;
         }
 
-        .welcome-msg { 
-            color: var(--gold); 
-            font-size: 0.8rem; 
-            text-transform: uppercase; 
-            letter-spacing: 2px; 
-            margin-bottom: 20px; 
-            text-align: center;
-        }
-
-        /* SALDOS */
-        .stats-row { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr 1fr; 
-            gap: 10px; 
-            width: 100%; 
-            max-width: 600px; 
-            margin-bottom: 20px; 
-        }
-
-        .stat-card { 
-            background: var(--card-bg); 
-            border: var(--border); 
-            border-radius: 10px; 
-            padding: 15px 5px; 
-            text-align: center; 
-        }
-
-        .stat-label { font-size: 0.6rem; color: #888; margin-bottom: 5px; text-transform: uppercase;}
-        .stat-value { font-size: 1.1rem; font-weight: bold; }
-
-        /* COMISIONES */
-        .section-title { 
-            width: 100%; 
-            text-align: center; 
-            font-size: 0.7rem; 
-            color: #666; 
-            margin: 15px 0 10px 0; 
-            letter-spacing: 1px; 
-            text-transform: uppercase;
-        }
-
-        .commission-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 10px; 
-            width: 100%; 
-            max-width: 600px; 
-            margin-bottom: 20px; 
-        }
-
-        /* CONTENEDORES DE MÓDULOS */
-        .module-container { 
-            width: 100%; 
-            max-width: 600px; 
-            background: var(--card-bg); 
-            border: var(--border); 
-            border-radius: 15px; 
-            padding: 20px; 
-            margin-bottom: 20px; 
-            box-sizing: border-box; 
-        }
-
-        .ganancias-netas { 
-            color: #00ff00; 
-            font-size: 1.5rem; 
-            font-weight: bold; 
-            text-align: center; 
-        }
-        
-        input { 
-            width: 100%; 
-            background: #1a1a1a; 
-            border: 1px solid #333; 
-            padding: 12px; 
-            color: #fff; 
-            border-radius: 8px; 
-            margin-bottom: 10px; 
-            box-sizing: border-box; 
-            font-family: 'Lexend', sans-serif;
-        }
-
-        button { 
-            width: 100%; 
-            background: var(--gold); 
-            color: #000;
-            border: none; 
-            padding: 15px; 
-            border-radius: 8px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            text-transform: uppercase;
-        }
-        
-        .footer { 
-            font-size: 0.6rem; 
-            color: #333; 
-            margin-top: auto; 
-            padding: 20px; 
-            text-align: center; 
-        }
-
-        /* Botón discreto ADMIN */
-        .btn-invisible {
-            background: transparent;
-            color: #111;
-            border: 1px solid #111;
-            padding: 8px 15px;
-            font-size: 0.6rem;
-            border-radius: 4px;
-            cursor: pointer;
-            margin: 20px 0;
-        }
+        /* ESTILOS DEL DASHBOARD */
+        .header-logo-small { width: 80px; margin: 10px 0; border-radius: 12px; }
+        .welcome-msg { color: var(--gold); font-size: 0.7rem; letter-spacing: 2px; margin-bottom: 20px; }
+        .stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; width: 100%; max-width: 500px; margin-bottom: 15px; }
+        .stat-card { background: var(--card-bg); border: var(--border); border-radius: 10px; padding: 12px 2px; text-align: center; }
+        .stat-label { font-size: 0.5rem; color: #666; text-transform: uppercase; }
+        .stat-value { font-size: 1rem; font-weight: bold; }
+        .commission-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; max-width: 500px; }
+        .module-container { width: 100%; max-width: 500px; background: var(--card-bg); border: var(--border); border-radius: 15px; padding: 20px; margin-top: 20px; box-sizing: border-box; }
+        button { width: 100%; background: var(--gold); border: none; padding: 15px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .btn-invisible { background: transparent; color: #111; border: 1px solid #111; padding: 8px 15px; font-size: 0.6rem; margin: 30px 0; cursor: pointer; }
     </style>
 </head>
-<body>
+<body onload="iniciarApp()">
 
-    <div class="shine-effect" style="border-radius: 20px; margin: 20px 0;">
-        <img src="logonuevo.png" alt="Will-Pay Logo" class="header-logo" style="margin:0;">
-    </div>
-    
-    <div class="welcome-msg">BIENVENIDO WILFREDO DONQUIZ</div>
-
-    <div class="stats-row">
-        <div class="stat-card shine-effect"><div class="stat-label">Bs.</div><div class="stat-value" id="main-bs">100.00</div></div>
-        <div class="stat-card shine-effect"><div class="stat-label">WPC</div><div class="stat-value">0.00</div></div>
-        <div class="stat-card shine-effect"><div class="stat-label">$</div><div class="stat-value">0.00</div></div>
+    <div id="splash-screen">
+        <div class="logo-flash shine">
+            <img src="logonuevo.png" alt="Will-Pay" style="width: 100%; display: block;">
+        </div>
     </div>
 
-    <div class="section-title">CONTROL DE COMISIONES ACTUAL</div>
-    <div class="commission-grid">
-        <div class="stat-card shine-effect"><div class="stat-label">PAGOS %</div><div id="val-pago" style="color:var(--gold); font-weight: bold;">1.5</div></div>
-        <div class="stat-card shine-effect"><div class="stat-label">RETIROS %</div><div id="val-retiro" style="color:var(--gold); font-weight: bold;">2.1</div></div>
-    </div>
+    <div id="main-app">
+        <img src="logonuevo.png" alt="Logo" class="header-logo-small">
+        <div class="welcome-msg">CEO PANEL | WILFREDO DONQUIZ</div>
 
-    <div id="panel-maestro-ceo" style="display: none; width: 100%; max-width: 600px;">
-        <div class="section-title">💰 BALANCE DE GANANCIAS</div>
-        <div class="module-container">
-            <div class="ganancias-netas" id="display-ganancia">Bs. 0.00</div>
+        <div class="stats-row">
+            <div class="stat-card"><div class="stat-label">Bolívares</div><div class="stat-value">100.00</div></div>
+            <div class="stat-card"><div class="stat-label">WPC</div><div class="stat-value">0.00</div></div>
+            <div class="stat-card"><div class="stat-label">$</div><div class="stat-value">0.00</div></div>
         </div>
 
-        <div class="section-title">⚙️ AJUSTE DE PORCENTAJES</div>
-        <div class="module-container">
-            <input type="number" id="input-pago" placeholder="Nuevo % Pagos (ej: 1.8)">
-            <input type="number" id="input-retiro" placeholder="Nuevo % Retiros (ej: 2.5)">
-            <button onclick="actualizarPorcentajes()">GUARDAR CAMBIOS</button>
+        <div class="commission-grid">
+            <div class="stat-card"><div class="stat-label">Pagos</div><div style="color:var(--gold)">1.5%</div></div>
+            <div class="stat-card"><div class="stat-label">Retiros</div><div style="color:var(--gold)">2.1%</div></div>
         </div>
+
+        <div id="panel-maestro-ceo" style="display: none; width: 100%; max-width: 500px;">
+            <div class="module-container">
+                <div style="color: #00ff00; font-size: 1.5rem; text-align: center; font-weight: bold;">Bs. 0.00</div>
+                <p style="text-align:center; font-size:0.6rem; color:#444;">GANANCIAS NETAS</p>
+            </div>
+        </div>
+
+        <div class="module-container" id="render-pagos">
+            </div>
+
+        <button onclick="accesoCEO()" class="btn-invisible">ADMIN ACCESS</button>
         
-        <div id="render-admin"></div>
-    </div>
-
-    <div class="section-title">ACCIONES DE USUARIO</div>
-    <div class="module-container" id="render-pagos">
+        <div style="font-size: 0.5rem; color: #222; margin-bottom: 20px;">
+            WILL-PAY VENEZUELA © 2026 | PROPIEDAD DE WILFREDO DONQUIZ
         </div>
-
-    <div id="render-socios"></div>
-
-    <div style="text-align: center; margin: 20px 0;">
-        <button onclick="accesoCEO()" class="btn-invisible">
-            ADMIN ACCESS
-        </button>
     </div>
-
-    <div class="footer">ID DNA: CEO-001 | WILL-PAY © 2026</div>
 
     <script>
+        // LA MAGIA DEL TIEMPO
+        function iniciarApp() {
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                const app = document.getElementById('main-app');
+                
+                splash.style.opacity = '0'; // Se desvanece
+                setTimeout(() => {
+                    splash.style.visibility = 'hidden';
+                    app.style.visibility = 'visible';
+                    app.style.opacity = '1'; // Aparece la app suavemente
+                }, 1000); // Tiempo que tarda en borrarse el splash
+            }, 4000); // 4 SEGUNDOS DE LOGO SOLO
+        }
+
         function accesoCEO() {
             let clave = prompt("🔐 CLAVE MAESTRA:");
             if (clave === "1234") {
                 document.getElementById('panel-maestro-ceo').style.display = 'block';
-                alert("Acceso concedido, Wilfredo.");
-            } else { alert("Clave incorrecta."); }
-        }
-
-        function actualizarPorcentajes() {
-            const p = document.getElementById('input-pago').value;
-            const r = document.getElementById('input-retiro').value;
-            if(p) document.getElementById('val-pago').innerText = p;
-            if(r) document.getElementById('val-retiro').innerText = r;
-            alert("Porcentajes actualizados.");
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         }
     </script>
 
