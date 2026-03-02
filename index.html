@@ -3,93 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Will-Pay Dashboard</title>
+    <title>Will-Pay CEO</title>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        // LÓGICA DE ACCESO (Puesta arriba para que funcione sí o sí)
+        function accesoCEO() {
+            console.log("Botón presionado"); // Esto es para que el navegador sepa que lo tocamos
+            let clave = prompt("🔐 CLAVE MAESTRA DE WILFREDO:");
+            if (clave === "1234") {
+                document.getElementById('panel-maestro-ceo').style.display = 'block';
+                alert("Acceso concedido, Wilfredo. Panel Maestro Activo.");
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else if (clave !== null) {
+                alert("❌ Clave incorrecta.");
+            }
+        }
+
+        function actualizarPorcentajes() {
+            const p = document.getElementById('input-pago').value;
+            const r = document.getElementById('input-retiro').value;
+            if(p) document.getElementById('val-pago').innerText = p;
+            if(r) document.getElementById('val-retiro').innerText = r;
+            alert("✅ Comisiones actualizadas.");
+        }
+    </script>
+
     <style>
         :root { --gold: #ffcf40; --dark-bg: #000; --card-bg: #0a0a0a; --border: 1px solid #332b00; }
-        body { font-family: 'Lexend', sans-serif; margin: 0; background: var(--dark-bg); color: #fff; display: flex; flex-direction: column; align-items: center; padding: 10px; }
-        .header-logo { width: 120px; margin: 20px 0; }
-        .welcome-msg { color: var(--gold); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
+        body { font-family: 'Lexend', sans-serif; margin: 0; background: var(--dark-bg); color: #fff; display: flex; flex-direction: column; align-items: center; padding: 10px; min-height: 100vh; }
+        .header-logo { width: 110px; margin: 15px 0; border-radius: 15px; }
+        .welcome-msg { color: var(--gold); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
 
-        /* SALDOS */
-        .stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; width: 100%; max-width: 600px; margin-bottom: 20px; }
-        .stat-card { background: var(--card-bg); border: var(--border); border-radius: 10px; padding: 15px 5px; text-align: center; }
-        .stat-label { font-size: 0.6rem; color: #888; margin-bottom: 5px; }
+        .stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; width: 100%; max-width: 500px; margin-bottom: 15px; }
+        .stat-card { background: var(--card-bg); border: var(--border); border-radius: 10px; padding: 12px 2px; text-align: center; }
+        .stat-label { font-size: 0.55rem; color: #666; margin-bottom: 4px; text-transform: uppercase; }
         .stat-value { font-size: 1.1rem; font-weight: bold; }
 
-        /* COMISIONES VISIBLES */
-        .section-title { width: 100%; text-align: center; font-size: 0.7rem; color: #666; margin: 15px 0 10px 0; letter-spacing: 1px; }
-        .commission-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; max-width: 600px; margin-bottom: 20px; }
+        .section-title { width: 100%; text-align: center; font-size: 0.65rem; color: #444; margin: 15px 0 8px 0; letter-spacing: 1px; text-transform: uppercase; }
+        .commission-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; max-width: 500px; margin-bottom: 15px; }
 
-        /* CONTENEDORES */
-        .module-container { width: 100%; max-width: 600px; background: var(--card-bg); border: var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-sizing: border-box; }
-        .ganancias-netas { color: #00ff00; font-size: 1.5rem; font-weight: bold; text-align: center; }
+        .module-container { width: 100%; max-width: 500px; background: var(--card-bg); border: var(--border); border-radius: 12px; padding: 15px; margin-bottom: 15px; box-sizing: border-box; }
+        .ganancias-netas { color: #00ff00; font-size: 1.4rem; font-weight: bold; text-align: center; }
         
-        /* BOTONES E INPUTS */
-        input { width: 100%; background: #1a1a1a; border: 1px solid #333; padding: 10px; color: #fff; border-radius: 8px; margin-bottom: 10px; box-sizing: border-box; }
-        button { width: 100%; background: var(--gold); border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        input { width: 100%; background: #111; border: 1px solid #222; padding: 12px; color: #fff; border-radius: 8px; margin-bottom: 8px; box-sizing: border-box; font-size: 0.9rem; }
+        .btn-gold { width: 100%; background: var(--gold); color: #000; border: none; padding: 14px; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
         
-        .footer { font-size: 0.6rem; color: #222; margin-top: 20px; padding-bottom: 40px; }
+        .footer { font-size: 0.6rem; color: #222; margin-top: auto; padding: 20px; text-align: center; width: 100%; }
+        
+        /* Botón discreto */
+        .btn-invisible { background: transparent; color: #111; border: 1px solid #111; padding: 8px 15px; font-size: 0.6rem; border-radius: 4px; cursor: pointer; margin: 20px 0; }
     </style>
 </head>
 <body>
 
-    <img src="logonuevo.png" alt="Logo" class="header-logo">
-    <div class="welcome-msg">BIENVENIDO WILFREDO DONQUIZ</div>
+    <img src="logonuevo.png" alt="Will-Pay" class="header-logo">
+    <div class="welcome-msg">CEO PANEL | WILFREDO DONQUIZ</div>
 
     <div class="stats-row">
-        <div class="stat-card"><div class="stat-label">Bs.</div><div class="stat-value">100.00</div></div>
-        <div class="stat-card"><div class="stat-label">WPC</div><div class="stat-value">0.00</div></div>
-        <div class="stat-card"><div class="stat-label">$</div><div class="stat-value">0.00</div></div>
+        <div class="stat-card"><div class="stat-label">Bolívares</div><div class="stat-value" id="main-bs">100.00</div></div>
+        <div class="stat-card"><div class="stat-label">WPC Coin</div><div class="stat-value">0.00</div></div>
+        <div class="stat-card"><div class="stat-label">Dólares</div><div class="stat-value">0.00</div></div>
     </div>
 
-    <div class="section-title">CONTROL DE COMISIONES ACTUAL</div>
+    <div class="section-title">Comisiones de Red</div>
     <div class="commission-grid">
-        <div class="stat-card">
-            <div class="stat-label">PAGOS %</div>
-            <div id="val-pago" style="color:var(--gold); font-weight: bold;">1.5</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-label">RETIROS %</div>
-            <div id="val-retiro" style="color:var(--gold); font-weight: bold;">2.1</div>
-        </div>
+        <div class="stat-card"><div class="stat-label">Pagos</div><div id="val-pago" style="color:var(--gold); font-weight: bold;">1.5%</div></div>
+        <div class="stat-card"><div class="stat-label">Retiros</div><div id="val-retiro" style="color:var(--gold); font-weight: bold;">2.1%</div></div>
     </div>
 
-    <div id="panel-maestro-ceo" style="display: none; width: 100%; max-width: 600px;">
-        <div class="section-title">💰 BALANCE DE GANANCIAS</div>
+    <div id="panel-maestro-ceo" style="display: none; width: 100%; max-width: 500px;">
+        <div class="section-title">💰 Balance de Ganancias</div>
         <div class="module-container">
             <div class="ganancias-netas" id="display-ganancia">Bs. 0.00</div>
         </div>
 
-        <div class="section-title">⚙️ AJUSTE DE PORCENTAJES</div>
+        <div class="section-title">⚙️ Ajustes de Plataforma</div>
         <div class="module-container">
-            <label style="font-size: 0.7rem; color: #888;">NUEVO % PAGOS:</label>
-            <input type="number" id="input-pago" placeholder="Ej: 1.8">
-            <label style="font-size: 0.7rem; color: #888;">NUEVO % RETIROS:</label>
-            <input type="number" id="input-retiro" placeholder="Ej: 2.5">
-            <button onclick="actualizarPorcentajes()">GUARDAR CAMBIOS</button>
+            <input type="number" id="input-pago" placeholder="Nuevo % Pagos">
+            <input type="number" id="input-retiro" placeholder="Nuevo % Retiros">
+            <button class="btn-gold" onclick="actualizarPorcentajes()">Guardar Cambios</button>
         </div>
+        
+        <div id="render-admin"></div>
     </div>
 
-    <div class="module-container" id="render-pagos"></div>
+    <div class="section-title">Operaciones Disponibles</div>
+    <div class="module-container" id="render-pagos">
+        </div>
 
-    <div style="text-align: center; margin: 20px 0;">
-        <button onclick="accesoCEO()" style="background: transparent; color: #1a1a1a; border: 1px solid #1a1a1a; width: auto; font-size: 0.6rem;">
-            ADMIN ACCESS
-        </button>
+    <div id="render-socios"></div>
+
+    <button class="btn-invisible" onclick="accesoCEO()">ADMIN ACCESS</button>
+
+    <div class="footer">
+        ID DNA: CEO-001 | WILL-PAY VENEZUELA © 2026<br>
+        PROPIEDAD DE WILFREDO DONQUIZ
     </div>
 
-    <div class="footer">ID DNA: CEO-001 | WILL-PAY © 2026</div>
-
-    <script>
-        // Lógica de acceso
-        function accesoCEO() {
-            let clave = prompt("🔐 CLAVE MAESTRA:");
-            if (clave === "1234") {
-                document.getElementById('panel-maestro-ceo').style.display = 'block';
-                window.scrollTo({ top: 0, behavior: 'smooth' }); // Te sube para ver el panel
-            } else { alert("Acceso denegado."); }
-        }
-
-        // Lógica de manipulación de %
-        function actualizarPorcentajes() {
+    <script src="modules/pagos.js"></script>
+    <script src="modules/admin.js"></script>
+    <script src="modules/socios.js"></script>
+</body>
+</html>
