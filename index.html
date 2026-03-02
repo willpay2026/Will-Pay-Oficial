@@ -23,26 +23,25 @@
             z-index: 1000; transition: opacity 1.5s ease;
         }
 
-        /* ✨ LOGO GIGANTE (EDICIÓN JEFE) */
+        /* ✨ LOGO AJUSTADO A 300PX (EQUILIBRIO TOTAL) */
         .logo-container {
             position: relative;
-            width: 350px; /* Tamaño máximo para impacto total */
-            height: 350px;
+            width: 300px; /* Ajuste a pedido del Jefe */
+            height: 300px;
             overflow: hidden;
-            border-radius: 50px; 
+            border-radius: 40px; 
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: transform 0.5s ease;
         }
 
         .logo-img {
-            width: 90%; /* Ajuste interno para que no toque los bordes del brillo */
+            width: 95%; 
             height: auto;
             display: block;
         }
 
-        /* EL DESTELLO DIAGONAL (MÁS LENTO Y ELEGANTE) */
+        /* EL DESTELLO DIAGONAL ELEGANTE */
         .logo-container::after {
             content: "";
             position: absolute;
@@ -59,84 +58,21 @@
                 rgba(255, 255, 255, 0) 100%
             );
             transform: rotate(-45deg);
-            animation: slowShine 7s infinite; /* 7 segundos para más clase */
+            animation: slowShine 7s infinite;
         }
 
         @keyframes slowShine {
             0% { top: -150%; left: -150%; }
-            15% { top: 100%; left: 100%; } /* El brillo cruza rápido al inicio */
-            100% { top: 100%; left: 100%; } /* Pausa larga para que el logo luzca */
+            15% { top: 100%; left: 100%; }
+            100% { top: 100%; left: 100%; }
         }
 
-        /* CARGADOR Y TEXTO DORADO */
+        /* CARGADOR Y TEXTO */
         .loader-ring {
-            width: 60px; height: 60px; border: 3px solid rgba(255, 207, 64, 0.1);
+            width: 50px; height: 50px; border: 3px solid rgba(255, 207, 64, 0.1);
             border-top: 3px solid var(--gold); border-radius: 50%;
-            animation: spin 1.2s linear infinite; margin: 20px 0;
+            animation: spin 1.2s linear infinite; margin: 25px 0;
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
         .loading-text {
-            color: var(--gold); font-size: 0.9rem; letter-spacing: 5px; font-weight: bold;
-            text-transform: uppercase; text-align: center;
-        }
-
-        /* PANEL DE ACCESO (LOGIN) */
-        #login-panel {
-            display: none; width: 100%; height: 100%;
-            justify-content: center; align-items: center; opacity: 0;
-            transition: opacity 1.2s ease;
-        }
-
-        .login-card {
-            width: 90%; max-width: 400px; background: #080808;
-            border: 1px solid #1a1500; border-radius: 30px;
-            padding: 40px; text-align: center;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
-        }
-    </style>
-</head>
-<body onload="iniciarSistema()">
-
-    <div id="splash-screen">
-        <div class="logo-container">
-            <img src="logonuevo.png" alt="Will-Pay" class="logo-img">
-        </div>
-        <div class="loader-ring"></div>
-        <div class="loading-text">CARGANDO EL LEGADO...</div>
-    </div>
-
-    <div id="login-panel">
-        <div class="login-card">
-            <img src="logonuevo.png" alt="Logo" style="width: 140px; margin-bottom: 20px;">
-            <h2 style="color: var(--gold); font-size: 1.2rem; letter-spacing: 2px; margin-bottom: 5px;">ACCESO SEGURO</h2>
-            <p style="color: #444; font-size: 0.7rem; margin-bottom: 35px; letter-spacing: 1px;">WILL-PAY VENEZUELA</p>
-            
-            <input type="text" placeholder="Usuario" style="width:100%; padding:18px; background:#111; border:1px solid #222; border-radius:15px; color:#fff; margin-bottom:15px; text-align:center; font-family:'Lexend';">
-            <input type="password" placeholder="••••" style="width:100%; padding:18px; background:#111; border:1px solid #222; border-radius:15px; color:#fff; margin-bottom:30px; text-align:center;">
-            
-            <button style="width:100%; background:var(--gold); border:none; padding:20px; border-radius:15px; font-weight:bold; cursor:pointer; font-size: 1rem; color: #000;">ENTRAR AL PANEL</button>
-            
-            <p style="margin-top:30px; font-size:0.8rem; color:#555;">
-                ¿Nuevo socio? <span style="color:var(--gold); cursor:pointer; font-weight: bold;" onclick="alert('Ir a Registro')">Regístrate aquí</span>
-            </p>
-        </div>
-    </div>
-
-    <script>
-        function iniciarSistema() {
-            setTimeout(() => {
-                const splash = document.getElementById('splash-screen');
-                const login = document.getElementById('login-panel');
-                
-                splash.style.opacity = '0';
-                setTimeout(() => {
-                    splash.style.display = 'none';
-                    login.style.display = 'flex';
-                    setTimeout(() => { login.style.opacity = '1'; }, 50);
-                }, 1500);
-            }, 5500); // 5.5 segundos para que el logo se luzca bien
-        }
-    </script>
-</body>
-</html>
