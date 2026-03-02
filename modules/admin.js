@@ -1,99 +1,80 @@
-/**
- * WILL-PAY - MÓDULO ADMINISTRATIVO (MAESTRO)
- * Nivel de Seguridad: Bloqueado por Clave para Wilfredo Donquiz
- */
+// PANEL DE CONTROL CENTRAL - WILL-PAY (PROPIEDAD DE WILFREDO DONQUIZ)
 
-const ModuloAdmin = {
-    balanceComisiones: 0.00,
-    tasaPorTransaccion: 1.50, // Tu ganancia por cada clic en "Aprobar"
-    pagosPendientes: [],
-    claveMaestra: "Willy2026", // <--- TU CLAVE SECRETA (Cámbiala cuando quieras)
+let comisionNormal = 1.5;
+let comisionNegocio = 5.0;
+let modoAutomatico = false;
 
-    init: function() {
-        this.renderizarBloqueado();
-    },
-
-    // 1. Muestra el panel con candado (Lo que verá el público)
-    renderizarBloqueado: function() {
-        const contenedor = document.getElementById('render-admin');
-        contenedor.innerHTML = `
-            <div id="admin-lock" style="text-align: center; padding: 20px; border: 1px solid #333; border-radius: 8px;">
-                <p style="color: var(--gold); font-weight: bold;">🔒 OFICINA PRIVADA</p>
-                <input type="password" id="pass-admin" placeholder="Introduce clave" 
-                       style="width:100%; padding:10px; margin-bottom:10px; border-radius:5px; border:1px solid #444; background:#111; color:#fff;">
-                <button onclick="ModuloAdmin.desbloquear()" 
-                        style="width:100%; background:var(--gold); border:none; padding:10px; border-radius:5px; font-weight:bold; cursor:pointer;">
-                    ENTRAR AL PANEL
-                </button>
+const mostrarPanelAdmin = () => {
+    const main = document.getElementById('login-panel'); // O el contenedor que prefieras
+    
+    main.innerHTML = `
+        <div style="padding: 20px; background: #000; color: #fff; font-family: 'Lexend';">
+            <h2 style="color: var(--gold); border-bottom: 2px solid var(--gold);">🏛️ PANEL DE CONTROL MAESTRO</h2>
+            
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <div style="flex: 1; background: #111; padding: 15px; border-radius: 10px; border-left: 5px solid #00ff00;">
+                    <p style="font-size: 0.7rem; color: #888;">MIS GANANCIAS TOTALES</p>
+                    <h3 id="total-ganancias">0.00 Bs</h3>
+                </div>
+                <div style="flex: 1; background: #111; padding: 15px; border-radius: 10px; border-left: 5px solid var(--gold);">
+                    <p style="font-size: 0.7rem; color: #888;">TRANSACCIONES HOY</p>
+                    <h3>0</h3>
+                </div>
             </div>
-            <div id="admin-content" style="display:none;"></div>
-        `;
-    },
 
-    // 2. Verifica la identidad del dueño
-    desbloquear: function() {
-        const pass = document.getElementById('pass-admin').value;
-        if (pass === this.claveMaestra) {
-            document.getElementById('admin-lock').style.display = 'none';
-            document.getElementById('admin-content').style.display = 'block';
-            this.mostrarPanelReal();
-        } else {
-            alert("❌ Acceso denegado. Solo el dueño Wilfredo puede entrar.");
-        }
-    },
-
-    // 3. Tu panel real con el dinero (Solo aparece tras la clave)
-    mostrarPanelReal: function() {
-        const content = document.getElementById('admin-content');
-        content.innerHTML = `
-            <div style="text-align: center; margin-bottom: 15px; background: #000; padding: 15px; border-radius: 10px; border: 1px solid #00ff00;">
-                <span style="font-size: 0.8rem; color: #888;">MIS COMISIONES (LEGADO)</span><br>
-                <span id="display-comision" style="font-size: 2.2rem; color: #00ff00; font-weight: bold;">
-                    $${this.balanceComisiones.toFixed(2)}
-                </span>
+            <div style="background: #111; padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+                <h4 style="margin-top:0;">🔧 AJUSTE DE COMISIONES (%)</h4>
+                <div style="display: flex; gap: 20px; align-items: center;">
+                    <div>
+                        <label style="font-size: 0.7rem;">Normal:</label>
+                        <input type="number" id="tasa-normal" value="${comisionNormal}" style="width: 60px; padding: 5px; margin-left: 5px;">
+                    </div>
+                    <div>
+                        <label style="font-size: 0.7rem;">Negocio:</label>
+                        <input type="number" id="tasa-negocio" value="${comisionNegocio}" style="width: 60px; padding: 5px; margin-left: 5px;">
+                    </div>
+                    <button onclick="actualizarTasas()" style="background: var(--gold); border:none; padding: 10px; border-radius: 5px; cursor:pointer; font-weight:bold;">GUARDAR</button>
+                </div>
             </div>
-            <div id="lista-notificaciones" style="background: #111; padding: 10px; border-radius: 8px;">
-                <p style="font-size: 0.8rem; color: #555; text-align: center;" id="msg-vacio">
-                    Esperando reportes de usuarios...
-                </p>
+
+            <div style="background: #111; padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #222;">
+                <h4 style="margin-top:0; color: #00ff00;">💸 RECARGA DIRECTA DE SALDO</h4>
+                <input type="tel" id="recarga-telf" placeholder="Número de Teléfono (0412...)" style="margin-bottom: 10px;">
+                <input type="number" id="recarga-monto" placeholder="Monto en Bs">
+                <button onclick="ejecutarRecargaDirecta()" style="width: 100%; background: #00ff00; border:none; padding: 15px; border-radius: 10px; font-weight:bold; cursor:pointer;">CARGAR SALDO INMEDIATO</button>
             </div>
-        `;
-        // Recarga los pagos si alguien reportó mientras estaba bloqueado
-        if(this.pagosPendientes.length > 0) {
-            this.pagosPendientes.forEach(ref => this.dibujarTicket(ref));
-        }
-    },
 
-    recibirNotificacion: function(referencia) {
-        this.pagosPendientes.push(referencia);
-        if(document.getElementById('lista-notificaciones')) {
-            this.dibujarTicket(referencia);
-        }
-    },
-
-    dibujarTicket: function(ref) {
-        const lista = document.getElementById('lista-notificaciones');
-        const msgVacio = document.getElementById('msg-vacio');
-        if (msgVacio) msgVacio.remove();
-
-        const ticket = document.createElement('div');
-        ticket.style = "background:#222; margin: 8px 0; padding: 12px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid #00ff00;";
-        ticket.innerHTML = `
-            <span style="font-size: 0.9rem;">Ref: <b>${ref}</b></span>
-            <button onclick="ModuloAdmin.aprobarPago('${ref}', this)" 
-                    style="background:#00ff00; color:#000; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; font-weight:bold;">
-                APROBAR $
-            </button>
-        `;
-        lista.appendChild(ticket);
-    },
-
-    aprobarPago: function(ref, boton) {
-        this.balanceComisiones += this.tasaPorTransaccion;
-        document.getElementById('display-comision').innerText = `$${this.balanceComisiones.toFixed(2)}`;
-        boton.parentElement.innerHTML = `<span style="color:#00ff00; font-size: 0.8rem; font-weight:bold;">✅ PAGO APROBADO (+$${this.tasaPorTransaccion})</span>`;
-    }
+            <div style="background: #1a1500; padding: 20px; border-radius: 15px; border: 1px solid var(--gold); display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h4 style="margin:0;">MODO AUTO-APROBACIÓN</h4>
+                    <p style="font-size: 0.6rem; color: var(--gold);">Si se activa, el sistema aprueba todo solo.</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="auto-switch" onchange="toggleAutoModo()">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+    `;
 };
 
-// Arrancamos el sistema de seguridad
-ModuloAdmin.init();
+// --- LÓGICA ---
+
+window.actualizarTasas = () => {
+    comisionNormal = document.getElementById('tasa-normal').value;
+    comisionNegocio = document.getElementById('tasa-negocio').value;
+    alert(`Tasas actualizadas: Normal ${comisionNormal}% | Negocio ${comisionNegocio}%`);
+};
+
+window.ejecutarRecargaDirecta = () => {
+    const telf = document.getElementById('recarga-telf').value;
+    const monto = document.getElementById('recarga-monto').value;
+    if(!telf || !monto) return alert("Faltan datos");
+    alert(`✅ RECARGA EXITOSA: Se han enviado ${monto} Bs al número ${telf}.`);
+};
+
+window.toggleAutoModo = () => {
+    modoAutomatico = document.getElementById('auto-switch').checked;
+    const estado = modoAutomatico ? "ACTIVADO (El sistema aprobará solo)" : "DESACTIVADO (Tú apruebas)";
+    alert(`🤖 MODO AUTOMÁTICO: ${estado}`);
+};
