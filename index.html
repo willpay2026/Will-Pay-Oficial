@@ -15,7 +15,7 @@
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
-            padding: 15px;
+            padding: 10px;
             background: radial-gradient(circle at top, #1a1a1a, #000);
             color: var(--text);
             display: flex;
@@ -23,28 +23,37 @@
             align-items: center;
         }
 
-        /* Estilo del Título estilo App */
-        .header {
+        /* DISEÑO DEL LOGO PROFESIONAL */
+        .logo-container {
             text-align: center;
-            margin-bottom: 20px;
-            width: 100%;
+            margin-top: 20px;
+            margin-bottom: 10px;
         }
 
-        h1 {
+        .app-logo {
+            width: 120px; /* Tamaño ideal para móvil */
+            height: auto;
+            filter: drop-shadow(0 0 10px rgba(255, 207, 64, 0.4));
+            border-radius: 15px; /* Por si tu logo es cuadrado, le da un toque moderno */
+        }
+
+        .header h1 {
             color: var(--gold);
             font-size: 2.2rem;
-            margin: 10px 0 5px 0;
+            margin: 5px 0;
             text-shadow: 0 0 10px rgba(255, 207, 64, 0.3);
-            letter-spacing: 1px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .tagline {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #888;
-            font-style: italic;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
         }
 
-        /* El Mensaje Mágico de Wilfredo */
+        /* El Mensaje Mágico */
         .legacy-box {
             background: rgba(255, 207, 64, 0.05);
             border: 1px solid rgba(255, 207, 64, 0.2);
@@ -52,17 +61,16 @@
             border-radius: 12px;
             margin-bottom: 25px;
             text-align: center;
-            max-width: 400px;
+            max-width: 380px;
         }
 
         .legacy-box p {
             font-size: 0.9rem;
             line-height: 1.4;
-            margin: 0;
             color: #ccc;
         }
 
-        /* Contenedores que parecen "Tarjetas de App" */
+        /* Tarjetas de la App */
         .app-card {
             background: var(--card-bg);
             width: 100%;
@@ -76,7 +84,7 @@
         }
 
         h2 {
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: var(--gold);
             margin-top: 0;
             border-bottom: 1px solid #333;
@@ -84,15 +92,16 @@
             text-transform: uppercase;
         }
 
-        /* Ajuste de botones para dedos (Touch Friendly) */
+        /* Botones e Inputs */
         button {
             width: 100%;
             padding: 15px;
             border-radius: 10px;
             font-size: 1rem;
             font-weight: bold;
+            background: var(--gold);
+            border: none;
             cursor: pointer;
-            transition: 0.3s;
             margin-top: 10px;
         }
 
@@ -105,45 +114,41 @@
             color: #fff;
             border-radius: 8px;
             box-sizing: border-box;
-            font-size: 1rem;
         }
 
         .footer {
-            margin-top: 20px;
+            margin-top: 30px;
             font-size: 0.7rem;
             color: #444;
             text-align: center;
+            padding-bottom: 20px;
         }
     </style>
 </head>
 <body>
 
+    <div class="logo-container">
+        <img src="logonuevo.png" alt="Will-Pay Logo" class="app-logo">
+    </div>
+
     <div class="header">
         <h1>Will-Pay</h1>
-        <div class="tagline">By Wilfredo Donquiz</div>
+        <div class="tagline">TECNOLOGÍA VENEZOLANA</div>
     </div>
 
     <div class="legacy-box">
         <p>
-            "Nacido de una idea simple pero revolucionaria para mi región. Will-Pay es fe, código y el futuro de mi hija Wilyanny."
+            "Nacido de un emprendedor que pensó en su región y en revolucionar el sistema de pagos con una idea simple y código honesto."
         </p>
     </div>
 
-    <div class="app-card" id="render-pagos">
-        <h2>Cargando Sistema de Pagos...</h2>
-    </div>
-
-    <div class="app-card" id="render-admin">
-        <h2>Protegiendo Oficina...</h2>
-    </div>
-
-    <div class="app-card" id="render-socios">
-        <h2>Espacios Reservados...</h2>
-    </div>
+    <div class="app-card" id="render-pagos"></div>
+    <div class="app-card" id="render-admin"></div>
+    <div class="app-card" id="render-socios"></div>
 
     <div class="footer">
         PROPIEDAD DE WILFREDO DONQUIZ © 2026<br>
-        VENEZUELA - TECNOLOGÍA CON PROPÓSITO
+        EL LEGADO DE WILYANNY DONQUIZ
     </div>
 
     <script src="modules/pagos.js"></script>
