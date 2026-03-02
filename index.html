@@ -3,173 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Will-Pay | Wilfredo Donquiz</title>
+    <title>Will-Pay | El Legado</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
 
     <style>
-        :root { --gold: #ffcf40; --dark-bg: #000; --card-bg: #0d0d0d; --border-gold: #ffcf40; }
+        :root { --gold: #ffcf40; --dark-bg: #000; --card-bg: #0a0a0a; --border-gold: #ffcf40; }
         body, html { margin: 0; padding: 0; background: var(--dark-bg); color: #fff; font-family: 'Lexend', sans-serif; height: 100%; overflow-x: hidden; }
 
-        /* SPLASH SCREEN */
-        #splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10000; transition: opacity 0.8s; }
-        
-        /* APP PRINCIPAL */
-        #main-app { display: none; width: 100%; min-height: 100vh; flex-direction: column; align-items: center; padding: 20px 0; opacity: 0; transition: opacity 0.5s; }
-        
-        /* CUADRO PRINCIPAL ESTILO CAPTURA */
-        .card { width: 92%; max-width: 380px; background: var(--card-bg); border: 2px solid var(--border-gold); border-radius: 30px; padding: 25px; text-align: center; margin-bottom: 20px; box-sizing: border-box; }
+        /* VISTAS */
+        .view { display: none; flex-direction: column; align-items: center; padding: 20px; width: 100%; min-height: 100vh; box-sizing: border-box; }
 
-        input { width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; border-radius: 10px; color: #fff; margin-bottom: 10px; text-align: center; font-family: 'Lexend'; outline: none; box-sizing: border-box; }
-        
-        .btn-gold { width: 100%; background: var(--gold); border: none; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer; color: #000; text-transform: uppercase; font-size: 0.85rem; }
-        .btn-action { background: #000; border: 1.5px solid var(--border-gold); padding: 15px; border-radius: 15px; color: #fff; cursor: pointer; font-size: 0.75rem; font-weight: bold; width: 100%; }
+        /* SPLASH SCREEN (BLOQUE 1) */
+        #view-splash { display: flex; justify-content: center; background: #000; }
+        .logo-splash { width: 250px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 0.7; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
 
-        /* RECUADRO DE RECARGA INTERNO */
-        .recarga-inner { background: #000; border: 1px solid #333; padding: 15px; border-radius: 15px; margin: 15px 0; width: 100%; box-sizing: border-box; }
+        /* CARDS CORPORATIVAS (BORDES BIEN MARCADOS) */
+        .card { 
+            width: 100%; max-width: 380px; background: var(--card-bg); 
+            border: 2px solid var(--border-gold); border-radius: 30px; 
+            padding: 25px; text-align: center; box-sizing: border-box; 
+            margin-top: 10px; position: relative;
+        }
 
-        /* COMPROBANTE */
-        .receipt-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.97); z-index: 8000; justify-content: center; align-items: center; padding: 20px; }
-        .receipt-card { background: #fff; color: #000; width: 100%; max-width: 320px; border-radius: 20px; padding: 25px; text-align: center; border: 5px double #000; }
+        /* INPUTS Y BOTONES */
+        input { 
+            width: 100%; padding: 14px; background: #111; border: 1px solid #444; 
+            border-radius: 12px; color: #fff; margin-bottom: 12px; text-align: center; 
+            outline: none; font-family: 'Lexend'; font-size: 0.9rem;
+        }
+        input:focus { border-color: var(--gold); }
 
-        .btn-back { background: transparent; border: 1px solid #444; color: #888; padding: 8px 15px; border-radius: 10px; cursor: pointer; margin-top: 15px; font-size: 0.7rem; }
-        .btn-logout { color: #ff4444; text-decoration: none; font-size: 0.8rem; margin-top: 20px; cursor: pointer; }
-        
+        .btn-gold { 
+            width: 100%; background: var(--gold); border: none; padding: 16px; 
+            border-radius: 12px; font-weight: bold; cursor: pointer; color: #000; 
+            text-transform: uppercase; font-size: 0.85rem; transition: 0.3s;
+        }
+        .btn-gold:active { transform: scale(0.98); }
+
+        .btn-action { 
+            background: #000; border: 2px solid var(--border-gold); padding: 18px; 
+            border-radius: 18px; color: #fff; cursor: pointer; font-size: 0.75rem; 
+            font-weight: bold; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 5px;
+        }
+
+        /* TABLERO CEO (EL DE TU IMAGEN) */
+        .ceo-container { width: 100%; max-width: 800px; display: flex; flex-direction: column; gap: 15px; }
+        .ceo-stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; width: 100%; }
+        .stat-item { background: #050505; border: 1px solid var(--gold); border-radius: 12px; padding: 15px; text-align: center; }
+        .stat-item small { color: var(--gold); font-size: 0.6rem; display: block; margin-bottom: 5px; }
+        .stat-item b { font-size: 1rem; color: #fff; }
+
+        /* RECUADRO DE RECARGA PENDIENTE (DISEÑO VERDE) */
+        .pending-box { 
+            background: #000; border: 1px solid #222; border-radius: 15px; 
+            padding: 15px; display: flex; justify-content: space-between; 
+            align-items: center; margin-top: 10px; 
+        }
+        .btn-approve { background: #00ff00; color: #000; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+
+        /* ESCÁNER Y COMPROBANTE */
         #reader-container { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 5000; }
-        .sello-footer { margin-top: 15px; color: var(--gold); font-size: 0.6rem; letter-spacing: 4px; opacity: 0.8; }
+        .receipt-overlay { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.98); z-index: 6000; justify-content: center; align-items: center; 
+        }
+        .receipt-card { 
+            background: #fff; color: #000; width: 85%; max-width: 320px; 
+            border-radius: 20px; padding: 25px; text-align: center; border: 5px double #000;
+        }
+
+        .sello-footer { margin-top: 25px; color: var(--gold); font-size: 0.6rem; letter-spacing: 4px; opacity: 0.8; text-transform: uppercase; }
+        .logout-link { color: #ff4444; margin-top: 30px; cursor: pointer; font-size: 0.8rem; text-decoration: underline; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div id="splash-screen">
-        <img src="logonuevo.png" style="width: 220px;">
+    <div id="view-splash" class="view">
+        <img src="logonuevo.png" class="logo-splash">
         <div class="sello-footer" style="position: absolute; bottom: 40px;">WILDON. C.A.</div>
     </div>
 
-    <div id="reader-container">
-        <div id="reader" style="width:100%; height:80%;"></div>
-        <button class="btn-gold" style="background:#ff4444; color:white;" onclick="cerrarEscaner()">CANCELAR ESCANEO</button>
-    </div>
-
-    <div id="receipt-overlay" class="receipt-overlay">
-        <div class="receipt-card" id="receipt-content"></div>
-    </div>
-
-    <div id="main-app">
-        <img src="logonuevo.png" style="width: 130px; margin-bottom: 10px;">
-        <div id="content-box" class="card"></div>
-        <div id="logout-area" onclick="location.reload()" class="btn-logout">Cerrar Sesión</div>
+    <div id="view-login" class="view">
+        <img src="logonuevo.png" style="width: 130px; margin-bottom: 20px;">
+        <div class="card">
+            <h3 style="color:var(--gold); letter-spacing: 1px;">DNA DE ACCESO</h3>
+            <input type="text" id="user-in" placeholder="ID Socio / Teléfono">
+            <input type="password" id="pass-in" placeholder="PIN de Seguridad">
+            <button class="btn-gold" onclick="autenticar()">ENTRAR AL SISTEMA</button>
+            <p style="font-size: 0.7rem; margin-top: 15px; color: #555;">REGISTRO ADN DISPONIBLE EN AGENCIAS</p>
+        </div>
         <div class="sello-footer">WILDON. C.A.</div>
     </div>
 
-    <script>
-        let saldoBs = 290074.68;
-        let nombreSocio = "WILFREDO DONQUIZ";
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    <div id="view-socio" class="view">
+        <img src="logonuevo.png" style="width: 100px; margin-bottom: 10px;">
+        <div class="card">
+            <div style="font-size: 0.7rem; color: #888;">SALDO DISPONIBLE</div>
+            <h1 style="color:var(--gold); font-size: 2.5rem; margin: 5px 0;" id="txt-saldo">Bs. 500.00</h1>
+            <div style="font-size: 0.8rem; margin-bottom: 20px;" id="txt-nombre">SOCIO ACTIVO</div>
+            
+            <div style="display:flex; gap:12px; margin-bottom:20px;">
+                <button class="btn-action" onclick="abrirVistaPago()">🚀<br>PAGAR</button>
+                <button class="btn-action" onclick="abrirEscanerCobro()">📥<br>COBRAR</button>
+            </div>
 
-        window.onload = () => {
-            setTimeout(() => {
-                document.getElementById('splash-screen').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('splash-screen').style.display = 'none';
-                    document.getElementById('main-app').style.display = 'flex';
-                    document.getElementById('main-app').style.opacity = '1';
-                    mostrarDashboard();
-                }, 800);
-            }, 3000);
-        };
-
-        function mostrarDashboard() {
-            document.getElementById('logout-area').style.display = 'block';
-            document.getElementById('content-box').innerHTML = `
-                <div style="font-size:0.75rem; color:#888; margin-bottom:5px;">Bienvenido, ${nombreSocio}</div>
-                <div style="font-size:2.4rem; font-weight:bold; margin-bottom:20px; color:var(--gold);">Bs. ${saldoBs.toLocaleString('es-VE')}</div>
-                
-                <div style="display:flex; gap:12px; margin-bottom:20px;">
-                    <div class="btn-action" onclick="mostrarPagar()">🚀<br>PAGAR</div>
-                    <div class="btn-action" onclick="abrirEscanerCobro()">📥<br>COBRAR</div>
-                </div>
-
-                <button class="btn-gold" style="font-size:0.75rem;" onclick="mostrarRecarga()">+ SOLICITAR RECARGA</button>
-                
-                <div style="text-align:left; margin-top:20px; border-top:1px solid #222; padding-top:10px;">
-                    <b style="font-size:0.65rem; color:var(--gold);">EVENTOS RECIENTES</b>
-                    <div style="display:flex; justify-content:space-between; font-size:0.65rem; padding:5px 0;">
-                        <span>Registro ADN Exitoso</span><span style="color:var(--gold);">+500.00</span>
-                    </div>
-                </div>
-            `;
-        }
-
-        function mostrarRecarga() {
-            document.getElementById('logout-area').style.display = 'none';
-            document.getElementById('content-box').innerHTML = `
-                <h3 style="color:var(--gold); font-size:0.9rem; margin-top:0;">RECARGA DE SALDO</h3>
-                <div class="recarga-inner">
-                    <input type="text" id="ref-p" placeholder="Referencia Pago Móvil">
-                    <input type="number" id="mon-p" placeholder="Monto Bs.">
-                    <input type="text" id="rec-3" placeholder="Recarga a Terceros (Cédula)">
-                    <div style="background:#1a1a1a; padding:10px; border-radius:10px; font-size:0.6rem; color:#666; border:1px dashed #444; margin-bottom:10px;">
-                        ADJUNTAR COMPROBANTE
-                    </div>
-                    <button class="btn-gold" onclick="alert('Enviado a Auditoría'); mostrarDashboard();">NOTIFICAR PAGO</button>
-                </div>
-                <button class="btn-back" onclick="mostrarDashboard()">← VOLVER ATRÁS</button>
-            `;
-        }
-
-        function mostrarPagar() {
-            document.getElementById('logout-area').style.display = 'none';
-            document.getElementById('content-box').innerHTML = `
-                <h3 style="color:var(--gold); font-size:0.9rem;">MISMO QR PARA PAGAR</h3>
-                <input type="number" id="m-val" placeholder="Monto a Pagar Bs." oninput="actQR()">
-                <div style="background:#fff; padding:15px; border-radius:15px; display:inline-block; margin:15px 0;">
-                    <img id="qr-p" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=WILLPAY|ID" style="width:150px;">
-                </div><br>
-                <button class="btn-back" onclick="mostrarDashboard()">← REGRESAR</button>
-            `;
-        }
-
-        function actQR() {
-            const v = document.getElementById('m-val').value || "0";
-            document.getElementById('qr-p').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=WP|${nombreSocio}|${v}|${Date.now()}`;
-        }
-
-        let scanner;
-        function abrirEscanerCobro() {
-            document.getElementById('reader-container').style.display = 'block';
-            scanner = new Html5Qrcode("reader");
-            scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (data) => {
-                const osc = audioCtx.createOscillator();
-                osc.connect(audioCtx.destination);
-                osc.frequency.value = 880; osc.start(); setTimeout(() => osc.stop(), 100);
-                scanner.stop();
-                imprimirRecibo(data);
-            });
-        }
-
-        function imprimirRecibo(data) {
-            document.getElementById('reader-container').style.display = 'none';
-            const info = data.split('|');
-            document.getElementById('receipt-content').innerHTML = `
-                <h2 style="margin:0;">WILL-PAY</h2>
-                <small>WILDON C.A. | VENEZUELA</small><hr>
-                <div style="text-align:left; font-size:0.8rem; line-height:1.6;">
-                    <b>RECIBO:</b> #${Date.now().toString().slice(-6)}<br>
-                    <b>SOCIO:</b> ${info[1]}<br>
-                    <b>DESTINO:</b> ${nombreSocio}<br>
-                    <b>MONTO:</b> <span style="font-size:1.2rem; color:green;">Bs. ${info[2]}</span>
-                </div><hr>
-                <button class="btn-gold" onclick="location.reload()">FINALIZAR</button>
-            `;
-            document.getElementById('receipt-overlay').style.display = 'flex';
-        }
-
-        function cerrarEscaner() {
-            if(scanner) scanner.stop();
-            document.getElementById('reader-container').style.display = 'none';
-        }
-    </script>
-</body>
-</html>
+            <button class="btn-gold" style="background:transparent; border:1px solid #333; color:#777;" onclick="abrirVistaRecarga()">+ SOLICITAR RECARGA</button>
+        </div>
+        <div class="logout-link
