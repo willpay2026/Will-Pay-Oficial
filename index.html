@@ -6,59 +6,76 @@
     <title>Will-Pay | El Legado</title>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --gold: #ffcf40; 
-            --dark-bg: #000000; 
+        :root { --gold: #ffcf40; --dark-bg: #000; }
+        body, html { margin: 0; padding: 0; background: var(--dark-bg); color: #fff; font-family: 'Lexend', sans-serif; height: 100%; overflow-x: hidden; }
+        
+        /* SPLASH */
+        #splash-screen { position: fixed; width: 100%; height: 100%; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; transition: opacity 1s; }
+        .logo-container { width: 300px; height: 300px; position: relative; overflow: hidden; border-radius: 40px; }
+        .logo-img { width: 100%; height: auto; }
+        .logo-container::after { content: ""; position: absolute; top: -100%; left: -100%; width: 300%; height: 300%; background: linear-gradient(to bottom right, transparent 45%, rgba(255,255,255,0.6) 50%, transparent 55%); transform: rotate(-45deg); animation: shine 6s infinite; }
+        @keyframes shine { 0% { top:-150%; left:-150%; } 20% { top:100%; left:100%; } 100% { top:100%; left:100%; } }
+
+        /* LOGIN */
+        #main-container { display: none; width: 100%; min-height: 100vh; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
+        .login-card { width: 100%; max-width: 400px; background: #080808; border: 1px solid #1a1500; border-radius: 30px; padding: 30px; text-align: center; }
+        input { width: 100%; padding: 15px; background: #111; border: 1px solid #222; border-radius: 12px; color: #fff; margin-bottom: 15px; text-align: center; font-family: 'Lexend'; }
+        .btn-gold { width: 100%; background: var(--gold); border: none; padding: 18px; border-radius: 15px; font-weight: bold; cursor: pointer; color: #000; text-transform: uppercase; }
+        
+        /* SWITCH PARA EL ADMIN.JS */
+        .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--gold); }
+        input:checked + .slider:before { transform: translateX(24px); }
+    </style>
+</head>
+<body onload="iniciarApp()">
+
+    <div id="splash-screen">
+        <div class="logo-container"><img src="logonuevo.png" class="logo-img"></div>
+        <div style="margin-top:20px; color:var(--gold); letter-spacing:3px; font-size:0.7rem;">WILL-PAY VENEZUELA</div>
+    </div>
+
+    <div id="main-container">
+        <div id="content-box" class="login-card">
+            <img src="logonuevo.png" style="width: 100px; margin-bottom: 20px;">
+            <h2 style="color: var(--gold); font-size: 1rem;">ACCESO SEGURO</h2>
+            <input type="text" id="user-input" placeholder="Usuario">
+            <input type="password" id="pass-input" placeholder="PIN">
+            <button class="btn-gold" onclick="validarEntrada()">ENTRAR</button>
+            <p style="margin-top:20px; font-size:0.7rem; color:#444;">¿Nuevo socio? <span style="color:var(--gold); cursor:pointer;" onclick="iniciarRegistroADN()">Regístrate aquí</span></p>
+        </div>
+    </div>
+
+    <script>
+        function iniciarApp() {
+            setTimeout(() => {
+                document.getElementById('splash-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('splash-screen').style.display = 'none';
+                    document.getElementById('main-container').style.display = 'flex';
+                }, 1000);
+            }, 4000);
         }
 
-        body, html { 
-            margin: 0; padding: 0; background: var(--dark-bg); 
-            color: #fff; font-family: 'Lexend', sans-serif; height: 100%; overflow-x: hidden;
+        function validarEntrada() {
+            const user = document.getElementById('user-input').value.trim();
+            // LLAVE MAESTRA
+            if(user === "WILFREDO-ADMIN") {
+                if (typeof mostrarPanelAdmin === "function") {
+                    mostrarPanelAdmin();
+                } else {
+                    alert("Error: El archivo admin.js no ha cargado todavía.");
+                }
+            } else {
+                alert("Acceso denegado. Solo para el Dueño.");
+            }
         }
+    </script>
 
-        /* 🎬 PANTALLA FLASH (SPLASH) */
-        #splash-screen {
-            position: fixed; width: 100%; height: 100%; background: #000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 1000; transition: opacity 1.5s ease;
-        }
-
-        .logo-container {
-            position: relative; width: 300px; height: 300px;
-            overflow: hidden; border-radius: 40px; 
-            display: flex; justify-content: center; align-items: center;
-        }
-
-        .logo-img { width: 95%; height: auto; display: block; }
-
-        .logo-container::after {
-            content: ""; position: absolute; top: -100%; left: -100%; width: 300%; height: 300%;
-            background: linear-gradient(to bottom right, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 45%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 55%, rgba(255,255,255,0) 100%);
-            transform: rotate(-45deg); animation: slowShine 7s infinite;
-        }
-
-        @keyframes slowShine {
-            0% { top: -150%; left: -150%; }
-            15% { top: 100%; left: 100%; }
-            100% { top: 100%; left: 100%; }
-        }
-
-        .loader-ring {
-            width: 50px; height: 50px; border: 3px solid rgba(255, 207, 64, 0.1);
-            border-top: 3px solid var(--gold); border-radius: 50%;
-            animation: spin 1.2s linear infinite; margin: 25px 0;
-        }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        /* 🖥️ PANELES */
-        #main-container {
-            display: none; width: 100%; min-height: 100vh;
-            justify-content: center; align-items: center; opacity: 0;
-            transition: opacity 1.2s ease; padding: 20px; box-sizing: border-box;
-        }
-
-        .login-card {
-            width: 100%; max-width: 400px; background: #080808;
-            border: 1px solid #1a1500; border-radius: 30px;
-            padding: 30px; text-align: center;
-            box-shadow: 0 30px
+    <script src="modules/registro.js"></script>
+    <script src="modules/admin.js"></script>
+</body>
+</html>
