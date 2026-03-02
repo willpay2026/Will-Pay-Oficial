@@ -5,17 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Will-Pay | El Legado</title>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
 
     <style>
         :root { --gold: #ffcf40; --dark-bg: #000; --card-bg: #0a0a0a; --border-gold: #ffcf40; }
         body, html { margin: 0; padding: 0; background: var(--dark-bg); color: #fff; font-family: 'Lexend', sans-serif; height: 100vh; overflow: hidden; }
 
-        /* VISTAS */
         .view { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100vh; padding: 20px; box-sizing: border-box; position: absolute; top:0; left:0; }
 
-        /* 1. SPLASH CORREGIDO */
+        /* SPLASH */
         #view-splash { display: flex; z-index: 1000; background: #000; }
         .logo-splash { width: 220px; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0%, 100% { opacity: 0.5; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1); } }
@@ -26,12 +24,7 @@
         input { width: 100%; padding: 12px; background: #111; border: 1px solid #444; border-radius: 10px; color: #fff; margin-bottom: 10px; text-align: center; outline: none; font-family: 'Lexend'; }
         .btn-gold { width: 100%; background: var(--gold); border: none; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer; color: #000; text-transform: uppercase; font-size: 0.8rem; }
         
-        /* BOTONES ACCIÓN */
-        .grid-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin: 15px 0; }
-        .btn-act { background: #000; border: 1.5px solid var(--gold); padding: 15px; border-radius: 15px; color: #fff; cursor: pointer; font-size: 0.7rem; font-weight: bold; }
-
         .sello { margin-top: 20px; color: var(--gold); font-size: 0.6rem; letter-spacing: 3px; opacity: 0.7; }
-        .logout { color: #ff4444; margin-top: 15px; cursor: pointer; font-size: 0.75rem; text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -43,88 +36,50 @@
 
     <div id="view-login" class="view">
         <img src="logonuevo.png" style="width: 130px; margin-bottom: 20px;">
-        <div class="card">
+        <div class="card" id="login-panel">
             <h3 style="color:var(--gold); margin-top:0;">ACCESO OFICIAL</h3>
             <input type="text" id="user" placeholder="Usuario / Teléfono">
             <input type="password" id="pin" placeholder="PIN de Seguridad">
             <button class="btn-gold" onclick="entrar()">ENTRAR AL SISTEMA</button>
+            <p style="font-size: 0.7rem; color: #555; margin-top: 15px; cursor: pointer;" onclick="iniciarRegistroADN()">¿No tienes ADN Digital? Regístrate</p>
         </div>
         <div class="sello">WILDON. C.A.</div>
     </div>
 
-    <div id="view-dash" class="view" style="justify-content: flex-start; padding-top: 40px;">
-        <img src="logonuevo.png" style="width: 110px; margin-bottom: 10px;">
-        <div class="card">
-            <div id="lbl-user" style="font-size:0.7rem; color:#888;">BIENVENIDO</div>
-            <h1 id="lbl-saldo" style="color:var(--gold); font-size: 2.2rem; margin: 10px 0;">Bs. 0.00</h1>
-            
-            <div class="grid-btns">
-                <button class="btn-act" onclick="irA('view-pagar')">🚀<br>PAGAR</button>
-                <button class="btn-act" onclick="abrirCamara()">📥<br>COBRAR</button>
+    <div id="view-dash" class="view" style="justify-content: flex-start; padding-top: 40px; overflow-y: auto;">
+        <div id="content-box" class="card" style="border:none; background:transparent; width:100%;">
             </div>
-            
-            <button class="btn-gold" style="background:transparent; border:1px solid #333; color:#666;" onclick="irA('view-recarga')">+ RECARGAR</button>
-        </div>
-        <div class="logout" onclick="location.reload()">Cerrar Sesión</div>
     </div>
 
-    <div id="view-pagar" class="view">
-        <div class="card">
-            <h3 style="color:var(--gold)">GENERAR PAGO</h3>
-            <input type="number" id="monto-p" placeholder="Monto Bs." oninput="genQR()">
-            <div style="background:#fff; padding:15px; border-radius:15px; display:inline-block; margin:15px 0;">
-                <img id="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=WILLPAY" style="width:150px;">
-            </div>
-            <button class="btn-gold" onclick="irA('view-dash')">REGRESAR</button>
-        </div>
-    </div>
-
-    <div id="view-recarga" class="view">
-        <div class="card">
-            <h3 style="color:var(--gold)">SOLICITAR RECARGA</h3>
-            <p style="font-size:0.6rem; color:#555;">BANESCO | ID: 13496133 | 04126602555</p>
-            <input type="number" placeholder="Monto Bs.">
-            <input type="text" placeholder="Referencia">
-            <button class="btn-gold" onclick="alert('Enviado'); irA('view-dash')">NOTIFICAR PAGO</button>
-            <button class="btn-gold" style="background:none; color:#444;" onclick="irA('view-dash')">VOLVER</button>
-        </div>
-    </div>
+    <script src="modules/socios.js"></script>
+    <script src="modules/registro.js"></script>
+    <script src="modules/pagos.js"></script>
+    <script src="modules/admin.js"></script>
 
     <script>
-        // NAVEGACIÓN INSTANTÁNEA
+        // PROPIEDAD DE NAVEGACIÓN
         function irA(id) {
             document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
             const target = document.getElementById(id);
             if(target) target.style.display = 'flex';
         }
 
-        // SALTO DEL SPLASH (3 SEGUNDOS FIJOS)
         window.onload = () => {
-            setTimeout(() => {
-                irA('view-login');
-            }, 3000); 
+            setTimeout(() => { irA('view-login'); }, 3000); 
         };
 
+        // PROPIEDAD DE ACCESO CORREGIDA
         function entrar() {
             const u = document.getElementById('user').value;
-            if(u === "04126602555" || u === "WILFREDO") {
-                document.getElementById('lbl-user').innerText = "MAESTRO: WILFREDO";
-                document.getElementById('lbl-saldo').innerText = "Bs. 290.074,68";
-            } else {
-                document.getElementById('lbl-user').innerText = "SOCIO: " + (u || "INVITADO");
-                document.getElementById('lbl-saldo').innerText = "Bs. 500,00";
-            }
             irA('view-dash');
-        }
 
-        function genQR() {
-            const m = document.getElementById('monto-p').value || "0";
-            document.getElementById('qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=WP|${m}`;
-        }
-
-        function abrirCamara() {
-            alert("Iniciando Escáner de Auditoría...");
-            // Aquí iría el código de html5Qr.start
+            if(u === "04126602555" || u === "WILFREDO") {
+                // Si eres tú, carga el Panel Maestro de admin.js
+                window.mostrarPanelAdmin();
+            } else {
+                // Si es otro, carga el Dashboard de pagos.js
+                window.mostrarDashboardUsuario();
+            }
         }
     </script>
 </body>
