@@ -7,236 +7,163 @@
     
     <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100;300;400;700&display=swap" rel="stylesheet">
-    
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
 
     <style>
-        :root { --gold: #ffcf40; --dark-bg: #000; --card-bg: #080808; --gray-border: #333; /* Borde Aclarado */ }
-        body, html { margin: 0; padding: 0; background: var(--dark-bg); color: #fff; font-family: 'Lexend', sans-serif; height: 100%; overflow: hidden; }
+        :root { --gold: #ffcf40; --dark-bg: #000; --card-bg: #050505; --border-bright: #ffcf40; }
+        body, html { margin: 0; padding: 0; background: var(--dark-bg); color: #fff; font-family: 'Lexend', sans-serif; height: 100%; overflow-x: hidden; }
 
-        /* --- BLOQUE 1: SPLASH SCREEN (OK) --- */
-        #splash-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 10000; transition: opacity 1s ease-in-out;
-        }
-        .logo-splash { width: 275px; height: auto; }
-        .credito-autor {
-            position: absolute; bottom: 50px; color: var(--gold); font-size: 0.65rem;
-            letter-spacing: 5px; font-weight: 300; text-transform: uppercase; opacity: 0.9;
-        }
-
-        /* APP PRINCIPAL */
-        #main-app { display: none; width: 100%; height: 100vh; flex-direction: column; align-items: center; padding-top: 20px; opacity: 0; transition: opacity 0.8s; overflow-y: auto; }
+        /* SPLASH SCREEN */
+        #splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10000; transition: opacity 1s; }
         
-        /* CARD CORPORATIVA (TU TABLERO) */
-        .card { width: 90%; max-width: 400px; background: var(--card-bg); border: 1px solid var(--gray-border); border-radius: 30px; padding: 25px; text-align: center; box-sizing: border-box; position: relative; }
+        /* APP PRINCIPAL */
+        #main-app { display: none; width: 100%; min-height: 100vh; flex-direction: column; align-items: center; padding: 20px 0; opacity: 0; transition: opacity 0.8s; }
+        
+        /* BORDES BIEN MARCADOS (COMO PEDISTE) */
+        .card { width: 92%; max-width: 400px; background: var(--card-bg); border: 2px solid var(--border-bright); border-radius: 25px; padding: 20px; text-align: center; margin-bottom: 20px; box-sizing: border-box; }
 
-        /* --- AJUSTE MAESTRO: RECISDROS ACLARADOS --- */
-        input { width: 100%; padding: 15px; background: #000; border: 1px solid #444; /* Borde Claro */ border-radius: 12px; color: #fff; margin-bottom: 12px; text-align: center; font-family: 'Lexend'; outline: none; }
+        input, select { width: 100%; padding: 14px; background: #000; border: 1.5px solid #555; border-radius: 12px; color: #fff; margin-bottom: 12px; text-align: center; font-family: 'Lexend'; outline: none; box-sizing: border-box; }
         input:focus { border-color: var(--gold); }
-        .btn-gold { width: 100%; background: var(--gold); border: none; padding: 18px; border-radius: 15px; font-weight: bold; cursor: pointer; color: #000; text-transform: uppercase; font-size: 0.9rem; }
+
+        .btn-gold { width: 100%; background: var(--gold); border: none; padding: 16px; border-radius: 12px; font-weight: bold; cursor: pointer; color: #000; text-transform: uppercase; font-size: 0.9rem; }
 
         /* DASHBOARD */
-        .wallet-balance { font-size: 2.8rem; font-weight: 700; color: var(--gold); margin: 10px 0 25px 0; }
-        .actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
-        /* Borde Aclarado en botones de acción */
-        .btn-action { background: #000; border: 1px solid var(--gray-border); padding: 20px 10px; border-radius: 20px; color: #fff; cursor: pointer; text-align: center; font-size: 0.75rem; }
+        .user-header { font-size: 0.9rem; color: var(--gold); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 2px; }
+        .wallet-balance { font-size: 2.5rem; font-weight: 700; color: #fff; margin-bottom: 20px; }
+        .wallet-balance span { font-size: 1.2rem; color: var(--gold); margin-right: 5px; }
 
-        /* SELLO FOOTER */
-        .sello-footer { margin-top: 25px; color: var(--gold); font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; opacity: 0.5; border-top: 1px solid #111; padding-top: 15px; width: 100%; }
+        .actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; margin-bottom: 10px; }
+        .btn-action { background: #000; border: 1.5px solid var(--border-bright); padding: 15px; border-radius: 15px; color: #fff; cursor: pointer; font-size: 0.7rem; font-weight: bold; }
 
-        /* ESCÁNER Y CAPAS */
+        /* HISTORIAL */
+        .history-box { width: 100%; text-align: left; margin-top: 15px; font-size: 0.7rem; border-top: 1px solid #222; padding-top: 10px; max-height: 150px; overflow-y: auto; }
+        .history-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #111; }
+
+        /* SELLO WILDON */
+        .sello-footer { margin-top: 20px; color: var(--gold); font-size: 0.6rem; letter-spacing: 4px; text-transform: uppercase; opacity: 0.7; padding-bottom: 30px; }
+
+        /* CAPA ESCÁNER */
         #reader-container { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 5000; flex-direction: column; }
-        #reader { width: 100% !important; height: 75% !important; }
-        
-        .receipt-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 6000; justify-content: center; align-items: center; }
-        .receipt-card { background: #fff; color: #000; width: 85%; max-width: 350px; border-radius: 20px; padding: 25px; text-align: center; }
+        #reader { width: 100% !important; height: 80% !important; }
     </style>
 </head>
 <body>
 
     <div id="splash-screen">
-        <img src="logonuevo.png" class="logo-splash">
-        <div class="credito-autor">WILDON. C.A.</div>
+        <img src="logonuevo.png" style="width: 250px;">
+        <div style="position: absolute; bottom: 40px; color: #ffcf40; font-size: 0.6rem; letter-spacing: 5px;">WILDON. C.A.</div>
     </div>
 
     <div id="reader-container">
         <div id="reader"></div>
-        <button class="btn-gold" style="margin: 20px; background: #ff4444; color: white;" onclick="cerrarEscaner()">CANCELAR</button>
-    </div>
-
-    <div id="receipt-overlay" class="receipt-overlay">
-        <div class="receipt-card">
-            <img src="logonuevo.png" style="width: 50px;">
-            <h2 style="margin: 10px 0; font-size: 1.2rem;">TRANSACCIÓN EXITOSA</h2>
-            <div id="receipt-data" style="text-align: left; font-size: 0.8rem; margin: 15px 0;"></div>
-            <button class="btn-gold" onclick="location.reload()">FINALIZAR</button>
-        </div>
+        <button class="btn-gold" style="margin: 20px; background: #ff4444; color: white;" onclick="cerrarEscaner()">CANCELAR ESCANEO</button>
     </div>
 
     <div id="main-app">
-        <img src="logonuevo.png" style="width: 170px; margin-bottom: 15px;">
+        <img src="logonuevo.png" style="width: 150px; margin-bottom: 15px;">
         <div id="content-box" class="card"></div>
+        <div class="sello-footer">WILDON. C.A.</div>
     </div>
 
     <script>
-        // --- VARIABLES DE ESTADO ---
-        let saldoActual = parseFloat(localStorage.getItem('WPay_Saldo')) || 0;
-        let nombreSocio = localStorage.getItem('WPay_Nombre') || "";
+        let saldoBs = parseFloat(localStorage.getItem('WPay_Saldo')) || 500;
+        let nombreSocio = localStorage.getItem('WPay_Nombre') || "WILFREDO DONQUIZ";
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const footerSello = `<div class="sello-footer">WILDON. C.A.</div>`;
 
-        // --- CONTROL DEL SPLASH (BLOQUE 1 OK) ---
         window.onload = () => {
-            mostrarLogin();
             setTimeout(() => {
-                const splash = document.getElementById('splash-screen');
-                splash.style.opacity = '0';
+                document.getElementById('splash-screen').style.opacity = '0';
                 setTimeout(() => {
-                    splash.style.display = 'none';
+                    document.getElementById('splash-screen').style.display = 'none';
                     document.getElementById('main-app').style.display = 'flex';
-                    setTimeout(() => document.getElementById('main-app').style.opacity = '1', 50);
+                    document.getElementById('main-app').style.opacity = '1';
+                    mostrarDashboard();
                 }, 1000);
             }, 5000);
         };
 
-        // --- BLOQUE 2: INGRESO Y REGISTRO ADN (CON BORDE ACLARADO) ---
-        function mostrarLogin() {
+        function mostrarDashboard() {
             document.getElementById('content-box').innerHTML = `
-                <h2 style="color:var(--gold); font-size:1.1rem; letter-spacing:1px; margin-bottom:20px;">ACCESO OFICIAL</h2>
-                <input type="text" id="u-login" placeholder="Usuario / Teléfono">
-                <input type="password" id="p-login" placeholder="PIN de Seguridad">
-                <button class="btn-gold" onclick="intentarEntrar()">ENTRAR</button>
-                <p style="font-size:0.7rem; margin-top:20px; color:#555;">¿Nuevo Socio? <span style="color:var(--gold); font-weight:bold; cursor:pointer;" onclick="mostrarRegistroADN()">Regístrate aquí</span></p>
-                ${footerSello}
-            `;
-        }
-
-        function intentarEntrar() {
-            const user = document.getElementById('u-login').value.trim();
-            // Lógica de Wilfredo Admin / Tu Teléfono
-            if(user === "WILFREDO-ADMIN" || user === "04126602555") {
-                alert("Acceso Maestro: Bienvenido Wilfredo Donquiz.");
-                mostrarDashboard(true); // Entra como Admin
-            } else if(nombreSocio !== "" && user === nombreSocio) {
-                mostrarDashboard(false); // Entra como Socio
-            } else {
-                alert("Usuario no reconocido. Registre su ADN primero.");
-            }
-        }
-
-        function mostrarRegistroADN() {
-            document.getElementById('content-box').innerHTML = `
-                <h2 style="color:var(--gold); font-size:1rem;">🧬 BÓVEDA ADN</h2>
-                <p style="font-size:0.5rem; letter-spacing:2px; color:#444; margin-bottom:15px;">FUNDACIÓN WILFREDO DONQUIZ</p>
+                <div class="user-header">${nombreSocio}</div>
+                <div class="wallet-balance"><span>Bs.</span>${saldoBs.toFixed(2)}</div>
                 
-                <input type="text" id="reg-nombre" placeholder="Nombre Completo">
-                <input type="number" id="reg-cedula" placeholder="Cédula">
-                <input type="password" id="reg-pin" placeholder="PIN (6 dígitos)">
-                
-                <div style="display:flex; gap:10px; margin-bottom:15px;">
-                    <div class="btn-action" style="flex:1; padding:10px; font-size:0.6rem; border-color:#444;">📸 CÉDULA</div>
-                    <div class="btn-action" style="flex:1; padding:10px; font-size:0.6rem; border-color:#444;">🤳 SELFIE</div>
-                </div>
-                
-                <button class="btn-gold" onclick="procesarRegistroADN()">UNIRSE A WILL-PAY</button>
-                
-                <p onclick="mostrarLogin()" style="cursor:pointer; margin-top:15px; font-size:0.7rem; color:#444;">VOLVER</p>
-                ${footerSello}
-            `;
-        }
-
-        function procesarRegistroADN() {
-            const nom = document.getElementById('reg-nombre').value;
-            const pin = document.getElementById('reg-pin').value;
-
-            if(nom === "" || pin === "") return alert("Complete los datos de seguridad, Socio.");
-
-            // Guardar en Bóveda local
-            localStorage.setItem('WPay_Nombre', nom);
-            localStorage.setItem('WPay_Saldo', 500); // Bono Real
-            saldoActual = 500;
-            nombreSocio = nom;
-
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ffcf40', '#ffffff'] });
-            alert("✅ Registro ADN Exitoso. ¡Recibiste tu bono de 500!");
-            mostrarDashboard(false);
-        }
-
-        // --- BLOQUE 3: EL TABLERO (DASHBOARD - TU DISEÑO) ---
-        function mostrarDashboard(isAdmin) {
-            document.getElementById('content-box').innerHTML = `
-                <div style="font-size:0.6rem; color:#666; letter-spacing:2px; margin-top:20px;">
-                    ${isAdmin ? 'PANEL DE COMISIONES' : 'SALDO DISPONIBLE'}
-                </div>
-                <div class="wallet-balance">$ ${saldoActual.toFixed(2)}</div>
                 <div class="actions-grid">
-                    <div class="btn-action" onclick="abrirEscaner()">🚀<br>PAGAR</div>
-                    <div class="btn-action" onclick="mostrarCobrar()">📥<br>COBRAR</div>
+                    <div class="btn-action" onclick="mostrarPagarQR()">🚀<br>PAGAR</div>
+                    <div class="btn-action" onclick="abrirEscanerCobro()">📥<br>COBRAR</div>
                 </div>
-                <button class="btn-gold" style="margin-top:25px; background:transparent; color:#333; border:1px solid #111;" onclick="mostrarLogin()">SALIR</button>
-                ${footerSello}
+
+                <div class="btn-action" style="width:100%; margin-top:10px;" onclick="mostrarRecarga()">💳 RECARGAR SALDO</div>
+
+                <div class="history-box">
+                    <b style="color:var(--gold)">EVENTOS RECIENTES</b>
+                    <div class="history-item"><span>Registro Exitoso</span><span>+500.00</span></div>
+                    <div class="history-item"><span>Bono de Bienvenida</span><span>Activo</span></div>
+                </div>
             `;
         }
 
-        // --- BLOQUE 4: LA REPCIÓN (COBRAR / QR GENERADO) ---
-        function mostrarCobrar() {
+        // --- BLOQUE PAGAR: GENERA QR AL INSTANTE ---
+        function mostrarPagarQR() {
             document.getElementById('content-box').innerHTML = `
-                <h3 style="color:var(--gold)">MI CÓDIGO QR</h3>
-                <input type="number" id="monto-c" placeholder="Monto a cobrar ($)" oninput="actQR()">
-                <div style="background:#fff; padding:15px; border-radius:15px; display:inline-block; margin:15px 0;">
-                    <img id="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=WP|${nombreSocio}|0" style="width:180px;">
+                <h3 style="color:var(--gold); font-size:0.9rem;">GENERAR QR PARA PAGAR</h3>
+                <input type="number" id="monto-pago" placeholder="Monto en Bs." oninput="generarQR()">
+                <div style="background:#fff; padding:10px; border-radius:15px; display:inline-block; margin:10px 0;">
+                    <img id="img-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=WILLPAY|${nombreSocio}|0" style="width:180px;">
                 </div>
-                <button class="btn-gold" onclick="mostrarDashboard(false)">VOLVER</button>
-                ${footerSello}
+                <button class="btn-gold" onclick="mostrarDashboard()">VOLVER</button>
             `;
         }
 
-        function actQR() {
-            const m = document.getElementById('monto-c').value || "0";
-            document.getElementById('qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=WP|${nombreSocio}|${m}`;
+        function generarQR() {
+            const m = document.getElementById('monto-pago').value || "0";
+            document.getElementById('img-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=WILLPAY|${nombreSocio}|${m}`;
         }
 
-        // --- BLOQUE 5: LA JOYA (PAGAR / CÁMARA + BEEP + RECIBO) ---
+        // --- BLOQUE COBRAR: ABRE CÁMARA ---
         let html5Qr;
-        function abrirEscaner() {
+        function abrirEscanerCobro() {
             document.getElementById('reader-container').style.display = 'flex';
             html5Qr = new Html5Qrcode("reader");
             html5Qr.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (text) => {
                 playBeep();
-                finalizarPago(text);
-            }).catch(e => alert("Cámara no disponible. Verifique permisos."));
+                procesarCobro(text);
+            }).catch(e => alert("Error de cámara"));
         }
 
         function cerrarEscaner() {
             if(html5Qr) html5Qr.stop().then(() => document.getElementById('reader-container').style.display = 'none');
         }
 
+        function procesarCobro(data) {
+            cerrarEscaner();
+            const d = data.split('|'); // WILLPAY|Nombre|Monto
+            const monto = parseFloat(d[2]) || 0;
+            saldoBs += monto;
+            localStorage.setItem('WPay_Saldo', saldoBs);
+            alert(`✅ Cobro Exitoso de Bs. ${monto} de ${d[1]}`);
+            mostrarDashboard();
+        }
+
+        // --- BLOQUE RECARGA (EL NUEVO MODAL) ---
+        function mostrarRecarga() {
+            document.getElementById('content-box').innerHTML = `
+                <h3 style="color:var(--gold); font-size:0.9rem;">RECARGAR BILLETERA</h3>
+                <input type="number" placeholder="Monto de la Recarga (Bs.)">
+                <input type="text" placeholder="Número de Referencia">
+                <input type="text" placeholder="Recarga a 3ros (Opcional)">
+                <div style="border:1.5px dashed #444; padding:15px; border-radius:12px; margin-bottom:12px; font-size:0.7rem; color:#888;">
+                    ADJUNTAR COMPROBANTE PAGO MÓVIL
+                </div>
+                <button class="btn-gold" onclick="alert('Solicitud enviada a Wilfredo para aprobación'); mostrarDashboard();">SOLICITAR RECARGA</button>
+                <p onclick="mostrarDashboard()" style="cursor:pointer; font-size:0.7rem; margin-top:10px;">CANCELAR</p>
+            `;
+        }
+
         function playBeep() {
             const osc = audioCtx.createOscillator();
             osc.connect(audioCtx.destination);
             osc.frequency.value = 880; osc.start(); setTimeout(() => osc.stop(), 150);
-        }
-
-        function finalizarPago(data) {
-            cerrarEscaner();
-            const d = data.split('|'); // WP|Nombre|Monto
-            const receptor = d[1] || "Socio";
-            const monto = d[2] || "0";
-            
-            saldoActual -= parseFloat(monto); // Descontar saldo real
-            localStorage.setItem('WPay_Saldo', saldoActual);
-
-            document.getElementById('receipt-data').innerHTML = `
-                <b>ID:</b> WP-${Date.now().toString().slice(-6)}<br>
-                <b>FECHA:</b> ${new Date().toLocaleString()}<br>
-                <b>EMISOR:</b> ${nombreSocio}<br>
-                <b>RECEPTOR:</b> ${receptor}<br>
-                <b>MONTO:</b> <span style="color:green; font-weight:bold; font-size:1.2rem;">$ ${monto}</span>
-            `;
-            document.getElementById('receipt-overlay').style.display = 'flex';
         }
     </script>
 </body>
