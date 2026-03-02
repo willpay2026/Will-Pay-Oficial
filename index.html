@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Will-Pay | Bóveda ADN</title>
+    <title>Will-Pay | El Legado</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="apple-touch-icon" href="logonuevo.png">
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100;300;400;700&display=swap" rel="stylesheet">
     
     <style>
         :root { --gold: #ffcf40; --dark-bg: #000; --card-bg: #080808; }
         body, html { margin: 0; padding: 0; background: var(--dark-bg); color: #fff; font-family: 'Lexend', sans-serif; height: 100%; overflow: hidden; }
 
-        /* SPLASH SCREEN - 5 SEGUNDOS */
+        /* SPLASH SCREEN - LOGO 275PX */
         #splash-screen {
             position: fixed; width: 100%; height: 100%; background: #000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -30,30 +30,39 @@
         }
         @keyframes shine { 0% { top:-150%; left:-150%; } 20% { top:100%; left:100%; } 100% { top:100%; left:100%; } }
 
-        #main-app { display: none; width: 100%; min-height: 100vh; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; overflow-y: auto; }
-        .login-card { width: 100%; max-width: 420px; background: var(--card-bg); border: 1px solid #1a1500; border-radius: 30px; padding: 35px; text-align: center; margin: 20px auto; }
+        #main-app { display: none; width: 100%; min-height: 100vh; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; overflow-y: auto; opacity: 0; transition: opacity 0.8s; }
+        .login-card { width: 100%; max-width: 420px; background: var(--card-bg); border: 1px solid #1a1500; border-radius: 30px; padding: 35px; text-align: center; margin: 20px auto; position: relative; }
         
-        input, select { width: 100%; padding: 15px; background: #111; border: 1px solid #222; border-radius: 12px; color: #fff; margin-bottom: 10px; text-align: center; font-family: 'Lexend'; font-size: 0.9rem; outline: none; }
+        input, select { width: 100%; padding: 15px; background: #111; border: 1px solid #222; border-radius: 12px; color: #fff; margin-bottom: 10px; text-align: center; font-family: 'Lexend'; outline: none; }
         
-        /* Estilo para carga de archivos ADN */
-        .file-upload { width: 100%; padding: 12px; background: #000; border: 1px dashed #333; border-radius: 12px; color: #888; margin-bottom: 10px; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .file-upload:hover { border-color: var(--gold); color: #fff; }
+        .adn-file-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .file-upload { background: #000; border: 1px dashed #333; border-radius: 12px; padding: 15px 5px; color: #666; cursor: pointer; font-size: 0.65rem; display: flex; flex-direction: column; align-items: center; gap: 5px; }
 
         .btn-gold { width: 100%; background: var(--gold); border: none; padding: 18px; border-radius: 15px; font-weight: bold; cursor: pointer; color: #000; text-transform: uppercase; font-size: 1rem; }
         
-        .privilegio-box { background: rgba(255, 207, 64, 0.05); border: 1px dashed rgba(255, 207, 64, 0.3); border-radius: 15px; padding: 12px; margin-top: 15px; }
-        .privilegio-text { color: var(--gold); font-size: 0.65rem; line-height: 1.4; font-style: italic; text-align: left; }
+        /* CUADRO DE PRIVILEGIO ACTUALIZADO */
+        .privilegio-box { background: rgba(255, 207, 64, 0.05); border: 1px dashed rgba(255, 207, 64, 0.3); border-radius: 15px; padding: 12px; margin-top: 15px; text-align: left; }
+        .privilegio-text { color: var(--gold); font-size: 0.65rem; line-height: 1.4; }
 
-        .wildon-footer { margin-top: 25px; padding-top: 15px; border-top: 1px solid rgba(255, 207, 64, 0.1); }
-        .wildon-text { color: var(--gold); font-size: 0.7rem; font-weight: 300; letter-spacing: 2px; text-transform: uppercase; display: inline-block; background: linear-gradient(135deg, #d1b13b, #ffcf40, #d1b13b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: textShine 5s infinite; }
-        @keyframes textShine { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+        /* SELLO WILDON C.A. - PIE DE PÁGINA FINO PALO SECO */
+        .sello-wildon { 
+            margin-top: 30px; 
+            padding-top: 15px; 
+            border-top: 1px solid #1a1500;
+            color: var(--gold);
+            font-size: 0.7rem;
+            font-weight: 100; /* Letra extra fina */
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body onload="arrancarWillPay()">
 
     <div id="splash-screen">
         <div class="logo-container"><img src="logonuevo.png" class="logo-img"></div>
-        <div style="margin-top:20px; color:var(--gold); letter-spacing:4px; font-size:0.8rem; font-weight:bold;">VENEZUELA</div>
+        <div style="margin-top:20px; color:var(--gold); letter-spacing:6px; font-size:0.9rem; font-weight:bold;">VENEZUELA</div>
     </div>
 
     <div id="main-app">
@@ -61,18 +70,6 @@
     </div>
 
     <script>
-        // 🧬 BÓVEDA ADN (ARCHIVADOR VIRTUAL)
-        const BovedaADN = {
-            guardarSocio: (datos) => {
-                // Se crea una "carpeta" única en el almacenamiento local usando la cédula
-                localStorage.setItem(`Socio_ADN_${datos.cedula}`, JSON.stringify(datos));
-                // También lo agregamos a la lista maestra de Wilfredo
-                let lista = JSON.parse(localStorage.getItem('WillPay_Socios')) || [];
-                lista.push({ nombre: datos.nombre, cedula: datos.cedula, status: 'Pendiente' });
-                localStorage.setItem('WillPay_Socios', JSON.stringify(lista));
-            }
-        };
-
         function arrancarWillPay() {
             mostrarLogin();
             setTimeout(() => {
@@ -85,6 +82,8 @@
             }, 5000);
         }
 
+        const footerSello = `<div class="sello-wildon">WILDON. C.A.</div>`;
+
         function mostrarLogin() {
             document.getElementById('content-box').innerHTML = `
                 <img src="logonuevo.png" style="width: 100px; margin-bottom: 15px;">
@@ -95,72 +94,42 @@
                 <p style="margin-top:20px; font-size:0.75rem; color:#444;">
                     ¿Nuevo Socio? <span style="color:var(--gold); cursor:pointer; font-weight:bold;" onclick="mostrarRegistroADN()">Regístrate aquí</span>
                 </p>
-                <div class="wildon-footer">
-                    <span class="wildon-text">Producido por WILDON. C.A.</span>
-                </div>
+                ${footerSello}
             `;
         }
 
         function mostrarRegistroADN() {
             document.getElementById('content-box').innerHTML = `
-                <h2 style="color: var(--gold); font-size: 1.2rem; margin-bottom: 5px;">🧬 REGISTRO ADN</h2>
-                <p style="color: #666; font-size: 0.5rem; letter-spacing: 2px; margin-bottom: 20px;">FUNDACIÓN WILFREDO DONQUIZ</p>
+                <h2 style="color: var(--gold); font-size: 1.1rem;">🧬 REGISTRO ADN</h2>
+                <p style="color: #666; font-size: 0.5rem; letter-spacing: 2px; margin-bottom: 15px;">FUNDACIÓN WILFREDO DONQUIZ</p>
                 
                 <input type="text" id="reg-nombre" placeholder="Nombre Completo">
-                <input type="number" id="reg-cedula" placeholder="Cédula">
+                <input type="number" id="reg-cedula" placeholder="Cédula de Identidad">
                 <input type="tel" id="reg-telf" placeholder="Número de Teléfono">
                 
                 <select id="reg-actividad">
                     <option value="" disabled selected>Actividad Económica</option>
                     <option value="Moto-Taxi">Moto-Taxi</option>
                     <option value="Comercio">Comercio / Negocio</option>
+                    <option value="Independiente">Independiente</option>
                 </select>
 
-                <p style="color: #555; font-size: 0.6rem; text-align: left; margin: 10px 0 5px 5px;">ARCHIVOS ADN (OBLIGATORIO):</p>
-                <label class="file-upload">
-                    <span>🪪 Foto de Cédula</span>
-                    <input type="file" accept="image/*" id="adn-cedula" style="display:none;">
-                </label>
-                <label class="file-upload">
-                    <span>🤳 Selfie de Verificación</span>
-                    <input type="file" accept="image/*" id="adn-selfie" style="display:none;">
-                </label>
+                <div class="adn-file-container">
+                    <label class="file-upload"><span>📸 CÉDULA</span><input type="file" accept="image/*" style="display:none;"></label>
+                    <label class="file-upload"><span>🤳 SELFIE ADN</span><input type="file" accept="image/*" style="display:none;"></label>
+                </div>
 
-                <button class="btn-gold" onclick="procesarRegistroADN()">UNIRSE A WILL-PAY</button>
+                <button class="btn-gold" onclick="alert('Expediente Archivador WILDON C.A.'); mostrarLogin();">UNIRSE A WILL-PAY</button>
 
                 <div class="privilegio-box">
                     <p class="privilegio-text">
-                        ✨ <b>PRIVILEGIO DE SOCIO:</b> Al registrarte, gozarás del beneficio de un <b>Historial Certificado</b> para trámites de <b>ISRL</b> y estados de cuenta oficiales.
+                        ✨ <b>PRIVILEGIO DE USUARIO:</b> Al registrarte con alguna actividad económica gozarás del beneficio de un <b>Historial Certificado</b> para cualquier tipo de trámites.
                     </p>
                 </div>
 
-                <p onclick="mostrarLogin()" style="color:#444; font-size:0.7rem; margin-top:15px; cursor:pointer;">VOLVER AL LOGIN</p>
+                <p onclick="mostrarLogin()" style="color:#444; font-size:0.7rem; margin-top:15px; cursor:pointer;">VOLVER</p>
+                ${footerSello}
             `;
-        }
-
-        function procesarRegistroADN() {
-            const nombre = document.getElementById('reg-nombre').value;
-            const cedula = document.getElementById('reg-cedula').value;
-            const telf = document.getElementById('reg-telf').value;
-            const actividad = document.getElementById('reg-actividad').value;
-            const fotoCedula = document.getElementById('adn-cedula').files[0];
-            const fotoSelfie = document.getElementById('adn-selfie').files[0];
-
-            if(!nombre || !cedula || !telf || !actividad || !fotoCedula || !fotoSelfie) {
-                return alert("❌ Jefe, faltan datos o fotos para completar la Carpeta ADN.");
-            }
-
-            // Aquí se simula el archivado de los archivos en su "carpeta"
-            const datosSocio = {
-                nombre, cedula, telf, actividad, 
-                fecha: new Date().toLocaleString(),
-                carpetaID: `WILDON-ADN-${cedula}`,
-                status: "Pendiente de Wilfredo"
-            };
-
-            BovedaADN.guardarSocio(datosSocio);
-            alert(`✅ ¡ADN ARCHIVADO CORRECTAMENTE!\n\nTu expediente digital ha sido guardado en la Bóveda de WILDON C.A. Wilfredo Donquiz revisará tus fotos para el beneficio ISRL.`);
-            mostrarLogin();
         }
 
         function intentarAcceso() {
