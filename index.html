@@ -9,7 +9,6 @@
         :root { 
             --gold: #ffcf40; 
             --dark-bg: #000000; 
-            --input-bg: #111111;
         }
 
         body, html { 
@@ -17,128 +16,34 @@
             color: #fff; font-family: 'Lexend', sans-serif; height: 100%; overflow: hidden;
         }
 
-        /* ✨ EFECTO DE BRILLO DIAGONAL */
-        .shine {
-            position: relative; overflow: hidden;
-        }
-        .shine::after {
-            content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: linear-gradient(to bottom right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
-            transform: rotate(-45deg); animation: sweep 3s infinite;
-        }
-        @keyframes sweep {
-            0% { left: -100%; top: -100%; }
-            100% { left: 100%; top: 100%; }
-        }
-
-        /* 🎬 1. PANTALLA FLASH */
+        /* 🎬 PANTALLA FLASH (SPLASH) */
         #splash-screen {
             position: fixed; width: 100%; height: 100%; background: #000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 100; transition: opacity 0.8s ease;
+            z-index: 1000; transition: opacity 1.5s ease;
         }
 
-        .loader-ring {
-            width: 40px; height: 40px; border: 3px solid transparent;
-            border-top: 3px solid var(--gold); border-radius: 50%;
-            animation: spin 1s linear infinite; margin: 20px 0;
-        }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        .loading-text {
-            color: var(--gold); font-size: 0.7rem; letter-spacing: 3px; font-weight: bold;
-        }
-
-        /* 🎫 2. PANEL DE ACCESO (LOGIN) */
-        #login-panel {
-            display: none; width: 100%; height: 100%;
-            justify-content: center; align-items: center; opacity: 0;
-            transition: opacity 0.8s ease;
+        /* ✨ LOGO GIGANTE (EDICIÓN JEFE) */
+        .logo-container {
+            position: relative;
+            width: 350px; /* Tamaño máximo para impacto total */
+            height: 350px;
+            overflow: hidden;
+            border-radius: 50px; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.5s ease;
         }
 
-        .login-card {
-            width: 85%; max-width: 350px; background: #050505;
-            border: 1px solid var(--gold); border-radius: 20px;
-            padding: 30px; text-align: center;
+        .logo-img {
+            width: 90%; /* Ajuste interno para que no toque los bordes del brillo */
+            height: auto;
+            display: block;
         }
 
-        .login-card h2 { color: var(--gold); font-size: 0.9rem; margin: 20px 0; letter-spacing: 1px; }
-
-        input {
-            width: 100%; background: var(--input-bg); border: 1px solid #222;
-            padding: 12px; color: #fff; border-radius: 10px; margin-bottom: 15px;
-            box-sizing: border-box; text-align: center; font-family: 'Lexend', sans-serif;
-        }
-
-        .btn-entrar {
-            width: 100%; background: var(--gold); color: #000; border: none;
-            padding: 15px; border-radius: 10px; font-weight: bold; cursor: pointer;
-            text-transform: uppercase; margin-top: 10px;
-        }
-
-        .reg-link {
-            display: block; margin-top: 20px; font-size: 0.7rem; color: #666; text-decoration: none;
-        }
-
-        /* 📝 3. SECCIÓN REGISTRO (OCULTA) */
-        #registro-section { display: none; padding: 20px; width: 100%; max-width: 500px; }
-    </style>
-</head>
-<body onload="ejecutarIntro()">
-
-    <div id="splash-screen">
-        <div class="shine" style="border-radius: 20px;">
-            <img src="logonuevo.png" alt="Will-Pay" style="width: 150px;">
-        </div>
-        <div class="loader-ring"></div>
-        <div class="loading-text">CARGANDO EL LEGADO...</div>
-    </div>
-
-    <div id="login-panel">
-        <div class="login-card">
-            <img src="logonuevo.png" alt="Logo" style="width: 100px; margin-bottom: 10px;">
-            <p style="font-size: 0.6rem; color: #888;">Tu Billetera Digital de Confianza</p>
-            
-            <h2>ACCESO AL PANEL</h2>
-            
-            <input type="text" placeholder="Nombre y Apellido">
-            <input type="text" placeholder="Usuario">
-            <input type="password" placeholder="••••">
-            
-            <button class="btn-entrar" onclick="irAlDashboard()">ENTRAR SEGURO</button>
-            
-            <a href="#" class="reg-link" onclick="mostrarRegistro()">¿No tienes cuenta? Regístrate aquí</a>
-        </div>
-    </div>
-
-    <div id="main-dashboard" style="display:none;">
-        </div>
-
-    <script>
-        function ejecutarIntro() {
-            setTimeout(() => {
-                const splash = document.getElementById('splash-screen');
-                const login = document.getElementById('login-panel');
-                
-                splash.style.opacity = '0';
-                setTimeout(() => {
-                    splash.style.display = 'none';
-                    login.style.display = 'flex';
-                    setTimeout(() => { login.style.opacity = '1'; }, 50);
-                }, 800);
-            }, 4000); // 4 Segundos de gloria para el logo
-        }
-
-        function mostrarRegistro() {
-            // Aquí la "perra" te lo redirecciona al registro bancario que pediste
-            alert("Redireccionando al Registro de Usuario Bancario...");
-            // Lógica para ocultar login y mostrar registro
-        }
-
-        function irAlDashboard() {
-            alert("Verificando Credenciales...");
-            // Aquí entra la magia de Wilfredo
-        }
-    </script>
-</body>
-</html>
+        /* EL DESTELLO DIAGONAL (MÁS LENTO Y ELEGANTE) */
+        .logo-container::after {
+            content: "";
+            position: absolute;
+            top
