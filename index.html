@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Will-Pay | El Legado</title>
+    <title>Will-Pay</title>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #ffcf40;
-            --gold-bright: #ffe082;
             --dark-bg: #050505;
             --card-bg: #121212;
             --text: #ffffff;
-            --gray: #888888;
         }
 
         * { box-sizing: border-box; }
@@ -22,74 +20,27 @@
             margin: 0;
             padding: 0;
             background: var(--dark-bg);
-            background-image: radial-gradient(circle at top right, #1a1500 0%, #050505 100%);
             color: var(--text);
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            overflow-x: hidden;
         }
 
-        /* CABECERA CON LOGO ESTILO PREMIUM */
+        /* LOGO LIMPIO Y CENTRADO */
         .app-header {
             width: 100%;
-            padding: 30px 20px;
+            padding: 40px 20px 20px 20px;
             text-align: center;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
-        }
-
-        .logo-wrapper {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 15px;
         }
 
         .app-logo {
-            width: 110px;
-            height: 110px;
-            object-fit: cover;
-            border-radius: 22px; /* Aquí le quitamos lo cuadrado */
-            border: 2px solid var(--gold);
-            box-shadow: 0 0 25px rgba(255, 207, 64, 0.4);
-            transition: transform 0.3s ease;
+            width: 150px; /* Un poco más grande ya que no hay texto */
+            height: auto;
+            /* Sin bordes, sin sombras, solo tu imagen pura */
         }
 
-        .app-logo:active { transform: scale(0.95); }
-
-        h1 {
-            font-size: 2.2rem;
-            margin: 0;
-            background: linear-gradient(to bottom, var(--gold-bright), var(--gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -1px;
-        }
-
-        .tagline {
-            color: var(--gray);
-            font-size: 0.75rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            margin-top: 5px;
-        }
-
-        /* EL MENSAJE MÁGICO DE WILFREDO */
-        .legacy-box {
-            width: 90%;
-            max-width: 400px;
-            padding: 20px;
-            background: rgba(255, 207, 64, 0.03);
-            border-radius: 15px;
-            border-left: 4px solid var(--gold);
-            margin-bottom: 30px;
-            font-style: italic;
-            line-height: 1.6;
-            color: #ddd;
-            font-size: 0.95rem;
-        }
-
-        /* TARJETAS DE LA APP (MÓDULOS) */
+        /* CONTENEDOR DE MÓDULOS */
         .container {
             width: 95%;
             max-width: 450px;
@@ -101,32 +52,19 @@
 
         .app-card {
             background: var(--card-bg);
-            border-radius: 24px;
+            border-radius: 20px;
             padding: 25px;
             border: 1px solid #222;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
         }
 
-        /* TITULOS DE SECCIÓN */
         h2 {
             font-size: 0.85rem;
             color: var(--gold);
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
-        h2::after {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background: #333;
-        }
-
-        /* ELEMENTOS DE INTERACCIÓN */
         input {
             width: 100%;
             background: #000;
@@ -136,12 +74,6 @@
             color: #fff;
             font-size: 1rem;
             margin-bottom: 12px;
-            transition: border 0.3s;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: var(--gold);
         }
 
         button {
@@ -154,63 +86,33 @@
             font-size: 1rem;
             font-weight: 700;
             cursor: pointer;
-            transition: 0.2s;
         }
-
-        button:active { transform: scale(0.98); opacity: 0.9; }
 
         .footer {
             margin-top: auto;
-            padding: 30px;
+            padding: 20px;
             text-align: center;
-            color: #444;
+            color: #333;
             font-size: 0.7rem;
-            line-height: 1.5;
-        }
-
-        /* Animación de entrada */
-        .app-card {
-            animation: slideUp 0.5s ease-out forwards;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
     <div class="app-header">
-        <div class="logo-wrapper">
-            <img src="logonuevo.png" alt="Will-Pay Logo" class="app-logo">
-        </div>
-        <h1>Will-Pay</h1>
-        <div class="tagline">The Payment Revolution</div>
-    </div>
-
-    <div class="legacy-box">
-        "Nacido de un emprendedor que pensó en su región y en revolucionar el sistema de pagos con una idea simple y código honesto. El legado de Wilyanny Donquiz."
+        <img src="logonuevo.png" alt="Logo" class="app-logo">
     </div>
 
     <div class="container">
-        <div class="app-card" id="render-pagos">
-            <h2>💰 Sistema de Pagos</h2>
-            </div>
+        <div class="app-card" id="render-pagos"></div>
 
-        <div class="app-card" id="render-admin">
-            <h2>🛡️ Panel Maestro</h2>
-            </div>
+        <div class="app-card" id="render-admin"></div>
 
-        <div class="app-card" id="render-socios">
-            <h2>🤝 Alianzas Will-Pay</h2>
-            </div>
+        <div class="app-card" id="render-socios"></div>
     </div>
 
     <div class="footer">
-        DESARROLLADO POR WILFREDO DONQUIZ<br>
-        PROPIEDAD EXCLUSIVA © 2026<br>
-        PUNTO FIJO, VENEZUELA
+        © 2026 WILL-PAY
     </div>
 
     <script src="modules/pagos.js"></script>
