@@ -13,7 +13,7 @@
 
         body, html { 
             margin: 0; padding: 0; background: var(--dark-bg); 
-            color: #fff; font-family: 'Lexend', sans-serif; height: 100%; overflow: hidden;
+            color: #fff; font-family: 'Lexend', sans-serif; height: 100%; overflow-x: hidden;
         }
 
         /* 🎬 PANTALLA FLASH (SPLASH) */
@@ -23,42 +23,18 @@
             z-index: 1000; transition: opacity 1.5s ease;
         }
 
-        /* ✨ LOGO AJUSTADO A 300PX */
         .logo-container {
-            position: relative;
-            width: 300px; 
-            height: 300px;
-            overflow: hidden;
-            border-radius: 40px; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            position: relative; width: 300px; height: 300px;
+            overflow: hidden; border-radius: 40px; 
+            display: flex; justify-content: center; align-items: center;
         }
 
-        .logo-img {
-            width: 95%; 
-            height: auto;
-            display: block;
-        }
+        .logo-img { width: 95%; height: auto; display: block; }
 
-        /* EL DESTELLO DIAGONAL ELEGANTE */
         .logo-container::after {
-            content: "";
-            position: absolute;
-            top: -100%;
-            left: -100%;
-            width: 300%;
-            height: 300%;
-            background: linear-gradient(
-                to bottom right,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0) 45%,
-                rgba(255, 255, 255, 0.6) 50%, 
-                rgba(255, 255, 255, 0) 55%,
-                rgba(255, 255, 255, 0) 100%
-            );
-            transform: rotate(-45deg);
-            animation: slowShine 7s infinite;
+            content: ""; position: absolute; top: -100%; left: -100%; width: 300%; height: 300%;
+            background: linear-gradient(to bottom right, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 45%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 55%, rgba(255,255,255,0) 100%);
+            transform: rotate(-45deg); animation: slowShine 7s infinite;
         }
 
         @keyframes slowShine {
@@ -67,7 +43,6 @@
             100% { top: 100%; left: 100%; }
         }
 
-        /* CARGADOR Y TEXTO DORADO (TU IMAGEN) */
         .loader-ring {
             width: 50px; height: 50px; border: 3px solid rgba(255, 207, 64, 0.1);
             border-top: 3px solid var(--gold); border-radius: 50%;
@@ -75,83 +50,15 @@
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        .loading-text {
-            color: var(--gold); font-size: 0.8rem; letter-spacing: 5px; font-weight: bold;
-            text-transform: uppercase; text-align: center;
-        }
-
-        /* PANEL DE ACCESO / REGISTRO */
-        #login-panel {
-            display: none; width: 100%; height: 100%;
+        /* 🖥️ PANELES */
+        #main-container {
+            display: none; width: 100%; min-height: 100vh;
             justify-content: center; align-items: center; opacity: 0;
-            transition: opacity 1.2s ease;
-            overflow-y: auto; /* IMPORTANTE PARA EL FORMULARIO LARGO */
+            transition: opacity 1.2s ease; padding: 20px; box-sizing: border-box;
         }
 
         .login-card {
-            width: 90%; max-width: 400px; background: #080808;
+            width: 100%; max-width: 400px; background: #080808;
             border: 1px solid #1a1500; border-radius: 30px;
-            padding: 40px; text-align: center;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
-            margin: 20px 0;
-        }
-
-        input, select {
-            width: 100%; padding: 15px; background: #111; border: 1px solid #222; 
-            border-radius: 12px; color: #fff; margin-bottom: 15px; text-align: center;
-            box-sizing: border-box; font-family: 'Lexend';
-        }
-
-        .btn-gold {
-            width: 100%; background: var(--gold); border: none; padding: 20px; 
-            border-radius: 15px; font-weight: bold; cursor: pointer; color: #000;
-            font-size: 1rem; text-transform: uppercase;
-        }
-    </style>
-</head>
-<body onload="iniciarSistema()">
-
-    <div id="splash-screen">
-        <div class="logo-container">
-            <img src="logonuevo.png" alt="Will-Pay" class="logo-img">
-        </div>
-        <div class="loader-ring"></div>
-        <div class="loading-text">CARGANDO EL LEGADO...</div>
-    </div>
-
-    <div id="login-panel">
-        <div class="login-card">
-            <img src="logonuevo.png" alt="Logo" style="width: 120px; margin-bottom: 20px;">
-            <h2 style="color: var(--gold); font-size: 1.1rem; letter-spacing: 2px;">ACCESO SEGURO</h2>
-            <p style="color: #444; font-size: 0.65rem; margin-bottom: 30px;">WILL-PAY VENEZUELA</p>
-            
-            <input type="text" placeholder="Usuario">
-            <input type="password" placeholder="••••">
-            
-            <button class="btn-gold">ENTRAR AL PANEL</button>
-            
-            <p style="margin-top:25px; font-size:0.75rem; color:#555;">
-                ¿Nuevo socio? <span style="color:var(--gold); cursor:pointer; font-weight: bold;" onclick="iniciarRegistroADN()">Regístrate aquí</span>
-            </p>
-        </div>
-    </div>
-
-    <script>
-        function iniciarSistema() {
-            setTimeout(() => {
-                const splash = document.getElementById('splash-screen');
-                const login = document.getElementById('login-panel');
-                
-                splash.style.opacity = '0';
-                setTimeout(() => {
-                    splash.style.display = 'none';
-                    login.style.display = 'flex';
-                    setTimeout(() => { login.style.opacity = '1'; }, 50);
-                }, 1500);
-            }, 5500); 
-        }
-    </script>
-
-    <script src="modules/registro.js"></script>
-</body>
-</html>
+            padding: 30px; text-align: center;
+            box-shadow: 0 30px
