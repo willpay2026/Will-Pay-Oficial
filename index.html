@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Will-Pay | Lanzamiento Oficial</title>
+    <title>Will-Pay | Oficial</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
@@ -17,11 +17,11 @@
         :root { --gold: #ffcf40; --dark-bg: #000; --card-bg: #080808; }
         body, html { margin: 0; padding: 0; background: var(--dark-bg); color: #fff; font-family: 'Lexend', sans-serif; height: 100%; overflow: hidden; }
 
-        /* SPLASH SCREEN - LOGO LIBRE 275PX */
+        /* SPLASH SCREEN - EL LOGO DE 275PX */
         #splash-screen {
-            position: fixed; width: 100%; height: 100%; background: #000;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 10000; transition: opacity 1s ease-in-out;
+            z-index: 10000; opacity: 1; transition: opacity 1s ease-in-out;
         }
         .logo-container { width: 275px; height: auto; position: relative; }
         .logo-img { width: 275px; height: auto; display: block; }
@@ -33,10 +33,23 @@
         }
         @keyframes shine { 0% { left: -150%; } 30% { left: 150%; } 100% { left: 150%; } }
 
-        #main-app { display: none; width: 100%; min-height: 100vh; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; overflow-y: auto; opacity: 0; transition: opacity 0.8s; }
-        .login-card { width: 100%; max-width: 420px; background: var(--card-bg); border: 1px solid #1a1500; border-radius: 30px; padding: 35px; text-align: center; margin: 20px auto; position: relative; }
+        /* APP PRINCIPAL - OCULTA POR DEFECTO */
+        #main-app { 
+            display: none; 
+            width: 100%; 
+            height: 100vh; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 20px; 
+            box-sizing: border-box; 
+            overflow-y: auto; 
+            opacity: 0; 
+            transition: opacity 0.8s; 
+            background: var(--dark-bg);
+        }
+        .login-card { width: 100%; max-width: 420px; background: var(--card-bg); border: 1px solid #1a1500; border-radius: 30px; padding: 35px; text-align: center; margin: auto; position: relative; }
         
-        input, select { width: 100%; padding: 15px; background: #111; border: 1px solid #222; border-radius: 12px; color: #fff; margin-bottom: 10px; text-align: center; font-family: 'Lexend'; outline: none; }
+        input, select { width: 100%; padding: 15px; background: #111; border: 1px solid #222; border-radius: 12px; color: #fff; margin-bottom: 10px; text-align: center; font-family: 'Lexend'; outline: none; box-sizing: border-box; }
         
         .adn-file-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
         .file-upload { background: #000; border: 1px dashed #333; border-radius: 12px; padding: 15px 5px; color: #666; cursor: pointer; font-size: 0.65rem; display: flex; flex-direction: column; align-items: center; }
@@ -56,44 +69,51 @@
         @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.15); } }
     </style>
 </head>
-<body onload="arrancarWillPay()">
+<body>
 
     <div id="splash-screen">
         <div class="logo-container"><img src="logonuevo.png" class="logo-img"></div>
         <div style="margin-top:20px; color:var(--gold); letter-spacing:6px; font-size:0.9rem; font-weight:bold;">VENEZUELA</div>
     </div>
 
-    <div id="premio-modal">
-        <h1 style="color: white; letter-spacing: 2px;">¡SORPRESA SOCIO!</h1>
-        <div class="bonus-destello">+ 500</div>
-        <p style="color: var(--gold); margin-top: 20px; padding: 0 20px; font-weight: 300;">Por creer en el sistema, la Fundación Wilfredo Donquiz te otorga este bono de bienvenida.</p>
-        <button class="btn-gold" style="width: auto; padding: 15px 40px; margin-top: 30px;" onclick="cerrarPremio()">RECIBIR SALDO</button>
-    </div>
-
     <div id="main-app">
         <div id="content-box" class="login-card"></div>
     </div>
 
-    <script>
-        let contadorSocios = parseInt(localStorage.getItem('WillPay_Contador')) || 0;
+    <div id="premio-modal">
+        <h1 style="color: white;">¡SORPRESA SOCIO!</h1>
+        <div class="bonus-destello">+ 500</div>
+        <p style="color: var(--gold); margin-top: 20px;">Bono de Bienvenida Fundación Wilfredo Donquiz.</p>
+        <button class="btn-gold" style="width: auto; padding: 15px 40px; margin-top: 30px;" onclick="cerrarPremio()">RECIBIR SALDO</button>
+    </div>
 
-        function arrancarWillPay() {
+    <script>
+        // MOTOR DE ARRANQUE SEGURO
+        window.onload = function() {
+            // Pre-renderizamos el login
             mostrarLogin();
+
+            // Esperar los 5 segundos del legado
             setTimeout(() => {
-                document.getElementById('splash-screen').style.opacity = '0';
+                const splash = document.getElementById('splash-screen');
+                const main = document.getElementById('main-app');
+
+                splash.style.opacity = '0';
+                
                 setTimeout(() => {
-                    document.getElementById('splash-screen').style.display = 'none';
-                    document.getElementById('main-app').style.display = 'flex';
-                    setTimeout(() => { document.getElementById('main-app').style.opacity = '1'; }, 50);
+                    splash.style.display = 'none';
+                    main.style.display = 'flex';
+                    setTimeout(() => { main.style.opacity = '1'; }, 50);
                 }, 1000);
             }, 5000);
-        }
+        };
 
         const footerSello = `<div class="sello-wildon">WILDON. C.A.</div>`;
 
         function mostrarLogin() {
             document.getElementById('content-box').innerHTML = `
-                <img src="logonuevo.png" style="width: 140px; margin-bottom: 20px;"> <h2 style="color: var(--gold); font-size: 1.2rem; margin-bottom: 5px;">BIENVENIDO</h2>
+                <img src="logonuevo.png" style="width: 140px; margin-bottom: 20px;">
+                <h2 style="color: var(--gold); font-size: 1.2rem; margin-bottom: 5px;">BIENVENIDO</h2>
                 <input type="text" id="user-master" placeholder="Usuario o Teléfono">
                 <input type="password" id="pin-master" placeholder="PIN de Seguridad">
                 <button class="btn-gold" onclick="intentarAcceso()">ENTRAR</button>
@@ -106,62 +126,43 @@
 
         function mostrarRegistroADN() {
             document.getElementById('content-box').innerHTML = `
-                <img src="logonuevo.png" style="width: 140px; margin-bottom: 15px;"> <h2 style="color: var(--gold); font-size: 1.1rem;">🧬 REGISTRO ADN</h2>
+                <img src="logonuevo.png" style="width: 140px; margin-bottom: 15px;">
+                <h2 style="color: var(--gold); font-size: 1.1rem;">🧬 REGISTRO ADN</h2>
                 <p style="color: #666; font-size: 0.5rem; letter-spacing: 2px; margin-bottom: 15px;">FUNDACIÓN WILFREDO DONQUIZ</p>
-                
                 <input type="text" id="reg-nombre" placeholder="Nombre Completo">
                 <input type="number" id="reg-cedula" placeholder="Cédula de Identidad">
                 <input type="tel" id="reg-telf" placeholder="Número de Teléfono">
-                
                 <select id="reg-actividad">
                     <option value="Independiente">Particular / Independiente</option>
                     <option value="Moto-Taxi">Moto-Taxi</option>
                     <option value="Comercio">Comercio</option>
                 </select>
-
                 <div class="adn-file-container">
                     <label class="file-upload"><span>📸 CÉDULA</span><input type="file" style="display:none;"></label>
                     <label class="file-upload"><span>🤳 SELFIE ADN</span><input type="file" style="display:none;"></label>
                 </div>
-
                 <button class="btn-gold" onclick="procesarPrimerosSocios()">UNIRSE A WILL-PAY</button>
-
                 <div class="privilegio-box">
-                    <p class="privilegio-text">
-                        ✨ <b>PRIVILEGIO DE USUARIO:</b> Al registrarte con alguna actividad económica gozarás del beneficio de un <b>Historial Certificado</b> para cualquier tipo de trámites.
-                    </p>
+                    <p class="privilegio-text">✨ <b>PRIVILEGIO DE USUARIO:</b> Al registrarte con alguna actividad económica gozarás del beneficio de un <b>Historial Certificado</b> para cualquier tipo de trámites.</p>
                 </div>
-
                 <p onclick="mostrarLogin()" style="color:#444; font-size:0.7rem; margin-top:15px; cursor:pointer;">VOLVER</p>
                 ${footerSello}
             `;
         }
 
         function procesarPrimerosSocios() {
-            const cedula = document.getElementById('reg-cedula').value;
-            if(!cedula) return alert("Por favor, ingrese su cédula.");
-            
-            contadorSocios++;
-            localStorage.setItem('WillPay_Contador', contadorSocios);
+            let contador = parseInt(localStorage.getItem('WillPay_Contador')) || 0;
+            contador++;
+            localStorage.setItem('WillPay_Contador', contador);
 
-            if(contadorSocios <= 5) {
-                lanzarSorpresa();
+            if(contador <= 5) {
+                document.getElementById('premio-modal').style.display = 'flex';
+                confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 }, colors: ['#ffcf40', '#ffffff'] });
             } else {
                 alert("Expediente ADN Archivador WILDON C.A.");
                 mostrarLogin();
             }
         }
 
-        function lanzarSorpresa() {
-            document.getElementById('premio-modal').style.display = 'flex';
-            confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 }, colors: ['#ffcf40', '#ffffff', '#d1b13b'] });
-        }
-
         function cerrarPremio() {
-            document.getElementById('premio-modal').style.display = 'none';
-            mostrarLogin();
-        }
-
-        // CORRECCIÓN DE ACCESO MAESTRO
-        function intentarAcceso() {
-            const user = document.getElementById('user
+            document.getElementById('prem
