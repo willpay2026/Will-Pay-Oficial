@@ -3,21 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Will-Pay | El Legado</title>
+    <title>Will-Pay | Bóveda ADN</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="logonuevo.png">
+    <meta name="apple-touch-icon" href="logonuevo.png">
 
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;700&display=swap" rel="stylesheet">
     
     <style>
-        :root { --gold: #ffcf40; --dark-bg: #000; }
+        :root { --gold: #ffcf40; --dark-bg: #000; --card-bg: #080808; }
         body, html { margin: 0; padding: 0; background: var(--dark-bg); color: #fff; font-family: 'Lexend', sans-serif; height: 100%; overflow: hidden; }
 
-        /* SPLASH SCREEN 275PX */
         #splash-screen {
             position: fixed; width: 100%; height: 100%; background: #000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -25,27 +23,16 @@
         }
         .logo-container { width: 275px; height: 275px; position: relative; overflow: hidden; border-radius: 35px; }
         .logo-img { width: 100%; height: auto; }
-        .logo-container::after {
-            content: ""; position: absolute; top: -150%; left: -150%; width: 300%; height: 300%;
-            background: linear-gradient(to bottom right, transparent 45%, rgba(255,255,255,0.6) 50%, transparent 55%);
-            transform: rotate(-45deg); animation: shine 6s infinite;
-        }
-        @keyframes shine { 0% { top:-150%; left:-150%; } 20% { top:100%; left:100%; } 100% { top:100%; left:100%; } }
 
         #main-app { display: none; width: 100%; min-height: 100vh; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; opacity: 0; transition: opacity 0.8s; }
-        .login-card { width: 100%; max-width: 420px; background: #080808; border: 1px solid #1a1500; border-radius: 30px; padding: 35px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.9); }
+        .login-card { width: 100%; max-width: 420px; background: var(--card-bg); border: 1px solid #1a1500; border-radius: 30px; padding: 35px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.9); }
         
         input, select { width: 100%; padding: 18px; background: #111; border: 1px solid #222; border-radius: 15px; color: #fff; margin-bottom: 12px; text-align: center; font-family: 'Lexend'; box-sizing: border-box; outline: none; font-size: 1rem; }
         input:focus { border-color: var(--gold); }
-        .btn-gold { width: 100%; background: var(--gold); border: none; padding: 18px; border-radius: 15px; font-weight: bold; cursor: pointer; color: #000; text-transform: uppercase; margin-bottom: 10px; font-size: 1rem; }
+        .btn-gold { width: 100%; background: var(--gold); border: none; padding: 18px; border-radius: 15px; font-weight: bold; cursor: pointer; color: #000; text-transform: uppercase; margin-bottom: 10px; font-size: 1rem; transition: 0.3s; }
         
-        /* Estilos del Switch para el Admin */
-        .switch { position: relative; display: inline-block; width: 45px; height: 24px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #222; transition: .4s; border-radius: 34px; border: 1px solid #333; }
-        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: var(--gold); }
-        input:checked + .slider:before { transform: translateX(21px); background-color: #000; }
+        .privilegio-box { background: rgba(255, 207, 64, 0.05); border: 1px dashed rgba(255, 207, 64, 0.3); border-radius: 15px; padding: 12px; margin-top: 15px; }
+        .privilegio-text { color: var(--gold); font-size: 0.65rem; line-height: 1.4; font-style: italic; }
     </style>
 </head>
 <body onload="iniciarApp()">
@@ -56,100 +43,23 @@
     </div>
 
     <div id="main-app">
-        <div id="content-box" class="login-card">
-            </div>
+        <div id="content-box" class="login-card"></div>
     </div>
 
     <script src="https://unpkg.com/html5-qrcode"></script>
 
     <script>
-        // ESTADO GLOBAL
-        window.modoAutomatico = false;
-        window.solicitudesPendientes = [];
+        const BovedaADN = {
+            guardar: (socio) => {
+                let socios = JSON.parse(localStorage.getItem('WillPay_Socios')) || [];
+                socios.push(socio);
+                localStorage.setItem('WillPay_Socios', JSON.stringify(socios));
+            }
+        };
 
         function iniciarApp() {
-            mostrarLoginView();
+            renderLogin();
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 const main = document.getElementById('main-app');
                 splash.style.opacity = '0';
-                setTimeout(() => {
-                    splash.style.display = 'none';
-                    main.style.display = 'flex';
-                    setTimeout(() => { main.style.opacity = '1'; }, 50);
-                }, 1000);
-            }, 5000);
-        }
-
-        // VISTA 1: LOGIN
-        function mostrarLoginView() {
-            document.getElementById('content-box').innerHTML = `
-                <img src="logonuevo.png" style="width: 100px; margin-bottom: 15px;">
-                <h2 style="color: var(--gold); font-size: 1.2rem; margin-bottom: 5px;">BIENVENIDO</h2>
-                <p style="color: #444; font-size: 0.6rem; margin-bottom: 20px; letter-spacing:1px;">INGRESA A TU BILLETERA</p>
-                <input type="text" id="user-master" placeholder="Usuario o Teléfono">
-                <input type="password" id="pin-master" placeholder="PIN de Seguridad">
-                <button class="btn-gold" onclick="intentarAcceso()">ENTRAR</button>
-                <p style="margin-top:20px; font-size:0.75rem; color:#444;">
-                    ¿Nuevo Socio? <span style="color:var(--gold); cursor:pointer; font-weight:bold;" onclick="iniciarRegistroADN()">Regístrate aquí</span>
-                </p>
-            `;
-        }
-
-        // VISTA 2: REGISTRO ADN (KYC COMPLETO)
-        function iniciarRegistroADN() {
-            document.getElementById('content-box').innerHTML = `
-                <h2 style="color: var(--gold); font-size: 1.2rem;">🧬 REGISTRO ADN</h2>
-                <p style="color: #666; font-size: 0.6rem; margin-bottom: 20px; letter-spacing: 2px;">FUNDACIÓN WILFREDO DONQUIZ</p>
-                
-                <input type="text" id="reg-nombre" placeholder="Nombre Completo">
-                <input type="number" id="reg-cedula" placeholder="Cédula de Identidad">
-                <input type="tel" id="reg-telf" placeholder="Número de Teléfono">
-                
-                <select id="reg-actividad">
-                    <option value="" disabled selected>Actividad Económica</option>
-                    <option value="Particular">Particular</option>
-                    <option value="Moto-Taxi">Moto-Taxi</option>
-                    <option value="Comercio">Comercio / Tienda</option>
-                    <option value="Vendedor">Vendedor Ambulante</option>
-                </select>
-
-                <button class="btn-gold" onclick="procesarRegistro()">UNIRSE A WILL-PAY</button>
-                <p onclick="mostrarLoginView()" style="color:#444; font-size:0.7rem; margin-top:10px; cursor:pointer;">VOLVER AL LOGIN</p>
-            `;
-        }
-
-        function procesarRegistro() {
-            const nombre = document.getElementById('reg-nombre').value;
-            const cedula = document.getElementById('reg-cedula').value;
-            const telf = document.getElementById('reg-telf').value;
-            const actividad = document.getElementById('reg-actividad').value;
-
-            if(!nombre || !cedula || !telf || !actividad) return alert("❌ Por favor, complete todos los campos ADN.");
-
-            if(window.modoAutomatico) {
-                alert(`🔥 MODO MASIVO ACTIVO: ¡Bienvenido ${nombre}! Acceso concedido.`);
-                mostrarDashboardUsuario();
-            } else {
-                window.solicitudesPendientes.push({ nombre, cedula, telf, actividad, fecha: new Date().toLocaleString() });
-                alert(`⏳ REGISTRO RECIBIDO: Wilfredo Donquiz revisará tus datos para el acceso.`);
-                mostrarLoginView();
-            }
-        }
-
-        function intentarAcceso() {
-            const user = document.getElementById('user-master').value.trim();
-            if(user === "WILFREDO-ADMIN") {
-                if(typeof mostrarPanelAdmin === 'function') mostrarPanelAdmin();
-            } else if(user.length >= 3) {
-                if(typeof mostrarDashboardUsuario === 'function') mostrarDashboardUsuario();
-            } else {
-                alert("Ingrese sus datos de acceso");
-            }
-        }
-    </script>
-
-    <script src="modules/admin.js"></script>
-    <script src="modules/pagos.js"></script>
-</body>
-</html>
