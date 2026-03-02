@@ -3,158 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Will-Pay | Control</title>
+    <title>Will-Pay | El Legado</title>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root { 
             --gold: #ffcf40; 
             --dark-bg: #000000; 
-            --card-bg: #0a0a0a; 
-            --border: 1px solid #332b00; 
+            --input-bg: #111111;
         }
 
         body, html { 
-            margin: 0; 
-            padding: 0;
-            background: var(--dark-bg); 
-            color: #fff; 
-            font-family: 'Lexend', sans-serif;
-            overflow-x: hidden;
-            height: 100%;
+            margin: 0; padding: 0; background: var(--dark-bg); 
+            color: #fff; font-family: 'Lexend', sans-serif; height: 100%; overflow: hidden;
         }
 
-        /* 🎬 PANTALLA DE INICIO (FLASH SCREEN) */
-        #splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 1s ease, visibility 1s;
-        }
-
-        .logo-flash {
-            width: 180px; /* Logo más grande para el inicio */
-            border-radius: 30px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* ✨ EL BRILLO DIAGONAL */
+        /* ✨ EFECTO DE BRILLO DIAGONAL */
         .shine {
-            position: relative;
-            overflow: hidden;
+            position: relative; overflow: hidden;
         }
         .shine::after {
-            content: "";
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
+            content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
             background: linear-gradient(to bottom right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
-            transform: rotate(-45deg);
-            animation: sweep 2.5s infinite;
+            transform: rotate(-45deg); animation: sweep 3s infinite;
         }
         @keyframes sweep {
             0% { left: -100%; top: -100%; }
             100% { left: 100%; top: 100%; }
         }
 
-        /* 📱 CONTENIDO DE LA APP (OCULTO AL INICIO) */
-        #main-app {
-            opacity: 0;
-            transition: opacity 1s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 10px;
-            visibility: hidden;
+        /* 🎬 1. PANTALLA FLASH */
+        #splash-screen {
+            position: fixed; width: 100%; height: 100%; background: #000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 100; transition: opacity 0.8s ease;
         }
 
-        /* ESTILOS DEL DASHBOARD */
-        .header-logo-small { width: 80px; margin: 10px 0; border-radius: 12px; }
-        .welcome-msg { color: var(--gold); font-size: 0.7rem; letter-spacing: 2px; margin-bottom: 20px; }
-        .stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; width: 100%; max-width: 500px; margin-bottom: 15px; }
-        .stat-card { background: var(--card-bg); border: var(--border); border-radius: 10px; padding: 12px 2px; text-align: center; }
-        .stat-label { font-size: 0.5rem; color: #666; text-transform: uppercase; }
-        .stat-value { font-size: 1rem; font-weight: bold; }
-        .commission-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; max-width: 500px; }
-        .module-container { width: 100%; max-width: 500px; background: var(--card-bg); border: var(--border); border-radius: 15px; padding: 20px; margin-top: 20px; box-sizing: border-box; }
-        button { width: 100%; background: var(--gold); border: none; padding: 15px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .btn-invisible { background: transparent; color: #111; border: 1px solid #111; padding: 8px 15px; font-size: 0.6rem; margin: 30px 0; cursor: pointer; }
+        .loader-ring {
+            width: 40px; height: 40px; border: 3px solid transparent;
+            border-top: 3px solid var(--gold); border-radius: 50%;
+            animation: spin 1s linear infinite; margin: 20px 0;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .loading-text {
+            color: var(--gold); font-size: 0.7rem; letter-spacing: 3px; font-weight: bold;
+        }
+
+        /* 🎫 2. PANEL DE ACCESO (LOGIN) */
+        #login-panel {
+            display: none; width: 100%; height: 100%;
+            justify-content: center; align-items: center; opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .login-card {
+            width: 85%; max-width: 350px; background: #050505;
+            border: 1px solid var(--gold); border-radius: 20px;
+            padding: 30px; text-align: center;
+        }
+
+        .login-card h2 { color: var(--gold); font-size: 0.9rem; margin: 20px 0; letter-spacing: 1px; }
+
+        input {
+            width: 100%; background: var(--input-bg); border: 1px solid #222;
+            padding: 12px; color: #fff; border-radius: 10px; margin-bottom: 15px;
+            box-sizing: border-box; text-align: center; font-family: 'Lexend', sans-serif;
+        }
+
+        .btn-entrar {
+            width: 100%; background: var(--gold); color: #000; border: none;
+            padding: 15px; border-radius: 10px; font-weight: bold; cursor: pointer;
+            text-transform: uppercase; margin-top: 10px;
+        }
+
+        .reg-link {
+            display: block; margin-top: 20px; font-size: 0.7rem; color: #666; text-decoration: none;
+        }
+
+        /* 📝 3. SECCIÓN REGISTRO (OCULTA) */
+        #registro-section { display: none; padding: 20px; width: 100%; max-width: 500px; }
     </style>
 </head>
-<body onload="iniciarApp()">
+<body onload="ejecutarIntro()">
 
     <div id="splash-screen">
-        <div class="logo-flash shine">
-            <img src="logonuevo.png" alt="Will-Pay" style="width: 100%; display: block;">
+        <div class="shine" style="border-radius: 20px;">
+            <img src="logonuevo.png" alt="Will-Pay" style="width: 150px;">
+        </div>
+        <div class="loader-ring"></div>
+        <div class="loading-text">CARGANDO EL LEGADO...</div>
+    </div>
+
+    <div id="login-panel">
+        <div class="login-card">
+            <img src="logonuevo.png" alt="Logo" style="width: 100px; margin-bottom: 10px;">
+            <p style="font-size: 0.6rem; color: #888;">Tu Billetera Digital de Confianza</p>
+            
+            <h2>ACCESO AL PANEL</h2>
+            
+            <input type="text" placeholder="Nombre y Apellido">
+            <input type="text" placeholder="Usuario">
+            <input type="password" placeholder="••••">
+            
+            <button class="btn-entrar" onclick="irAlDashboard()">ENTRAR SEGURO</button>
+            
+            <a href="#" class="reg-link" onclick="mostrarRegistro()">¿No tienes cuenta? Regístrate aquí</a>
         </div>
     </div>
 
-    <div id="main-app">
-        <img src="logonuevo.png" alt="Logo" class="header-logo-small">
-        <div class="welcome-msg">CEO PANEL | WILFREDO DONQUIZ</div>
-
-        <div class="stats-row">
-            <div class="stat-card"><div class="stat-label">Bolívares</div><div class="stat-value">100.00</div></div>
-            <div class="stat-card"><div class="stat-label">WPC</div><div class="stat-value">0.00</div></div>
-            <div class="stat-card"><div class="stat-label">$</div><div class="stat-value">0.00</div></div>
+    <div id="main-dashboard" style="display:none;">
         </div>
-
-        <div class="commission-grid">
-            <div class="stat-card"><div class="stat-label">Pagos</div><div style="color:var(--gold)">1.5%</div></div>
-            <div class="stat-card"><div class="stat-label">Retiros</div><div style="color:var(--gold)">2.1%</div></div>
-        </div>
-
-        <div id="panel-maestro-ceo" style="display: none; width: 100%; max-width: 500px;">
-            <div class="module-container">
-                <div style="color: #00ff00; font-size: 1.5rem; text-align: center; font-weight: bold;">Bs. 0.00</div>
-                <p style="text-align:center; font-size:0.6rem; color:#444;">GANANCIAS NETAS</p>
-            </div>
-        </div>
-
-        <div class="module-container" id="render-pagos">
-            </div>
-
-        <button onclick="accesoCEO()" class="btn-invisible">ADMIN ACCESS</button>
-        
-        <div style="font-size: 0.5rem; color: #222; margin-bottom: 20px;">
-            WILL-PAY VENEZUELA © 2026 | PROPIEDAD DE WILFREDO DONQUIZ
-        </div>
-    </div>
 
     <script>
-        // LA MAGIA DEL TIEMPO
-        function iniciarApp() {
+        function ejecutarIntro() {
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
-                const app = document.getElementById('main-app');
+                const login = document.getElementById('login-panel');
                 
-                splash.style.opacity = '0'; // Se desvanece
+                splash.style.opacity = '0';
                 setTimeout(() => {
-                    splash.style.visibility = 'hidden';
-                    app.style.visibility = 'visible';
-                    app.style.opacity = '1'; // Aparece la app suavemente
-                }, 1000); // Tiempo que tarda en borrarse el splash
-            }, 4000); // 4 SEGUNDOS DE LOGO SOLO
+                    splash.style.display = 'none';
+                    login.style.display = 'flex';
+                    setTimeout(() => { login.style.opacity = '1'; }, 50);
+                }, 800);
+            }, 4000); // 4 Segundos de gloria para el logo
         }
 
-        function accesoCEO() {
-            let clave = prompt("🔐 CLAVE MAESTRA:");
-            if (clave === "1234") {
-                document.getElementById('panel-maestro-ceo').style.display = 'block';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
+        function mostrarRegistro() {
+            // Aquí la "perra" te lo redirecciona al registro bancario que pediste
+            alert("Redireccionando al Registro de Usuario Bancario...");
+            // Lógica para ocultar login y mostrar registro
+        }
+
+        function irAlDashboard() {
+            alert("Verificando Credenciales...");
+            // Aquí entra la magia de Wilfredo
         }
     </script>
-
-    <script src="modules/pagos.js"></script>
-    <script src="modules/admin.js"></script>
-    <script src="modules/socios.js"></script>
 </body>
 </html>
