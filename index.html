@@ -11,23 +11,13 @@
         :root { --gold: #ffcf40; --dark-bg: #000; --card-bg: #0a0a0a; --border-gold: #ffcf40; }
         body, html { margin: 0; padding: 0; background: var(--dark-bg); color: #fff; font-family: 'Lexend', sans-serif; height: 100vh; overflow: hidden; }
 
-        /* VISTAS */
         .view { display: none; flex-direction: column; align-items: center; width: 100%; height: 100vh; padding: 20px; box-sizing: border-box; position: absolute; top:0; left:0; }
 
-        /* SPLASH - CIRUGÍA: ESTÁTICO Y LIMPIO */
-        #view-splash { 
-            display: flex; 
-            z-index: 1000; 
-            background: #000; 
-            justify-content: center; 
-            align-items: center; 
-        }
-        .logo-splash { 
-            width: 220px; 
-            opacity: 1; /* Sólido, sin palpitación */
-        }
+        /* SPLASH */
+        #view-splash { display: flex; z-index: 1000; background: #000; justify-content: center; align-items: center; }
+        .logo-splash { width: 220px; }
 
-        /* LOGIN - DISEÑO QUIRÚRGICO */
+        /* LOGIN & FORMS */
         .login-container { width: 100%; max-width: 360px; text-align: center; margin-top: 20px; }
         
         input { 
@@ -46,8 +36,6 @@
         }
         
         .sello { margin-top: 30px; color: var(--gold); font-size: 0.6rem; letter-spacing: 4px; opacity: 0.7; font-weight: bold; }
-
-        /* CONTENEDOR DINÁMICO */
         #content-box { width: 100%; max-width: 450px; margin: 0 auto; }
     </style>
 </head>
@@ -60,15 +48,14 @@
 
     <div id="view-login" class="view" style="justify-content: center;">
         <img src="logonuevo.png" style="width: 150px; margin-bottom: 40px;">
-        
         <div class="login-container">
             <h2 style="color:var(--gold); margin-bottom: 30px; font-weight: 300; letter-spacing: 2px;">ACCESO</h2>
             <input type="text" id="user" placeholder="Usuario / Teléfono">
             <input type="password" id="pin" placeholder="PIN de Seguridad">
             <button class="btn-gold" onclick="entrar()">ENTRAR AL SISTEMA</button>
-            <p style="font-size: 0.75rem; color: #555; margin-top: 30px; cursor: pointer;" onclick="iniciarRegistroADN()">¿No tienes ADN Digital? <span style="color:var(--gold)">Regístrate</span></p>
+            
+            <p style="font-size: 0.75rem; color: #555; margin-top: 30px; cursor: pointer;" onclick="irARegistro()">¿No tienes ADN Digital? <span style="color:var(--gold)">Regístrate</span></p>
         </div>
-
         <div class="sello">WILDON. C.A.</div>
     </div>
 
@@ -82,34 +69,51 @@
     <script src="modules/admin.js"></script>
 
     <script>
+        // Función de navegación universal
         function irA(id) {
             document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
             const target = document.getElementById(id);
             if(target) target.style.display = 'flex';
         }
 
-        // RELOJ AJUSTADO A 4 SEGUNDOS
+        // Control del Splash
         window.onload = () => {
-            setTimeout(() => { 
-                irA('view-login'); 
-            }, 4000); 
+            setTimeout(() => { irA('view-login'); }, 4000); 
         };
 
-       function entrar() {
-    const u = document.getElementById('user').value.toUpperCase().trim(); // Convertimos a mayúsculas para evitar errores de escritura
-    
-    // Si el usuario es Wilfredo (por número o por nombre admin)
-    if(u === "04126602555" || u === "WILFREDO-ADMIN" || u === "WILFREDO") {
-        irA('view-dash');
-        window.mostrarPanelAdmin(); // Llama a tu Panel Maestro de comisiones
-    } 
-    // Si el usuario puso algo pero no es el admin
-    else if (u !== "") {
-        irA('view-dash');
-        window.mostrarDashboardUsuario(); // Llama al panel de pagos normal
-    } 
-    // Si no puso nada, le avisamos
-    else {
-        alert("Por favor, ingrese su ADN Digital");
-    }
-}
+        // Lógica de Acceso Blindada
+        function entrar() {
+            const u = document.getElementById('user').value.toUpperCase().trim();
+            
+            if(u === "04126602555" || u === "WILFREDO-ADMIN" || u === "WILFREDO") {
+                irA('view-dash');
+                if(window.mostrarPanelAdmin) {
+                    window.mostrarPanelAdmin();
+                } else {
+                    alert("Error: Módulo Admin no cargado");
+                }
+            } else if (u !== "") {
+                irA('view-dash');
+                if(window.mostrarDashboardUsuario) {
+                    window.mostrarDashboardUsuario();
+                } else {
+                    alert("Error: Módulo de Pagos no cargado");
+                }
+            } else {
+                alert("Por favor, ingrese su ADN Digital");
+            }
+        }
+
+        // Función para saltar al registro
+        function irARegistro() {
+            irA('view-dash');
+            if(window.iniciarRegistroADN) {
+                window.iniciarRegistroADN();
+            } else {
+                // Si el módulo no tiene esa función, mostramos un aviso
+                document.getElementById('content-box').innerHTML = "<h2 style='color:var(--gold)'>Próximamente Registro</h2><button class='btn-gold' onclick='location.reload()'>Volver</button>";
+            }
+        }
+    </script>
+</body>
+</html>
