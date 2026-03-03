@@ -1,89 +1,83 @@
-// Módulo de ADN Digital Will-Pay - PROPIEDAD DE WILFREDO DONQUIZ
+// Módulo de ADN Digital Will-Pay - GESTIÓN BANCARIA
 window.iniciarRegistroADN = () => {
-    // Apuntamos al contenedor correcto del Index
     const panel = document.getElementById('content-box');
     
     panel.innerHTML = `
-        <div style="animation: fadeIn 0.5s; padding: 10px;">
-            <div style="text-align: center; margin-bottom: 20px;">
-                <h2 style="color: var(--gold); margin: 0; font-size: 1.4rem; letter-spacing: 2px;">ADN DIGITAL</h2>
-                <p style="color: #555; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase;">Registro de Usuario Bancario</p>
+        <div style="animation: fadeIn 0.5s; padding: 10px; text-align: center;">
+            <div style="margin-bottom: 20px;">
+                <h2 style="color: var(--gold); margin: 0; font-size: 1.6rem; letter-spacing: 2px;">ADN DIGITAL</h2>
+                <p style="color: #666; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase;">Configuración de Cuenta y Retiros</p>
             </div>
 
-            <div style="background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 25px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <div style="background: #0a0a0a; border: 1.5px solid #1a1a1a; border-radius: 30px; padding: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.8);">
                 
-                <div style="max-height: 60vh; overflow-y: auto; padding-right: 5px;">
+                <div style="max-height: 65vh; overflow-y: auto; padding-right: 5px; text-align: left;">
                     
-                    <label style="color: #444; font-size: 0.6rem; font-weight: bold; margin-left: 5px;">NOMBRE COMPLETO / RAZÓN SOCIAL</label>
-                    <input type="text" id="reg-nombre" placeholder="Ej: Wilfredo Donquiz" style="width:100%; padding:15px; margin: 8px 0 20px 0; background:#000; border:1px solid #222; color:#fff; border-radius:15px; text-align: left; font-size: 0.9rem;">
+                    <p style="color:var(--gold); font-size:0.7rem; border-bottom:1px solid #222; padding-bottom:5px; margin-bottom:15px;">1. IDENTIDAD</p>
+                    <label style="color: #555; font-size: 0.6rem; font-weight: bold; margin-left: 10px;">NOMBRE Y APELLIDO</label>
+                    <input type="text" id="reg-nombre" placeholder="Ej: Wilfredo Donquiz" style="width:100%; padding:15px; margin: 8px 0 20px 0; background:#000; border:1px solid #222; color:#fff; border-radius:18px;">
 
-                    <label style="color: #444; font-size: 0.6rem; font-weight: bold; margin-left: 5px;">CÉDULA / RIF (SOLO NÚMEROS)</label>
-                    <input type="number" id="reg-cedula" placeholder="Ej: 13496133" style="width:100%; padding:15px; margin: 8px 0 20px 0; background:#000; border:1px solid #222; color:#fff; border-radius:15px; text-align: left; font-size: 0.9rem;">
+                    <label style="color: #555; font-size: 0.6rem; font-weight: bold; margin-left: 10px;">CÉDULA / RIF</label>
+                    <input type="number" id="reg-cedula" placeholder="Ej: 13496133" style="width:100%; padding:15px; margin: 8px 0 20px 0; background:#000; border:1px solid #222; color:#fff; border-radius:18px;">
 
-                    <label style="color: var(--gold); font-size: 0.6rem; font-weight: bold; margin-left: 5px;">MODALIDAD DE CUENTA</label>
-                    <select id="reg-tipo" onchange="window.verificarActividad()" style="width:100%; padding:15px; margin: 8px 0 20px 0; background:#000; border:1px solid var(--gold); color:#fff; border-radius:15px; font-family: 'Lexend'; outline: none;">
-                        <option value="normal">Usuario Normal (Tasa 1.5%)</option>
-                        <option value="negocio">Actividad Económica (Tasa 5.0%)</option>
+                    <p style="color:var(--gold); font-size:0.7rem; border-bottom:1px solid #222; padding-bottom:5px; margin-top:10px; margin-bottom:15px;">2. DESTINO DE FONDOS (PARA RETIROS)</p>
+                    
+                    <label style="color: #555; font-size: 0.6rem; font-weight: bold; margin-left: 10px;">BANCO DESTINO</label>
+                    <select id="reg-banco" style="width:100%; padding:15px; margin: 8px 0 20px 0; background:#000; border:1px solid #222; color:#fff; border-radius:18px; font-family: 'Lexend';">
+                        <option value="0102">BANCO DE VENEZUELA</option>
+                        <option value="0134">BANESCO</option>
+                        <option value="0105">MERCANTIL</option>
+                        <option value="0108">PROVINCIAL</option>
+                        <option value="0172">BANCAMIGA</option>
                     </select>
 
-                    <div id="aviso-negocio" style="display: none; background: rgba(255, 207, 64, 0.05); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,207,64,0.2); margin-bottom: 20px;">
-                        <p style="color: var(--gold); font-size: 0.65rem; line-height: 1.5; margin: 0; text-align: center;">
-                            <b>💎 LIBRO DE VIDA DIGITAL:</b> Al ser Socio Comercial, tendrás un historial certificado de cada cobro, ideal para tu control y sustento legal.
-                        </p>
-                    </div>
+                    <label style="color: #555; font-size: 0.6rem; font-weight: bold; margin-left: 10px;">TELÉFONO PAGO MÓVIL</label>
+                    <input type="number" id="reg-tlf-banco" placeholder="0412..." style="width:100%; padding:15px; margin: 8px 0 20px 0; background:#000; border:1px solid #222; color:#fff; border-radius:18px;">
+
+                    <p style="color:var(--gold); font-size:0.7rem; border-bottom:1px solid #222; padding-bottom:5px; margin-top:10px; margin-bottom:15px;">3. SEGURIDAD ADN</p>
+                    
+                    <label style="color: #555; font-size: 0.6rem; font-weight: bold; margin-left: 10px;">MODALIDAD</label>
+                    <select id="reg-tipo" onchange="window.verificarActividad()" style="width:100%; padding:15px; margin: 8px 0 25px 0; background:#000; border:1.5px solid var(--gold); color:#fff; border-radius:18px;">
+                        <option value="normal">Usuario Normal (Tasa 1.5%)</option>
+                        <option value="negocio">Socio Comercial (Tasa 5.0%)</option>
+                    </select>
 
                     <div id="seccion-negocio" style="display: none; margin-bottom: 20px;">
-                        <label style="color: #444; font-size: 0.6rem; font-weight: bold; margin-left: 5px;">RAMA DE ACTIVIDAD</label>
-                        <select id="reg-actividad" style="width:100%; padding:15px; margin: 8px 0; background:#000; border:1px solid #222; color:#fff; border-radius:15px; font-family: 'Lexend'; outline: none;">
-                            <optgroup label="Transporte / Delivery">
-                                <option>Transporte Urbano</option><option>Mototaxis</option><option>Taxis</option>
-                            </optgroup>
-                            <optgroup label="Venta de Alimentos">
-                                <option>Bodegas</option><option>Comida rápida</option>
-                            </optgroup>
-                            <optgroup label="Otros">
-                                <option>Salud y Belleza</option><option>Servicios Técnicos</option>
-                            </optgroup>
+                        <label style="color: #555; font-size: 0.6rem; font-weight: bold; margin-left: 10px;">RAMA COMERCIAL</label>
+                        <select id="reg-actividad" style="width:100%; padding:15px; margin: 8px 0; background:#000; border:1px solid #222; color:#fff; border-radius:18px;">
+                            <option>Transporte</option><option>Alimentos</option><option>Servicios</option>
                         </select>
                     </div>
 
-                    <label style="color: #444; font-size: 0.6rem; font-weight: bold; margin-left: 5px;">PIN DE SEGURIDAD (6 DÍGITOS)</label>
-                    <input type="password" id="reg-pin" maxlength="6" placeholder="••••••" style="width:100%; padding:15px; margin: 8px 0; background:#000; border:1px solid #222; color:var(--gold); border-radius:15px; text-align:center; font-size: 1.2rem; letter-spacing: 5px;">
+                    <label style="color: #555; font-size: 0.6rem; font-weight: bold; margin-left: 10px;">PIN DE SEGURIDAD (6 DÍGITOS)</label>
+                    <input type="password" id="reg-pin" maxlength="6" placeholder="••••••" style="width:100%; padding:15px; margin: 8px 0; background:#000; border:1px solid #222; color:var(--gold); border-radius:18px; text-align:center; font-size: 1.5rem; letter-spacing: 8px;">
                 </div>
 
-                <button onclick="window.finalizarADN()" class="btn-gold" style="margin-top: 10px;">
+                <button onclick="window.finalizarADN()" class="btn-gold" style="margin-top: 15px;">
                     GENERAR MI ADN DIGITAL
                 </button>
             </div>
             
-            <p onclick="location.reload()" style="color: #333; font-size: 0.7rem; text-align: center; margin-top: 20px; cursor: pointer;">Volver al Inicio</p>
+            <p onclick="location.reload()" style="color: #444; font-size: 0.7rem; text-align: center; margin-top: 25px; cursor: pointer;">← VOLVER</p>
         </div>
     `;
 };
 
 window.verificarActividad = () => {
     const tipo = document.getElementById('reg-tipo').value;
-    const seccionNegocio = document.getElementById('seccion-negocio');
-    const avisoNegocio = document.getElementById('aviso-negocio');
-    
-    if (tipo === 'negocio') {
-        seccionNegocio.style.display = 'block';
-        avisoNegocio.style.display = 'block';
-    } else {
-        seccionNegocio.style.display = 'none';
-        avisoNegocio.style.display = 'none';
-    }
+    document.getElementById('seccion-negocio').style.display = (tipo === 'negocio') ? 'block' : 'none';
 };
 
 window.finalizarADN = () => {
-    const cedula = document.getElementById('reg-cedula').value;
     const nombre = document.getElementById('reg-nombre').value;
-    
-    if(!cedula || !nombre) return alert("❌ Jefe, faltan datos críticos para el ADN.");
+    const banco = document.getElementById('reg-banco').value;
+    const tlf = document.getElementById('reg-tlf-banco').value;
+    const pin = document.getElementById('reg-pin').value;
 
-    const dnaID = `WP-DNA-${cedula}-${Math.floor(Math.random() * 900) + 100}`;
-    
-    alert(`🎯 ADN DIGITAL GENERADO\n\nSocio: ${nombre}\nID ADN: ${dnaID}\n\nSu solicitud ha sido enviada a Wilfredo Donquiz para aprobación.`);
-    
+    if(!nombre || !tlf || pin.length < 6) {
+        return alert("⚠️ Faltan datos bancarios o el PIN no es de 6 dígitos.");
+    }
+
+    alert(`🎯 ADN GENERADO\n\nSocio: ${nombre.toUpperCase()}\nBanco: ${banco}\nPago Móvil: ${tlf}\n\nEspere aprobación de Wilfredo Donquiz.`);
     location.reload();
 };
