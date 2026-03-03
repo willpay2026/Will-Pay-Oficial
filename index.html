@@ -95,15 +95,21 @@
             }, 4000); 
         };
 
-        function entrar() {
-            const u = document.getElementById('user').value;
-            irA('view-dash');
-            if(u === "04126602555" || u === "WILFREDO") {
-                window.mostrarPanelAdmin();
-            } else {
-                window.mostrarDashboardUsuario();
-            }
-        }
-    </script>
-</body>
-</html>
+       function entrar() {
+    const u = document.getElementById('user').value.toUpperCase().trim(); // Convertimos a mayúsculas para evitar errores de escritura
+    
+    // Si el usuario es Wilfredo (por número o por nombre admin)
+    if(u === "04126602555" || u === "WILFREDO-ADMIN" || u === "WILFREDO") {
+        irA('view-dash');
+        window.mostrarPanelAdmin(); // Llama a tu Panel Maestro de comisiones
+    } 
+    // Si el usuario puso algo pero no es el admin
+    else if (u !== "") {
+        irA('view-dash');
+        window.mostrarDashboardUsuario(); // Llama al panel de pagos normal
+    } 
+    // Si no puso nada, le avisamos
+    else {
+        alert("Por favor, ingrese su ADN Digital");
+    }
+}
