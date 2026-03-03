@@ -14,12 +14,20 @@
         /* VISTAS */
         .view { display: none; flex-direction: column; align-items: center; width: 100%; height: 100vh; padding: 20px; box-sizing: border-box; position: absolute; top:0; left:0; }
 
-        /* SPLASH */
-        #view-splash { display: flex; z-index: 1000; background: #000; justify-content: center; }
-        .logo-splash { width: 220px; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 0.5; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1); } }
+        /* SPLASH - CIRUGÍA: ESTÁTICO Y LIMPIO */
+        #view-splash { 
+            display: flex; 
+            z-index: 1000; 
+            background: #000; 
+            justify-content: center; 
+            align-items: center; 
+        }
+        .logo-splash { 
+            width: 220px; 
+            opacity: 1; /* Sólido, sin palpitación */
+        }
 
-        /* ELEMENTOS DE INTERFAZ (LIMPIOS - SIN RECUADROS) */
+        /* LOGIN - DISEÑO QUIRÚRGICO */
         .login-container { width: 100%; max-width: 360px; text-align: center; margin-top: 20px; }
         
         input { 
@@ -65,8 +73,7 @@
     </div>
 
     <div id="view-dash" class="view" style="justify-content: flex-start; padding-top: 30px; overflow-y: auto;">
-        <div id="content-box">
-            </div>
+        <div id="content-box"></div>
     </div>
 
     <script src="modules/socios.js"></script>
@@ -81,8 +88,11 @@
             if(target) target.style.display = 'flex';
         }
 
+        // RELOJ AJUSTADO A 4 SEGUNDOS
         window.onload = () => {
-            setTimeout(() => { irA('view-login'); }, 3000); 
+            setTimeout(() => { 
+                irA('view-login'); 
+            }, 4000); 
         };
 
         function entrar() {
