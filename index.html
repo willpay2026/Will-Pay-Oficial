@@ -37,6 +37,10 @@
         
         .sello { margin-top: 30px; color: var(--gold); font-size: 0.6rem; letter-spacing: 4px; opacity: 0.7; font-weight: bold; }
         #content-box { width: 100%; max-width: 450px; margin: 0 auto; }
+        
+        /* Animación suave para cambios de vista */
+        .fadeIn { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
@@ -60,7 +64,7 @@
     </div>
 
     <div id="view-dash" class="view" style="justify-content: flex-start; padding-top: 30px; overflow-y: auto;">
-        <div id="content-box"></div>
+        <div id="content-box" class="fadeIn"></div>
     </div>
 
     <script src="modules/socios.js"></script>
@@ -76,42 +80,50 @@
             if(target) target.style.display = 'flex';
         }
 
-        // Control del Splash
+        // Control del Splash (4 segundos de impacto)
         window.onload = () => {
             setTimeout(() => { irA('view-login'); }, 4000); 
         };
 
-        // Lógica de Acceso Blindada
+        // LÓGICA DE ACCESO REPARADA
         function entrar() {
             const u = document.getElementById('user').value.toUpperCase().trim();
             
+            // ACCESO MAESTRO (WILFREDO)
             if(u === "04126602555" || u === "WILFREDO-ADMIN" || u === "WILFREDO") {
                 irA('view-dash');
-                if(window.mostrarPanelAdmin) {
-                    window.mostrarPanelAdmin();
+                // IMPORTANTE: Unificamos a mostrarPanelMaestro
+                if(window.mostrarPanelMaestro) {
+                    window.mostrarPanelMaestro();
                 } else {
-                    alert("Error: Módulo Admin no cargado");
+                    alert("Error: El archivo modules/admin.js no está cargado correctamente.");
                 }
-            } else if (u !== "") {
+            } 
+            // ACCESO USUARIO (YESICA Y OTROS)
+            else if (u !== "") {
                 irA('view-dash');
                 if(window.mostrarDashboardUsuario) {
                     window.mostrarDashboardUsuario();
                 } else {
-                    alert("Error: Módulo de Pagos no cargado");
+                    alert("Error: El archivo modules/pagos.js no está cargado.");
                 }
-            } else {
+            } 
+            else {
                 alert("Por favor, ingrese su ADN Digital");
             }
         }
 
-        // Función para saltar al registro
         function irARegistro() {
             irA('view-dash');
             if(window.iniciarRegistroADN) {
                 window.iniciarRegistroADN();
             } else {
-                // Si el módulo no tiene esa función, mostramos un aviso
-                document.getElementById('content-box').innerHTML = "<h2 style='color:var(--gold)'>Próximamente Registro</h2><button class='btn-gold' onclick='location.reload()'>Volver</button>";
+                document.getElementById('content-box').innerHTML = `
+                    <div style="text-align:center; padding:20px;">
+                        <h2 style='color:var(--gold)'>Próximamente Registro</h2>
+                        <p style="color:#555">Estamos blindando el sistema de ADN Digital.</p>
+                        <button class='btn-gold' style="margin-top:20px" onclick='location.reload()'>VOLVER</button>
+                    </div>`;
             }
         }
     </script>
