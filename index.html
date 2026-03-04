@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Will-Pay | El Legado</title>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/html5-qrcode"></script>
-
     <style>
         :root { --gold: #ffcf40; --dark-bg: #000; --card-bg: #0a0a0a; --border-gold: #ffcf40; }
         body, html { margin: 0; padding: 0; background: var(--dark-bg); color: #fff; font-family: 'Lexend', sans-serif; height: 100vh; overflow: hidden; }
@@ -46,9 +44,8 @@
         <div class="login-container">
             <h2 style="color:var(--gold); margin-bottom: 30px; font-weight: 300; letter-spacing: 2px;">ACCESO</h2>
             <input type="text" id="user" placeholder="Usuario / Teléfono">
-            <input type="password" id="pin" placeholder="PIN de Seguridad">
+            <input type="password" id="pin" placeholder="PIN de Seguridad (Opcional p/ Admin)">
             <button id="btn-entrar" class="btn-gold" onclick="entrar()">ENTRAR AL SISTEMA</button>
-            
             <p style="font-size: 0.75rem; color: #555; margin-top: 30px; cursor: pointer;" onclick="irARegistro()">¿No tienes ADN Digital? <span style="color:var(--gold)">Regístrate</span></p>
         </div>
         <div class="sello">WILDON. C.A.</div>
@@ -58,11 +55,6 @@
         <div id="content-box" class="fadeIn"></div>
     </div>
 
-    <script src="modules/socios.js"></script>
-    <script src="modules/registro.js"></script>
-    <script src="modules/pagos.js"></script>
-    <script src="modules/admin.js"></script>
-
     <script>
         function irA(id) {
             document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
@@ -71,26 +63,31 @@
         }
 
         window.onload = () => {
-            setTimeout(() => { irA('view-login'); }, 4000); 
+            setTimeout(() => { irA('view-login'); }, 3000); 
         };
 
-        // LÓGICA DE ACCESO REAL CONECTADA AL SERVER.JS
         async function entrar() {
             const u = document.getElementById('user').value.trim();
             const p = document.getElementById('pin').value.trim();
             const btn = document.getElementById('btn-entrar');
 
-            if (u === "" || p === "") {
-                alert("Por favor, ingrese su ADN Digital completo.");
+            if (u === "") {
+                alert("Por favor, ingrese su usuario.");
                 return;
             }
 
             btn.innerText = "VERIFICANDO...";
             btn.disabled = true;
 
+            // SI ES EL JEFE, ENTRA DIRECTO AL PANEL DE CONTROL
+            if (u === "WILFREDO-ADMIN") {
+                window.location.href = "https://willpay.onrender.com/panel-control?pass=WILL_PAY_BOSS";
+                return;
+            }
+
             try {
-                // LLAMADA AL SERVIDOR QUE CREAMOS EN RENDER
-                const response = await fetch('/login', {
+                // CONEXIÓN AL BÚNKER EN RENDER PARA USUARIOS Y SOCIOS
+                const response = await fetch('https://willpay.onrender.com/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ user: u, pin: p })
@@ -99,16 +96,10 @@
                 const data = await response.json();
 
                 if (data.success) {
-                    // Si el login es exitoso, guardamos los datos del socio
                     localStorage.setItem('usuario_activo', JSON.stringify(data.usuario));
                     irA('view-dash');
-
-                    // Verificamos si es Wilfredo (ADMIN) o un Socio
-                    if (data.usuario.rol === 'ADMIN') {
-                        if(window.mostrarPanelMaestro) window.mostrarPanelMaestro();
-                    } else {
-                        if(window.mostrarDashboardUsuario) window.mostrarDashboardUsuario();
-                    }
+                    // Aquí cargaríamos el dashboard del usuario/socio
+                    document.getElementById('content-box').innerHTML = "<h2 style='color:var(--gold)'>BIENVENIDO SOCIO</h2><p>Cargando búnker...</p>";
                 } else {
                     alert("ERROR: " + data.message);
                     btn.innerText = "ENTRAR AL SISTEMA";
@@ -123,17 +114,7 @@
         }
 
         function irARegistro() {
-            irA('view-dash');
-            if(window.iniciarRegistroADN) {
-                window.iniciarRegistroADN();
-            } else {
-                document.getElementById('content-box').innerHTML = `
-                    <div style="text-align:center; padding:20px;">
-                        <h2 style='color:var(--gold)'>REGISTRO DE ADN</h2>
-                        <p style="color:#555">Estamos activando los nuevos nodos.</p>
-                        <button class='btn-gold' style="margin-top:20px" onclick='location.reload()'>VOLVER</button>
-                    </div>`;
-            }
+            alert("Módulo de registro en mantenimiento para socios reservados.");
         }
     </script>
 </body>
